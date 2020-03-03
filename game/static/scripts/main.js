@@ -39,17 +39,21 @@ var cursors;
 // configuration is passed into the Game obj this will start the process of bring the game to life
 var game = new Phaser.Game(config);
 // load assets by using the scene function preload. phaser will automatically look for this function when it starts and load anything defined within it.
+var sky;
 function preload ()
 {
-    this.load.image('sky', 'assets/download.png');
+    this.load.image('sky', 'static/assets/images/starbg.png');
     this.load.image('player1', 'static/assets/images/whiteship.png');
     this.load.image('player2', 'static/assets/images/greenship.png');
     this.load.image('player3', 'static/assets/images/orangeship.png');
+    this.load.atlas('shapes', 'static/assets/images/shapes.png', 'static/assets/images/shapes.json');
+    this.load.text('space_dirt', 'static/assets/images/space_dirt.json');
 }
 
 function create ()
 {
-    this.add.image(400, 300, 'sky');
+    sky = this.add.tileSprite(400, 300, 800, 600, 'sky');
+    dirt1 = this.add.particles('shapes',  new Function('return ' + this.cache.text.get('space_dirt'))());
 
     let ship = this.physics.add.sprite(100, 450, 'player1');
     ship.setBounce(0.2);
@@ -75,7 +79,8 @@ function create ()
 
 function update ()
 {
-    let i = 0;
+    sky.tilePositionX = sky.tilePositionX + 1;
+
     let cursors = this.input.keyboard.createCursorKeys();
     let kb = this.input.keyboard
     let left, right, up, down = false
