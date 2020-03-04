@@ -33,8 +33,18 @@ var config = {
     }
 };
 
+
+
+function bounce(obj1, obj2) {
+    //get the object angle for bounce and then reflect.
+    ang = get_angle(obj1, obj2);
+}
+
+
+
+
+
 var ships = [];
-var texty;
 var cursors;
 // configuration is passed into the Game obj this will start the process of bring the game to life
 var game = new Phaser.Game(config);
@@ -71,7 +81,6 @@ function create ()
     ship.setCollideWorldBounds(true);
     ships.push(ship)
 
-    texty = this.add.text(440, 40, "SCORE: 0", {fontSize: '32px', fill: '#fff'});
     ships[0] = new Ship(ships[0], 100, 450, 1, 0);
     ships[1] = new Ship(ships[1], 200, 500, 1, 0);
     ships[2] = new Ship(ships[2], 400, 200, 1, 0);

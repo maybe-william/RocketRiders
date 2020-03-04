@@ -3,9 +3,6 @@ class Ship {
         this.x = x;
         this.y = y;
 
-        this.accelX = 0;
-        this.accelY = 10;
-    
         this.x_vel = 0;
         this.y_vel = 0;
 
@@ -19,13 +16,15 @@ class Ship {
     }
 
     update(fire, spec, up=false, down=false, right=false, left=false, inn=false, out=false) {
-        let aX = this.accelX;
-        let aY = this.accelY;
 
+        const acc = 10
+        const ang = this.ph.rotation;
+        const xacc = Math.cos(ang + (Math.PI/2)) * acc
+        const yacc = Math.sin(ang + (Math.PI/2)) * acc
         if (left) {
-            this.accel(aX, aY);
+            this.accel(xacc, yacc);
         } else if (right) {
-            this.accel(-aX, -aY);
+            this.accel(-xacc, -yacc);
         } else {
             this.decel(3, 0);
         }
@@ -45,8 +44,6 @@ class Ship {
 
         this.ph.setVelocityX(this.x_vel);
         this.ph.setVelocityY(this.y_vel);
-        //this.print(this.x_vel)
-        //this.print(this.y_vel)
     }
 
     decel(x, y) {
@@ -68,77 +65,22 @@ class Ship {
         this.ph.setVelocityY(this.y_vel);
     }
 
-    rotate(angle, down) {
-        let otherangle = 90 + angle - 180;
+    rotate(angle) {
+        let newangle = this.ph.angle + angle;
 
-        // const arry = [-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-        // let high = arry.length - 1;
-        // let low = 9;
-
-        // if (down) {
-
-        //     this.accelX = arry[high];
-        //     this.accelY = arry[low];
-        // } else {
-        //     this.accelX = arry[high];
-        //     this.accelY = arry[low];
-        // }
-
-        this.ph.setAngle(this.trueAngle += angle)
-        // this.print(this.trueAngle)
-        // Direction Math
-        if (this.trueAngle < 0) {
-            this.trueAngle += 360;
-        }
-        if (this.trueAngle > 360) {
-            this.trueAngle = 0;
-        }
-        if (this.trueAngle < -360) {
-            this.trueAngle = 0;
-        }
-        if (this.trueAngle == 360) {
-            this.trueAngle = 0;
+        if (newangle > 180) {
+            newangle = newangle - 360;
         }
 
-        this.accelX = Math.cos(angle) * 20;
-        this.accelY = Math.sin(angle) * 20;
-        const txt = `x is ${this.accelX} y is ${this.accelY}`;
-        print('lol')
-        // if (this.trueAngle == 0) {
-        //     this.accelX = 0;
-        //     this.accelY = 10;
-        // } else if (this.trueAngle == 90) {
-        //     this.accelX = -10;
-        //     this.accelY = 0;
-        // } else if (this.trueAngle == 180) {
-        //     this.accelX = 0;
-        //     this.accelY = -10;
-        // } else if (this.trueAngle == 270) {
-        //     this.accelX = 10;
-        //     this.accelY = 0;
-        // }
-        
-        
-        // else if (this.trueAngle > 0 && this.trueAngle < 90) {
-        //     if (-10 < this.accelX < 10) {
-        //         this.accelX -= 1;
-        //     }
-        //     if (-10 < this.accelY < 10) {
-        //         this.accelY += 1;
-        //     }
-        // } else if (this.trueAngle > 90 && this.trueAngle < 180) {
-        //     if (-10 < this.accelX < 10) {
-        //         this.accelX += 1;
-        //     }
-        //     if (-10 < this.accelY < 10 ) {
-        //         this.accelY -= 1;
-        //     }
-        // }
+        if (newangle < -180) {
+            newangle = newangle + 360;
+        }
+        this.ph.setAngle(newangle);
+        newangle = (newangle/180) * Math.PI //radian conversion
+        this.ph.setRotation(newangle);
+
     }
 
-    print(lol) {
-        texty.setText(lol)
-    }
 
     scale(scale) {
 
