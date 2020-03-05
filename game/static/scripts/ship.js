@@ -18,6 +18,7 @@ class Ship {
     update(fire, spec, up=false, down=false, right=false, left=false, inn=false, out=false) {
 
         const acc = 10
+        const dec = 3
         const ang = this.ph.rotation;
         const xacc = Math.cos(ang + (Math.PI/2)) * acc
         const yacc = Math.sin(ang + (Math.PI/2)) * acc
@@ -25,41 +26,50 @@ class Ship {
             this.accel(xacc, yacc);
         } else if (right) {
             this.accel(-xacc, -yacc);
-        } else {
-            this.decel(3, 0);
         }
 
         if (up) {
-            this.rotate(-10);
+            this.rotate(-5);
         } else if (down) {
-            this.rotate(10);
-        } else {
-            this.decel(0, 3)
+            this.rotate(5);
         }
+
+        this.decel(dec);
     }
 
     accel(x, y) {
-        this.x_vel = Math.max(Math.min(this.x_vel + x, this.vel_max), this.vel_min);
-        this.y_vel = Math.max(Math.min(this.y_vel + y, this.vel_max), this.vel_min);
+        this.x_vel = Math.max(Math.min(this.ph.body.velocity.x + x, this.vel_max), this.vel_min);
+        this.y_vel = Math.max(Math.min(this.ph.body.velocity.y + y, this.vel_max), this.vel_min);
 
         this.ph.setVelocityX(this.x_vel);
         this.ph.setVelocityY(this.y_vel);
     }
 
-    decel(x, y) {
-        let xfunc = Math.max
-        let yfunc = Math.max
-        if (this.x_vel < 0) {
-            x = -x;
+    decel(amt) {
+        console.log(' ');
+        const xvel = this.ph.body.velocity.x;
+        const yvel = this.ph.body.velocity.y;
+        const xvel1 = Math.abs(xvel) + 0.00001;
+        const yvel1 = Math.abs(yvel) + 0.00001;
+
+        const z = Math.sqrt(Math.pow(xvel1, 2) + Math.pow(yvel1, 2));
+        const z2 = Math.max(z - amt, 0);
+
+        const x2 = (z2 * xvel) / z;
+        const y2 = (z2 * yvel) / z;
+
+        let xfunc = Math.max;
+        let yfunc = Math.max;
+
+        if (xvel < 0) {
             xfunc = Math.min;
         }
-        if (this.y_vel < 0) {
-            y = -y;
+        if (yvel < 0) {
             yfunc = Math.min;
         }
 
-        this.x_vel = xfunc(this.x_vel - x, 0);
-        this.y_vel = yfunc(this.y_vel - y, 0);
+        this.x_vel = xfunc(x2, 0);
+        this.y_vel = yfunc(y2, 0);
 
         this.ph.setVelocityX(this.x_vel);
         this.ph.setVelocityY(this.y_vel);

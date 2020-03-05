@@ -23,7 +23,7 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: false
+            debug: true
         }
     },
     scene: {
@@ -84,6 +84,42 @@ function create ()
     ships[0] = new Ship(ships[0], 100, 450, 1, 0);
     ships[1] = new Ship(ships[1], 200, 500, 1, 0);
     ships[2] = new Ship(ships[2], 400, 200, 1, 0);
+
+    function shipCollide(ship1, ship2) {
+        console.log('collision')
+        let x1 = ship1.body.position.x;
+        let x2 = ship2.body.position.x;
+        let y1 = ship1.body.position.y;
+        let y2 = ship2.body.position.y;
+        let mirror = new Phaser.Line(x1, y1, x2, y2);
+
+        let xvel1 = ship1.body.velocity.x;
+        let yvel1 = ship1.body.velocity.y;
+        let line1 = new Phaser.Line(x1 - xvel1, y1 - yvel1, x1, y1);
+
+        let xvel2 = ship2.body.velocity.x;
+        let yvel2 = ship2.body.velocity.y;
+        let line2 = new Phaser.Line(x2 - xvel2, y2 - yvel2, x2, y2);
+
+        let refl1 = line1.reflect(mirror);
+        let xrefl1 = refl1.end.x - x1;
+        let yrefl1 = refl1.end.y - y1;
+
+        let refl2 = line2.reflect(mirror);
+        let xrefl2 = refl2.end.x - x2;
+        let yrefl2 = refl2.end.y - y2;
+
+        ship1.setVelocityX(xrefl1);
+        ship1.setVelocityY(yrefl1);
+
+        ship2.setVelocityX(xrefl2);
+        ship2.setVelocityY(yrefl2);
+    }
+
+    this.physics.add.collider(ships[0], ships[1], shipCollide, null, this);
+    this.physics.add.collider(ships[1], ships[2], shipCollide, null, this);
+    this.physics.add.collider(ships[0], ships[2], shipCollide, null, this);
+
 }
 
 function update ()
