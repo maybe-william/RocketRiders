@@ -1,3 +1,4 @@
+
 var ships = [];
 var enemies = [];
 var cursors;
@@ -10,6 +11,8 @@ var badshots = [];
 var badshotsactive = [];
 
 var normal_mode = true;
+
+var textbox
 
 function makeShot (shipobj) {
     let shots = badshots
@@ -25,9 +28,14 @@ function makeShot (shipobj) {
 
 
 class MainScene extends Phaser.Scene {
+    constructor () {
+        super({key: 'Main'});
+    }
+
     preload ()
     {
-
+        this.load.plugin('rextexttypingplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexttypingplugin.min.js', true);
+        console.log('this')
         this.load.image('sky', 'static/assets/images/starbg.png');
         this.load.image('player1', 'static/assets/images/whiteship.png');
         this.load.image('player2', 'static/assets/images/greenship.png');
@@ -126,9 +134,36 @@ class MainScene extends Phaser.Scene {
             callbackScope: this,
             loop: true
         });
+        let content = 'Hello, Christian Williams. I am your last name.'
+        textbox = this.make.text({
+            x: 100,
+            y: 100,
+            padding: {
+                left: 64,
+                right: 16,
+                top: 20,
+                bottom: 40,
+                x: 32,    // 32px padding on the left/right
+                y: 16     // 16px padding on the top/bottom
+            },
+            text: 'Text\nGame Object\nCreated from config',
+            style: {
+                fontSize: '64px',
+                fontFamily: 'Arial',
+                color: '#ffffff',
+                align: 'center',  // 'left'|'center'|'right'|'justify'
+                backgroundColor: '#ff00ff'
+            },
+            add: true
+        });
+
+        
+        //textbox = this.plugins.get('rextexttypingplugin').add(new Text(this, 200, 200, content, null), {
+        //                 wrapWidth: 500,
+        //             })
+
 
     }
-
     update ()
     {
         // move sky
@@ -151,7 +186,6 @@ class MainScene extends Phaser.Scene {
             up = true
         }
         ships[0].update(fire, false, up, down, right, left, false, false);
-
         // get the movement for ship2
         let w = this.input.keyboard.addKey('W');
         let a = this.input.keyboard.addKey('A');
@@ -206,7 +240,15 @@ var config = {
             debug: true
         }
     },
-    scene: MainScene 
+    plugins: {
+        global: [{
+            key: 'rextexttypingplugin',
+            start: true
+        }
+            // ...
+        ]
+    },
+    scene: [MainScene]
 };
 
 // start the game
