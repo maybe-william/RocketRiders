@@ -162,7 +162,7 @@ function update ()
         }
         enemy.update(false, false, up, down, right, left, false, false);
     }
-    enemies = enemies.filter(function (item, ind, arr) {
-        return item.ph.body.position.x >= 0;
-    });
+    destroyable = enemies.filter((item, ind, arr) => (item.ph.body.position.x < -100));
+    enemies = enemies.filter((item, ind, arr) => (item.ph.body.position.x >= -100));
+    destroyable.map((item) => (item.ph.destroy()));
 }

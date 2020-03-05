@@ -6,8 +6,7 @@ class Ship {
         this.x_vel = 0;
         this.y_vel = 0;
 
-        this.vel_max = 1000;
-        this.vel_min = -1000;
+        this.vel_max = 500;
 
         this.scale = scale;
         this.ph = phship;
@@ -22,10 +21,14 @@ class Ship {
         const ang = this.ph.rotation;
         const xacc = Math.cos(ang + (Math.PI/2)) * acc
         const yacc = Math.sin(ang + (Math.PI/2)) * acc
+
+        const x_max = Math.cos(ang + (Math.PI/2)) * this.vel_max;
+        const y_max = Math.sin(ang + (Math.PI/2)) * this.vel_max;
+
         if (left) {
-            this.accel(xacc, yacc);
+            this.accel(xacc, yacc, this.vel_max);
         } else if (right) {
-            this.accel(-xacc, -yacc);
+            this.accel(-xacc, -yacc, this.vel_max);
         }
 
         if (up) {
@@ -37,9 +40,21 @@ class Ship {
         this.decel(dec);
     }
 
-    accel(x, y) {
-        this.x_vel = Math.max(Math.min(this.ph.body.velocity.x + x, this.vel_max), this.vel_min);
-        this.y_vel = Math.max(Math.min(this.ph.body.velocity.y + y, this.vel_max), this.vel_min);
+    accel(x, y, max) {
+        let x_vel = this.ph.body.velocity.x + x + 0.000001;
+        let y_vel = this.ph.body.velocity.y + y + 0.000001;
+
+        let x_max = (x_vel * max) / Math.sqrt(Math.pow(x_vel, 2) + Math.pow(y_vel, 2))
+        let y_max = (y_vel * max) / Math.sqrt(Math.pow(x_vel, 2) + Math.pow(y_vel, 2))
+
+        if (Math.abs(x_max) < Math.abs(x_vel)) {
+            x_vel = x_max;
+        }
+        if (Math.abs(y_max) < Math.abs(y_vel)) {
+            y_vel = y_max;
+        }
+        this.x_vel = x_vel
+        this.y_vel = y_vel
 
         this.ph.setVelocityX(this.x_vel);
         this.ph.setVelocityY(this.y_vel);
