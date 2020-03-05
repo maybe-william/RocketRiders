@@ -116,6 +116,6 @@ class Ship {
     }
 
     shoot(spec=false) {
-        shotFunc(this.ph);
+        makeShot(this.ph);
     }
 }

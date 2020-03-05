@@ -60,6 +60,21 @@ function preload ()
     this.load.image('badshot', 'static/assets/images/badshot.png');
 }
 
+function bulletHit(ship, shot) {
+    console.log('here')
+    if (shot.texture.key === 'goodshot') {
+        goodshotsactive = goodshotsactive.filter((item, ind) => (item !== shot));
+        goodshots.push(shot);
+    } else {
+        badshotsactive = badshotsactive.filter((item, ind) => (item !== shot));
+        badshots.push(shot);
+    }
+    shot.setPosition(-100, -100);
+    shot.setActive = false;
+    shot.setVisible = false;
+    ship.setPosition(-200, -200);
+}
+
 function create ()
 {
     sky = this.add.tileSprite(400, 300, 800, 600, 'sky');
@@ -79,13 +94,6 @@ function create ()
     ships[0] = new Ship(ships[0], 100, 450, 1, 0);
     ships[1] = new Ship(ships[1], 200, 500, 1, 0);
 
-    function shipCollide(ship1, ship2) {
-        console.log('collision')
-        if (false) {
-            this.physics.world.collideObjects(ship1, ship2, null, null, null, false)
-        }
-        return
-    }
 
     this.physics.add.collider(ships[0].ph, ships[1].ph, null, null, this);
     this.physics.add.collider(ships[1].ph, ships[0].ph, null, null, this);
@@ -94,8 +102,8 @@ function create ()
     let i = 200
     while (i > 0) {
         let shot = this.physics.add.sprite(-100, -100, 'goodshot');
-        shot.visible = false;
-        shot.active = false;
+        shot.setVisible = false;
+        shot.setActive = false;
         goodshots.push(shot);
         i = i-1;
     }
@@ -104,10 +112,10 @@ function create ()
     i = 200
     while (i > 0) {
         let shot = this.physics.add.sprite(-100, -100, 'badshot');
-        this.physics.add.collider(ships[0], shot, null, null, this);
-        this.physics.add.collider(ships[1], shot, null, null, this);
-        shot.visible = false;
-        shot.active = false;
+        this.physics.add.collider(ships[0], shot, bulletHit, null, this);
+        this.physics.add.collider(ships[1], shot, bulletHit, null, this);
+        shot.setVisible = false;
+        shot.setActive = false;
         badshots.push(shot);
         i = i-1;
     }
@@ -126,7 +134,10 @@ function create ()
                 this.physics.add.collider(ships[0].ph, ship, null, null, this);
                 this.physics.add.collider(ships[1].ph, ship, null, null, this);
                 for (let shot of goodshots) {
-                    this.physics.add.collider(ship, shot, null, null, this);
+                    this.physics.add.collider(ship, shot, bulletHit, null, this);
+                }
+                for (let shot of goodshotsactive) {
+                    this.physics.add.collider(ship, shot, bulletHit, null, this);
                 }
                 for (let fellow of enemies) {
                     this.physics.add.collider(ship, fellow.ph, null, null, this);
@@ -141,12 +152,15 @@ function create ()
 }
 
 function makeShot (shipobj) {
-    let shot = 'badshot'
+    let shots = badshots
+    let activeshots = badshotsactive
     if (shipobj.texture.key === 'player1' || shipobj.texture.key === 'player2') {
-        shot = 'goodshot'
+        shots = goodshots
+        activeshots = goodshotsactive
     }
-
-    this.physics.add.sprite(shipobj.body.position.x, shipobj.body.position.y, shot);
+    let shot = shots.pop();
+    shot.setPosition(150, 150);
+    activeshots.push(shot);
 }
 
 function update ()
