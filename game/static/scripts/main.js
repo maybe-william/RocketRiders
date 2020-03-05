@@ -134,10 +134,10 @@ class MainScene extends Phaser.Scene {
             callbackScope: this,
             loop: true
         });
-        let content = 'Hello, Christian Williams. I am your last name.'
+        let temp = 
         textbox = this.make.text({
-            x: 100,
-            y: 100,
+            x: 50,
+            y: 400,
             padding: {
                 left: 64,
                 right: 16,
@@ -148,15 +148,23 @@ class MainScene extends Phaser.Scene {
             },
             text: 'Text\nGame Object\nCreated from config',
             style: {
-                fontSize: '64px',
+                fontSize: '32px',
                 fontFamily: 'Arial',
                 color: '#ffffff',
-                align: 'center',  // 'left'|'center'|'right'|'justify'
-                backgroundColor: '#ff00ff'
+                align: 'left',  // 'left'|'center'|'right'|'justify'
+                backgroundColor: '#ff00ff',
+                wordWrap: {
+                    width: 500,
+                    useAdvancedWrap: true,
+                },
+                fixedWidth: 500,
             },
             add: true
         });
-
+        textbox.setDepth(99999);
+        textbox = this.plugins.get('rextexttypingplugin').add(textbox, {
+        })
+        textbox.start("MY NAME ISSL KDJFLJDF :LSKJ DFK:SJ KDLF asldkfjasdfkja alskdfjlkasd flkasdf", 100);
         
         //textbox = this.plugins.get('rextexttypingplugin').add(new Text(this, 200, 200, content, null), {
         //                 wrapWidth: 500,
@@ -226,6 +234,7 @@ class MainScene extends Phaser.Scene {
         enemies = enemies.filter((item, ind, arr) => (item.ph.body.position.x >= -100));
         destroyable.map((item) => (item.ph.destroy()));
     }
+
 }
 
 // set the game config
