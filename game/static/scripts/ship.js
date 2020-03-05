@@ -1,20 +1,13 @@
 class Ship {
     constructor(phship, x, y, scale, rot) {
-        this.x = x;
-        this.y = y;
-
-        this.x_vel = 0;
-        this.y_vel = 0;
-
-        this.vel_max = 500;
-
-        this.scale = scale;
         this.ph = phship;
+        this.scale = scale;
+        this.vel_max = 500;
         this.shotspeed = 1000;
         this.rotate(rot);
     }
 
-    update(fire, spec, up=false, down=false, right=false, left=false, inn=false, out=false) {
+    update(fire, spec, up=false, down=false, right=false, left=false) {
 
         const acc = 10
         const dec = 3
@@ -57,17 +50,15 @@ class Ship {
         if (Math.abs(y_max) < Math.abs(y_vel)) {
             y_vel = y_max;
         }
-        this.x_vel = x_vel
-        this.y_vel = y_vel
 
-        this.ph.setVelocityX(this.x_vel);
-        this.ph.setVelocityY(this.y_vel);
+        this.ph.setVelocityX(x_vel);
+        this.ph.setVelocityY(y_vel);
     }
 
     decel(amt) {
         console.log(' ');
-        const xvel = this.ph.body.velocity.x;
-        const yvel = this.ph.body.velocity.y;
+        let xvel = this.ph.body.velocity.x;
+        let yvel = this.ph.body.velocity.y;
         const xvel1 = Math.abs(xvel) + 0.00001;
         const yvel1 = Math.abs(yvel) + 0.00001;
 
@@ -87,11 +78,11 @@ class Ship {
             yfunc = Math.min;
         }
 
-        this.x_vel = xfunc(x2, 0);
-        this.y_vel = yfunc(y2, 0);
+        xvel = xfunc(x2, 0);
+        yvel = yfunc(y2, 0);
 
-        this.ph.setVelocityX(this.x_vel);
-        this.ph.setVelocityY(this.y_vel);
+        this.ph.setVelocityX(xvel);
+        this.ph.setVelocityY(yvel);
     }
 
     rotate(angle) {
