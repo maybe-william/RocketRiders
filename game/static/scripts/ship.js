@@ -10,7 +10,7 @@ class Ship {
 
         this.scale = scale;
         this.ph = phship;
-        this.trueAngle = 0;
+        this.shotspeed = 1000;
         this.rotate(rot);
     }
 
@@ -25,19 +25,23 @@ class Ship {
         const x_max = Math.cos(ang + (Math.PI/2)) * this.vel_max;
         const y_max = Math.sin(ang + (Math.PI/2)) * this.vel_max;
 
-        if (left) {
+        if (down) {
             this.accel(xacc, yacc, this.vel_max);
-        } else if (right) {
+        } else if (up) {
             this.accel(-xacc, -yacc, this.vel_max);
         }
 
-        if (up) {
+        if (left) {
             this.rotate(-5);
-        } else if (down) {
+        } else if (right) {
             this.rotate(5);
         }
 
         this.decel(dec);
+
+        if (fire) {
+            this.shoot(spec);
+        }
     }
 
     accel(x, y, max) {
@@ -112,5 +116,6 @@ class Ship {
     }
 
     shoot(spec=false) {
+        shotFunc(this.ph);
     }
 }
