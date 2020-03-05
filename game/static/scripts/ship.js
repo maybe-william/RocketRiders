@@ -10,9 +10,9 @@ class Ship {
         this.vel_min = -1000;
 
         this.scale = scale;
-        this.rot = rot;
         this.ph = phship;
         this.trueAngle = 0;
+        this.rotate(rot);
     }
 
     update(fire, spec, up=false, down=false, right=false, left=false, inn=false, out=false) {

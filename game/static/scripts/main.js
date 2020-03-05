@@ -33,18 +33,11 @@ var config = {
     }
 };
 
-
-
-function bounce(obj1, obj2) {
-    //get the object angle for bounce and then reflect.
-    ang = get_angle(obj1, obj2);
-}
-
-
-
+var normal_mode = true;
 
 
 var ships = [];
+var enemies = [];
 var cursors;
 // configuration is passed into the Game obj this will start the process of bring the game to life
 var game = new Phaser.Game(config);
@@ -87,38 +80,33 @@ function create ()
 
     function shipCollide(ship1, ship2) {
         console.log('collision')
-        let x1 = ship1.body.position.x;
-        let x2 = ship2.body.position.x;
-        let y1 = ship1.body.position.y;
-        let y2 = ship2.body.position.y;
-        let mirror = new Phaser.Line(x1, y1, x2, y2);
-
-        let xvel1 = ship1.body.velocity.x;
-        let yvel1 = ship1.body.velocity.y;
-        let line1 = new Phaser.Line(x1 - xvel1, y1 - yvel1, x1, y1);
-
-        let xvel2 = ship2.body.velocity.x;
-        let yvel2 = ship2.body.velocity.y;
-        let line2 = new Phaser.Line(x2 - xvel2, y2 - yvel2, x2, y2);
-
-        let refl1 = line1.reflect(mirror);
-        let xrefl1 = refl1.end.x - x1;
-        let yrefl1 = refl1.end.y - y1;
-
-        let refl2 = line2.reflect(mirror);
-        let xrefl2 = refl2.end.x - x2;
-        let yrefl2 = refl2.end.y - y2;
-
-        ship1.setVelocityX(xrefl1);
-        ship1.setVelocityY(yrefl1);
-
-        ship2.setVelocityX(xrefl2);
-        ship2.setVelocityY(yrefl2);
+        if (false) {
+            this.physics.world.collideObjects(ship1, ship2, null, null, null, false)
+        }
+        return
     }
 
-    this.physics.add.collider(ships[0], ships[1], shipCollide, null, this);
-    this.physics.add.collider(ships[1], ships[2], shipCollide, null, this);
-    this.physics.add.collider(ships[0], ships[2], shipCollide, null, this);
+    this.physics.add.collider(ships[0].ph, ships[1].ph, null, null, this);
+    this.physics.add.collider(ships[1].ph, ships[2].ph, null, null, this);
+    this.physics.add.collider(ships[0].ph, ships[2].ph, null, null, this);
+
+
+
+
+
+    //enemy spawn timer
+    this.time.addEvent({
+        delay: 1000,
+        callback: function() {
+            if (normal_mode) {
+                let ship = this.physics.add.sprite(900, Phaser.Math.Between(0, 600), 'player3');
+                let enemy = new Ship(ship, 900, ship.body.position.y, 1, -90);
+                enemies.push(enemy);
+            }
+        },
+        callbackScope: this,
+        loop: true
+    });
 
 }
 
@@ -163,4 +151,18 @@ function update ()
         up = true
     }
     ships[1].update(false, false, up, down, right, left, false, false);
+
+    for (let enemy of enemies) {
+        up = false;
+        down = false;
+        right = false;
+        left = false;
+        if (enemy.ph.body.position.x > 450) {
+            right = true;
+        }
+        enemy.update(false, false, up, down, right, left, false, false);
+    }
+    enemies = enemies.filter(function (item, ind, arr) {
+        return item.ph.body.position.x >= 0;
+    });
 }
