@@ -134,9 +134,8 @@ class MainScene extends Phaser.Scene {
             callbackScope: this,
             loop: true
         });
-        let temp = 
         textbox = this.make.text({
-            x: 50,
+            x: 0,
             y: 400,
             padding: {
                 left: 64,
@@ -147,30 +146,33 @@ class MainScene extends Phaser.Scene {
                 y: 16     // 16px padding on the top/bottom
             },
             text: 'Text\nGame Object\nCreated from config',
+            
             style: {
                 fontSize: '32px',
-                fontFamily: 'Arial',
+                fontFamily: 'Oxanum',
                 color: '#ffffff',
                 align: 'left',  // 'left'|'center'|'right'|'justify'
-                backgroundColor: '#ff00ff',
+                backgroundColor: '#fffff',
                 wordWrap: {
-                    width: 500,
+                    width: 780,
                     useAdvancedWrap: true,
                 },
-                fixedWidth: 500,
+                fixedWidth: 5000,
+                fixedHeight: 500
             },
             add: true
         });
         textbox.setDepth(99999);
         textbox = this.plugins.get('rextexttypingplugin').add(textbox, {
         })
-        textbox.start("MY NAME ISSL KDJFLJDF :LSKJ DFK:SJ KDLF asldkfjasdfkja alskdfjlkasd flkasdf", 100);
+        textbox.start("Come on baby, don't fear the reaper\
+        Baby take my hand, don't fear the reaper\
+        We'll be able to fly, don't fear the reaper\
+        Baby I'm your man", 10);
         
         //textbox = this.plugins.get('rextexttypingplugin').add(new Text(this, 200, 200, content, null), {
         //                 wrapWidth: 500,
         //             })
-
-
     }
     update ()
     {
@@ -234,7 +236,7 @@ class MainScene extends Phaser.Scene {
         enemies = enemies.filter((item, ind, arr) => (item.ph.body.position.x >= -100));
         destroyable.map((item) => (item.ph.destroy()));
     }
-
+    textbox.emit('complete');
 }
 
 // set the game config
