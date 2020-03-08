@@ -56,7 +56,6 @@ class Ship {
     }
 
     decel(amt) {
-        console.log(' ');
         let xvel = this.ph.body.velocity.x;
         let yvel = this.ph.body.velocity.y;
         const xvel1 = Math.abs(xvel) + 0.00001;

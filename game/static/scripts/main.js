@@ -3,28 +3,53 @@ var enemies = [];
 var cursors;
 var sky;
 var dirt1;
+var spaceheld = false;
 
-var goodshots = [];
-var goodshotsactive = [];
-var badshots = [];
-var badshotsactive = [];
+var goodshots;
+var badshots;
 
 var normal_mode = true;
 
 function makeShot (shipobj) {
     let shots = badshots
-    let activeshots = badshotsactive
     if (shipobj.texture.key === 'player1' || shipobj.texture.key === 'player2') {
         shots = goodshots
-        activeshots = goodshotsactive
     }
-    let shot = shots.pop();
-    shot.setPosition(150, 150);
-    activeshots.push(shot);
+    const bod = shipobj.body;
+    let shot = shots.get(bod.position.x + shipobj.width/2, bod.position.y + shipobj.height/2);
+    if (shot) {
+        shot.setScale(0.7)
+        shot.setActive(true);
+        shot.setVisible(true);
+        const x_vel = Math.cos(shipobj.rotation + (Math.PI/2)) * 600;
+        const y_vel = Math.sin(shipobj.rotation + (Math.PI/2)) * 600;
+        shot.setVelocityX(bod.velocity.x * 0.3 - x_vel);
+        shot.setVelocityY(bod.velocity.y * 0.3 - y_vel);
+        shot.setDepth(-1);
+    }
 }
 
 
 class MainScene extends Phaser.Scene {
+
+
+
+
+    bulletHit (ship, shot) {
+        shot.setPosition(-100, -100);
+        shot.setVelocity(0,0);
+        shot.setActive(false);
+        shot.setVisible(false);
+
+        ship.setPosition(-200, 0);
+        ship.setVelocity(0, 0);
+        ship.setActive(false);
+        ship.setVisible(false);
+    }
+
+
+
+
     preload ()
     {
 
@@ -38,31 +63,20 @@ class MainScene extends Phaser.Scene {
         this.load.image('badshot', 'static/assets/images/badshot.png');
     }
 
-    bulletHit(ship, shot) {
-        console.log('here')
-        if (shot.texture.key === 'goodshot') {
-            goodshotsactive = goodshotsactive.filter((item, ind) => (item !== shot));
-            goodshots.push(shot);
-        } else {
-            badshotsactive = badshotsactive.filter((item, ind) => (item !== shot));
-            badshots.push(shot);
-        }
-        shot.setPosition(-100, -100);
-        shot.setActive = false;
-        shot.setVisible = false;
-        ship.setPosition(-200, -200);
-    }
+
+
 
     create ()
     {
         sky = this.add.tileSprite(400, 300, 800, 600, 'sky');
+        sky.setDepth(-999);
         dirt1 = this.add.particles('shapes',  new Function('return ' + this.cache.text.get('space_dirt'))());
+        dirt1.setDepth(-999);
 
         let ship = this.physics.add.sprite(100, 450, 'player1');
         ship.setBounce(0.2);
         ship.setCollideWorldBounds(true);
         ships.push(ship)
-
 
         ship = this.physics.add.sprite(200, 500, 'player2');
         ship.setBounce(0.2);
@@ -72,34 +86,20 @@ class MainScene extends Phaser.Scene {
         ships[0] = new Ship(ships[0], 100, 450, 1, 0);
         ships[1] = new Ship(ships[1], 200, 500, 1, 0);
 
+        goodshots = this.physics.add.group({
+            defaultKey: 'goodshot',
+            maxSize: 200
+        });
+ 
+        badshots = this.physics.add.group({
+            defaultKey: 'badshot',
+            maxSize: 200
+        });
 
         this.physics.add.collider(ships[0].ph, ships[1].ph, null, null, this);
         this.physics.add.collider(ships[1].ph, ships[0].ph, null, null, this);
-
-        // keep 200 good-guy shots
-        let i = 200
-        while (i > 0) {
-            let shot = this.physics.add.sprite(-100, -100, 'goodshot');
-            shot.setVisible = false;
-            shot.setActive = false;
-            goodshots.push(shot);
-            i = i-1;
-        }
-
-        // keep 200 bad-guy shots
-        i = 200
-        while (i > 0) {
-            let shot = this.physics.add.sprite(-100, -100, 'badshot');
-            this.physics.add.collider(ships[0], shot, this.bulletHit, null, this);
-            this.physics.add.collider(ships[1], shot, this.bulletHit, null, this);
-            shot.setVisible = false;
-            shot.setActive = false;
-            badshots.push(shot);
-            i = i-1;
-        }
-
-
-
+        this.physics.add.collider(ships[0].ph, badshots, this.bulletHit, null, this);
+        this.physics.add.collider(ships[1].ph, badshots, this.bulletHit, null, this);
 
         //enemy spawn timer
         this.time.addEvent({
@@ -111,12 +111,7 @@ class MainScene extends Phaser.Scene {
                     let enemy = new Ship(ship, 900, ship.body.position.y, 1, -90);
                     this.physics.add.collider(ships[0].ph, ship, null, null, this);
                     this.physics.add.collider(ships[1].ph, ship, null, null, this);
-                    for (let shot of goodshots) {
-                        this.physics.add.collider(ship, shot, this.bulletHit, null, this);
-                    }
-                    for (let shot of goodshotsactive) {
-                        this.physics.add.collider(ship, shot, this.bulletHit, null, this);
-                    }
+                    this.physics.add.collider(ship, goodshots, this.bulletHit, null, this);
                     for (let fellow of enemies) {
                         this.physics.add.collider(ship, fellow.ph, null, null, this);
                     }
@@ -129,6 +124,9 @@ class MainScene extends Phaser.Scene {
 
     }
 
+
+
+
     update ()
     {
         // move sky
@@ -138,7 +136,7 @@ class MainScene extends Phaser.Scene {
         let cursors = this.input.keyboard.createCursorKeys();
         let kb = this.input.keyboard
         let left, right, up, down = false
-        let fire = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE).isDown;
+        let fire = false;
         if (cursors.left.isDown) {
             left = true;
         } else if (cursors.right.isDown) {
@@ -150,7 +148,7 @@ class MainScene extends Phaser.Scene {
         } else if (cursors.up.isDown) {
             up = true
         }
-        ships[0].update(fire, false, up, down, right, left, false, false);
+        ships[1].update(fire, false, up, down, right, left, false, false);
 
         // get the movement for ship2
         let w = this.input.keyboard.addKey('W');
@@ -162,7 +160,12 @@ class MainScene extends Phaser.Scene {
         right = false;
         up = false;
         down = false;
-        fire = false;
+        fire = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE).isDown;
+        if (!fire) {
+            spaceheld = false;
+        }
+        fire = fire && !spaceheld; //only fire on the first press
+
         if (a.isDown) {
             left = true;
         } else if (d.isDown) {
@@ -174,7 +177,11 @@ class MainScene extends Phaser.Scene {
         } else if (w.isDown) {
             up = true
         }
-        ships[1].update(fire, false, up, down, right, left, false, false);
+        ships[0].update(fire, false, up, down, right, left, false, false);
+        if (fire) {
+            spaceheld = true;
+        }
+
 
         // move offscreen enemies onscreen and delete enemies after exit.
         for (let enemy of enemies) {
@@ -191,8 +198,33 @@ class MainScene extends Phaser.Scene {
         let destroyable = enemies.filter((item, ind, arr) => (item.ph.body.position.x < -100));
         enemies = enemies.filter((item, ind, arr) => (item.ph.body.position.x >= -100));
         destroyable.map((item) => (item.ph.destroy()));
+
+        //destroy bullets out of range
+        goodshots.children.each(function (shot) {
+            if (shot.active) {
+                if (shot.y < -50 || shot.y > 650 || shot.x < -50 || shot.x > 850) {
+                    shot.setActive(false);
+                    shot.setVisible(false);
+                }
+            }
+        }.bind(this));
+
+        //destroy bullets out of range
+        badshots.children.each(function (shot) {
+            if (shot.active) {
+                if (shot.y < -50 || shot.y > 650 || shot.x < -50 || shot.x > 850) {
+                    shot.setActive(false);
+                    shot.setVisible(false);
+                }
+            }
+        }.bind(this));
+
     }
 }
+
+
+
+
 
 // set the game config
 var config = {
@@ -206,7 +238,7 @@ var config = {
             debug: true
         }
     },
-    scene: MainScene 
+    scene: MainScene
 };
 
 // start the game
