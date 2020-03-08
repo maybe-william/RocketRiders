@@ -4,28 +4,50 @@ var cursors;
 var sky;
 var dirt1;
 var spaceheld = false;
+var shiftpressed = 0;
 
 var goodshots;
 var badshots;
 
 var normal_mode = true;
 
-function makeShot (shipobj) {
+function makeShot (shipobj, spec=false) {
+    function shootOne(shipobj, shot, angle, speed_scale, extra_speed, invertY=false) {
+        const bod = shipobj.body;
+        shot.setScale(0.7);
+        shot.setActive(true);
+        shot.setVisible(true);
+        const x_vel = Math.cos(shipobj.rotation + angle) * extra_speed;
+        const y_vel = Math.sin(shipobj.rotation + angle) * extra_speed;
+        shot.setVelocityX(bod.velocity.x * speed_scale - x_vel);
+        shot.setVelocityY(bod.velocity.y * speed_scale - y_vel);
+        if (invertY) {
+            shot.setVelocityX(shot.body.velocity.x * -1);
+            shot.setVelocityY(shot.body.velocity.y * -1);
+        }
+        shot.setDepth(-1);
+    }
+
+
     let shots = badshots
     if (shipobj.texture.key === 'player1' || shipobj.texture.key === 'player2') {
         shots = goodshots
     }
     const bod = shipobj.body;
-    let shot = shots.get(bod.position.x + shipobj.width/2, bod.position.y + shipobj.height/2);
-    if (shot) {
-        shot.setScale(0.7)
-        shot.setActive(true);
-        shot.setVisible(true);
-        const x_vel = Math.cos(shipobj.rotation + (Math.PI/2)) * 600;
-        const y_vel = Math.sin(shipobj.rotation + (Math.PI/2)) * 600;
-        shot.setVelocityX(bod.velocity.x * 0.3 - x_vel);
-        shot.setVelocityY(bod.velocity.y * 0.3 - y_vel);
-        shot.setDepth(-1);
+
+    if (!spec) {
+        let shot = shots.get(bod.position.x + shipobj.width/2, bod.position.y + shipobj.height/2);
+        if (shot) {
+            shootOne(shipobj, shot, (Math.PI/2), 0.3, 600);
+        }
+    } else {
+        const vals = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        for (let val of vals) {
+            let shot = shots.get(bod.position.x + shipobj.width/2, bod.position.y + shipobj.height/2);
+        if (shot) {
+                shootOne(shipobj, shot, ((val - 0.5) * (Math.PI/16)), 0.1, 100, true);
+            }
+        }
     }
 }
 
@@ -137,6 +159,8 @@ class MainScene extends Phaser.Scene {
         let kb = this.input.keyboard
         let left, right, up, down = false
         let fire = false;
+        let spec = false;
+
         if (cursors.left.isDown) {
             left = true;
         } else if (cursors.right.isDown) {
@@ -148,7 +172,7 @@ class MainScene extends Phaser.Scene {
         } else if (cursors.up.isDown) {
             up = true
         }
-        ships[1].update(fire, false, up, down, right, left, false, false);
+        ships[1].update(fire, spec, up, down, right, left, false, false);
 
         // get the movement for ship2
         let w = this.input.keyboard.addKey('W');
@@ -166,6 +190,14 @@ class MainScene extends Phaser.Scene {
         }
         fire = fire && !spaceheld; //only fire on the first press
 
+        spec = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT).isDown;
+        if (Date.now() - shiftpressed < 6000) {
+            spec = false; //only allow shift every 6 seconds
+        }
+        if (spec) {
+            shiftpressed = Date.now();
+        }
+
         if (a.isDown) {
             left = true;
         } else if (d.isDown) {
@@ -177,7 +209,7 @@ class MainScene extends Phaser.Scene {
         } else if (w.isDown) {
             up = true
         }
-        ships[0].update(fire, false, up, down, right, left, false, false);
+        ships[0].update(fire, spec, up, down, right, left, false, false);
         if (fire) {
             spaceheld = true;
         }

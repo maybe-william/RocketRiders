@@ -32,7 +32,7 @@ class Ship {
 
         this.decel(dec);
 
-        if (fire) {
+        if (fire || spec) {
             this.shoot(spec);
         }
     }
@@ -106,6 +106,10 @@ class Ship {
     }
 
     shoot(spec=false) {
-        makeShot(this.ph);
+        if (!spec) {
+            makeShot(this.ph);
+        } else {
+            makeShot(this.ph, spec);
+        }
     }
 }
