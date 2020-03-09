@@ -1,5 +1,6 @@
 var ships = [];
 var enemies = [];
+var blasts;
 var cursors;
 var sky;
 var dirt1;
@@ -58,6 +59,10 @@ class MainScene extends Phaser.Scene {
 
 
     bulletHit (ship, shot) {
+        let blast = blasts.get(shot.body.position.x, shot.body.position.y);
+        blast.setActive(true);
+        blast.setVisible(true);
+        blast.play('blast');
         shot.setPosition(-100, -100);
         shot.setVelocity(0,0);
         shot.setActive(false);
@@ -67,6 +72,12 @@ class MainScene extends Phaser.Scene {
         ship.setVelocity(0, 0);
         ship.setActive(false);
         ship.setVisible(false);
+
+        setTimeout(function () {
+            blast.setActive(false);
+            blast.setVisible(false);
+            blast.setPosition(-100, -100);
+        }, 1000);
     }
 
 
@@ -83,8 +94,15 @@ class MainScene extends Phaser.Scene {
         this.load.text('space_dirt', 'static/assets/images/space_dirt.json');
         this.load.image('goodshot', 'static/assets/images/goodshot.png');
         this.load.image('badshot', 'static/assets/images/badshot.png');
-    }
+        this.load.image('blast1', 'static/assets/images/blast1.png');
+        this.load.image('blast2', 'static/assets/images/blast2.png');
+        this.load.image('blast3', 'static/assets/images/blast3.png');
+        this.load.image('blast4', 'static/assets/images/blast4.png');
+        this.load.image('blast5', 'static/assets/images/blast5.png');
+        this.load.image('blast6', 'static/assets/images/blast6.png');
 
+        this.load.image('null', 'static/assets/images/null.png');
+    }
 
 
 
@@ -107,6 +125,24 @@ class MainScene extends Phaser.Scene {
 
         ships[0] = new Ship(ships[0], 100, 450, 1, 0);
         ships[1] = new Ship(ships[1], 200, 500, 1, 0);
+
+        this.anims.create({
+            key: 'blast',
+            frames: [
+                { key: 'blast1' },
+                { key: 'blast2' },
+                { key: 'blast3' },
+                { key: 'blast4' },
+                { key: 'blast5' },
+                { key: 'blast6' },
+                { key: 'null'},
+            ]
+        })
+
+        blasts = this.physics.add.group({
+            defaultKey: 'blast1',
+            maxSize: 200
+        })
 
         goodshots = this.physics.add.group({
             defaultKey: 'goodshot',
