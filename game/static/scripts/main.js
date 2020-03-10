@@ -12,6 +12,13 @@ var badshots;
 
 var normal_mode = true;
 
+function offscreen(x, y) {
+    if (x < -200 || y < -200 || x > 1000 || y > 800) {
+        return true;
+    }
+    return false;
+}
+
 function makeShot (shipobj, spec=false) {
     function shootOne(shipobj, shot, angle, speed_scale, extra_speed, invertY=false) {
         const bod = shipobj.body;
@@ -35,18 +42,51 @@ function makeShot (shipobj, spec=false) {
         shots = goodshots
     }
     const bod = shipobj.body;
-
-    if (!spec) {
-        let shot = shots.get(bod.position.x + shipobj.width/2, bod.position.y + shipobj.height/2);
-        if (shot) {
-            shootOne(shipobj, shot, (Math.PI/2), 0.3, 600);
-        }
-    } else {
-        const vals = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        for (let val of vals) {
+    if (shipobj.active && shipobj.visible){
+        if (!spec) {
             let shot = shots.get(bod.position.x + shipobj.width/2, bod.position.y + shipobj.height/2);
-        if (shot) {
-                shootOne(shipobj, shot, ((val - 0.5) * (Math.PI/16)), 0.1, 100, true);
+            if (shot) {
+                shootOne(shipobj, shot, (Math.PI/2), 0.3, 600);
+            }
+        } else {
+            const vals = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+            for (let val of vals) {
+                let shot = shots.get(bod.position.x + shipobj.width/2, bod.position.y + shipobj.height/2);
+                if (shot) {
+                    shootOne(shipobj, shot, ((val - 0.5) * (Math.PI/16)), 0.1, 100, true);
+                }
+            }
+        }
+    }
+}
+
+function pointsTo(angle, x1, y1, x2, y2, inaccuracy=0.5) {
+    let dir = Phaser.Math.Angle.Between(x1, y1, x2, y2);
+    min = Phaser.Math.Angle.Normalize(angle - inaccuracy);
+    max = Phaser.Math.Angle.Normalize(angle + inaccuracy);
+    dir = Phaser.Math.Angle.Normalize(dir);
+    if (max - min < 0) {
+        let temp = min;
+        min = max;
+        max = min;
+    }
+    if (min < dir && max > dir) {
+        return true;
+    }
+    return false;
+}
+
+function ai1(shot, spec, up, down, right, left, inn, out) {
+    //lazy binding allows 'this' to refer to the enemy ships when used as their update method.
+    let phase = (Date.now() - this.createTime + this.nonceTime)/500;
+    //this.ph.setVelocityY(200);
+    //this.ph.setVelocityX(Math.cos(phase) * 200);
+    this.rotate(Math.sin(phase - (Math.PI/4)));
+    this.move(10, 3, 200, false);
+    for (sh of ships) {
+        if ( pointsTo(this.ph.rotation - (Math.PI/2), this.ph.body.position.x, this.ph.body.position.y, sh.ph.body.position.x, sh.ph.body.position.y, 0.1)) {
+            if (Phaser.Math.Between(0, 20000) < 300) {
+                this.shoot(false);
             }
         }
     }
@@ -78,6 +118,15 @@ class MainScene extends Phaser.Scene {
             blast.setVisible(false);
             blast.setPosition(-100, -100);
         }, 1000);
+
+        if (ship.texture.key == 'player1' || ship.texture.key == 'player2') {
+            setTimeout(function () {
+                ship.setActive(true);
+                ship.setVisible(true);
+                ship.setPosition(Phaser.Math.Between(200, 600), Phaser.Math.Between(200, 400));
+                ship.setVelocity(0, 0);
+            }, 1000);
+        }
     }
 
 
@@ -110,8 +159,8 @@ class MainScene extends Phaser.Scene {
     {
         sky = this.add.tileSprite(400, 300, 800, 600, 'sky');
         sky.setDepth(-999);
-        dirt1 = this.add.particles('shapes',  new Function('return ' + this.cache.text.get('space_dirt'))());
-        dirt1.setDepth(-999);
+        //dirt1 = this.add.particles('shapes',  new Function('return ' + this.cache.text.get('space_dirt'))());
+        //dirt1.setDepth(-999);
 
         let ship = this.physics.add.sprite(100, 450, 'player1');
         ship.setBounce(0.2);
@@ -135,7 +184,7 @@ class MainScene extends Phaser.Scene {
                 { key: 'blast4' },
                 { key: 'blast5' },
                 { key: 'blast6' },
-                { key: 'null'},
+                { key: 'null' },
             ]
         })
 
@@ -148,7 +197,7 @@ class MainScene extends Phaser.Scene {
             defaultKey: 'goodshot',
             maxSize: 200
         });
- 
+
         badshots = this.physics.add.group({
             defaultKey: 'badshot',
             maxSize: 200
@@ -164,15 +213,18 @@ class MainScene extends Phaser.Scene {
             delay: 1000,
             callback: function() {
                 if (normal_mode) {
-                    let ship = this.physics.add.sprite(900, Phaser.Math.Between(0, 600), 'player3');
+                    let ship = this.physics.add.sprite(Phaser.Math.Between(0, 800), -100, 'player3');
                     ship.setBounce(0.6);
-                    let enemy = new Ship(ship, 900, ship.body.position.y, 1, -90);
+                    let enemy = new Ship(ship, 900, ship.body.position.y, 1, 180);
                     this.physics.add.collider(ships[0].ph, ship, null, null, this);
                     this.physics.add.collider(ships[1].ph, ship, null, null, this);
                     this.physics.add.collider(ship, goodshots, this.bulletHit, null, this);
                     for (let fellow of enemies) {
                         this.physics.add.collider(ship, fellow.ph, null, null, this);
                     }
+                    enemy.createTime = Date.now();
+                    enemy.nonceTime = Phaser.Math.Between(0, 6000);
+                    enemy.update = ai1;
                     enemies.push(enemy);
                 }
             },
@@ -188,7 +240,7 @@ class MainScene extends Phaser.Scene {
     update ()
     {
         // move sky
-        sky.tilePositionX = sky.tilePositionX + 1;
+        sky.tilePositionY = sky.tilePositionY - 1;
 
         // get the movement for ship1
         let cursors = this.input.keyboard.createCursorKeys();
@@ -258,19 +310,19 @@ class MainScene extends Phaser.Scene {
             right = false;
             left = false;
             fire = false;
-            if (enemy.ph.body.position.x > 450) {
-                up = true;
-            }
+            //if (enemy.ph.body.position.x > 450) {
+            //up = true;
+            //}
             enemy.update(false, false, up, down, right, left, false, false);
         }
-        let destroyable = enemies.filter((item, ind, arr) => (item.ph.body.position.x < -100));
-        enemies = enemies.filter((item, ind, arr) => (item.ph.body.position.x >= -100));
+        let destroyable = enemies.filter((item, ind, arr) => (offscreen(item.ph.body.position.x, item.ph.body.position.y)));
+        enemies = enemies.filter((item, ind, arr) => (!offscreen(item.ph.body.position.x, item.ph.body.position.y)));
         destroyable.map((item) => (item.ph.destroy()));
 
         //destroy bullets out of range
         goodshots.children.each(function (shot) {
             if (shot.active) {
-                if (shot.y < -50 || shot.y > 650 || shot.x < -50 || shot.x > 850) {
+                if (offscreen(shot.x, shot.y)) {
                     shot.setActive(false);
                     shot.setVisible(false);
                 }
@@ -280,7 +332,7 @@ class MainScene extends Phaser.Scene {
         //destroy bullets out of range
         badshots.children.each(function (shot) {
             if (shot.active) {
-                if (shot.y < -50 || shot.y > 650 || shot.x < -50 || shot.x > 850) {
+                if (offscreen(shot.x, shot.y)) {
                     shot.setActive(false);
                     shot.setVisible(false);
                 }

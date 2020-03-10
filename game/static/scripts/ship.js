@@ -11,17 +11,11 @@ class Ship {
 
         const acc = 10
         const dec = 3
-        const ang = this.ph.rotation;
-        const xacc = Math.cos(ang + (Math.PI/2)) * acc
-        const yacc = Math.sin(ang + (Math.PI/2)) * acc
-
-        const x_max = Math.cos(ang + (Math.PI/2)) * this.vel_max;
-        const y_max = Math.sin(ang + (Math.PI/2)) * this.vel_max;
 
         if (down) {
-            this.accel(xacc, yacc, this.vel_max);
+            this.move(acc, dec, this.vel_max, true);
         } else if (up) {
-            this.accel(-xacc, -yacc, this.vel_max);
+            this.move(acc, dec, this.vel_max, false);
         }
 
         if (left) {
@@ -30,11 +24,28 @@ class Ship {
             this.rotate(5);
         }
 
-        this.decel(dec);
 
         if (fire || spec) {
             this.shoot(spec);
         }
+    }
+    
+    move (acc=10, dec=3, max_vel=this.vel_max, back=false) {
+        // move forward or backwards (and decelerate)
+        const ang = this.ph.rotation;
+        const xacc = Math.cos(ang + (Math.PI/2)) * acc
+        const yacc = Math.sin(ang + (Math.PI/2)) * acc
+
+        const x_max = Math.cos(ang + (Math.PI/2)) * max_vel;
+        const y_max = Math.sin(ang + (Math.PI/2)) * max_vel;
+
+        if (back) {
+            this.accel(xacc, yacc, max_vel);
+        } else {
+            this.accel(-xacc, -yacc, max_vel);
+        }
+
+        this.decel(dec);
     }
 
     accel(x, y, max) {
