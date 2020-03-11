@@ -4,8 +4,13 @@ var blasts;
 var cursors;
 var sky;
 var dirt1;
+
 var spaceheld = false;
 var shiftpressed = 0;
+
+var two_player = false;
+var zeroheld = false;
+var enterpressed = 0;
 
 var goodshots;
 var badshots;
@@ -105,6 +110,8 @@ class MainScene extends Phaser.Scene {
 
         ships[0] = new Ship(ships[0], 100, 450, 1, 0);
         ships[1] = new Ship(ships[1], 200, 500, 1, 0);
+        ships[1].ph.setActive(false);
+        ships[1].ph.setVisible(false);
 
         this.anims.create({
             key: 'blast',
@@ -174,42 +181,56 @@ class MainScene extends Phaser.Scene {
         sky.tilePositionY = sky.tilePositionY - 1;
 
         // get the movement for ship1
-        let cursors = this.input.keyboard.createCursorKeys();
-        let kb = this.input.keyboard
-        let left, right, up, down = false
-        let fire = false;
-        let spec = false;
+        const kb = this.input.keyboard;
+        let four = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_FOUR).isDown;
+        let six = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SIX).isDown;
+        let eight = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_EIGHT).isDown;
+        let five = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_FIVE).isDown;
+        let fire =  kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ZERO).isDown;
+        let spec =  kb.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).isDown;
+        if (!two_player && spec) {
+            ships[1].ph.setActive(true);
+            ships[1].ph.setVisible(true);
+            ships[1].ph.setPosition(210, 300);
+            ships[1].ph.setVelocity(0, 0);
+            two_player = true;
+            enterpressed = Date.now();
+            spec = false;
+        }
+        if (!fire) {
+            zeroheld = false;
+        }
+        fire = fire && !zeroheld; //only fire on the first press
 
-        if (cursors.left.isDown) {
-            left = true;
-        } else if (cursors.right.isDown) {
-            right = true;
+        if (Date.now() - enterpressed < 6000) {
+            spec = false; //only allow shift every 6 seconds
+        }
+        if (spec) {
+            enterpressed = Date.now();
         }
 
-        if (cursors.down.isDown) {
-            down = true
-        } else if (cursors.up.isDown) {
-            up = true
+        if (two_player) {
+            ships[1].update(fire, spec, eight, five, six, four);
         }
-        ships[1].update(fire, spec, up, down, right, left, false, false);
+
+        if (fire) {
+            zeroheld = true;
+        }
 
         // get the movement for ship2
-        let w = this.input.keyboard.addKey('W');
-        let a = this.input.keyboard.addKey('A');
-        let s = this.input.keyboard.addKey('S');
-        let d = this.input.keyboard.addKey('D');
+        let w = kb.addKey('W').isDown;
+        let a = kb.addKey('A').isDown;
+        let s = kb.addKey('S').isDown;
+        let d = kb.addKey('D').isDown;
 
-        left = false;
-        right = false;
-        up = false;
-        down = false;
-        fire = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE).isDown;
+        fire = kb.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE).isDown;
+        spec = kb.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT).isDown;
+
         if (!fire) {
             spaceheld = false;
         }
         fire = fire && !spaceheld; //only fire on the first press
 
-        spec = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT).isDown;
         if (Date.now() - shiftpressed < 6000) {
             spec = false; //only allow shift every 6 seconds
         }
@@ -217,18 +238,7 @@ class MainScene extends Phaser.Scene {
             shiftpressed = Date.now();
         }
 
-        if (a.isDown) {
-            left = true;
-        } else if (d.isDown) {
-            right = true;
-        }
-
-        if (s.isDown) {
-            down = true
-        } else if (w.isDown) {
-            up = true
-        }
-        ships[0].update(fire, spec, up, down, right, left, false, false);
+        ships[0].update(fire, spec, w, s, d, a);
         if (fire) {
             spaceheld = true;
         }
@@ -236,10 +246,10 @@ class MainScene extends Phaser.Scene {
 
         // move offscreen enemies onscreen and delete enemies after exit.
         for (let enemy of enemies) {
-            up = false;
-            down = false;
-            right = false;
-            left = false;
+            let up = false;
+            let down = false;
+            let right = false;
+            let left = false;
             fire = false;
             //if (enemy.ph.body.position.x > 450) {
             //up = true;
@@ -269,6 +279,7 @@ class MainScene extends Phaser.Scene {
                 }
             }
         }.bind(this));
+        console.log(eight, w);
 
     }
 }
