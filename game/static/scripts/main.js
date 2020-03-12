@@ -192,7 +192,8 @@ class MainScene extends Phaser.Scene {
                     enemy.ptx = pmath.Between(100, 700);
                     enemy.pty = pmath.Between(100, 500);
                     //enemy.update = ai3;
-                    enemy.update = ai4;
+                    //enemy.update = ai4;
+                    enemy.update = ai5;
                     enemies.push(enemy);
                 }
             },

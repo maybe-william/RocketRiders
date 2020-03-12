@@ -130,23 +130,68 @@ function ai4(shot, spec, up, down, right, left) {
         this.targetShip = ships[Math.floor(Math.random(2))];
         return
     }
-    if (dist < 400 && this.ptx == null && this.pty == null) {
+    if (dist < 300 && this.ptx == null && this.pty == null) {
         this.ptx = pmath.Between(100, 700);
         this.pty = pmath.Between(100, 500);
     }
-    if (dist < 400) {
-        if (this.ph.body.position.x === this.ptx && this.ph.body.position.y === this.pty) {
+    if (dist < 300) {
+        let thisx = this.ph.body.position.x;
+        let thisy = this.ph.body.position.y;
+        let xdist = Math.abs(thisx - this.ptx);
+        let ydist = Math.abs(thisy - this.pty);
+        if (xdist < 30 && ydist < 30) {
             this.ptx = pmath.Between(100, 700);
-            this.ptx = pmath.Between(100, 500);
+            this.pty = pmath.Between(100, 500);
         }
         moveToPoint(this, this.ptx, this.pty, 20, 300, 10);
     }else{
         this.ptx = null;
         this.pty = null;
         rotateToPoint(this, this.targetShip.ph.body.position.x, this.targetShip.ph.body.position.y, 10);
-        this.move(3, 2, 300, false);
+        this.move(3, 2, 20, false);
         if (pmath.Between(0, 6000) > 5996) {
             this.shoot(false);
+        }
+    }
+}
+
+function ai5(shot, spec, up, down, right, left) {
+    if (this.targetShip.ph.active === false) {
+        this.targetShip = ships[Math.floor(Math.random(2))];
+        return
+    }
+
+    if (this.ptx && this.pty) {
+        moveToPoint(this, this.ptx, this.pty, 10, 400, 10);
+    }
+    let thisx = this.ph.body.position.x;
+    let thisy = this.ph.body.position.y;
+    let xdist = Math.abs(thisx - this.ptx);
+    let ydist = Math.abs(thisy - this.pty);
+    if (xdist < 30 && ydist < 30) {
+        this.ptx = false;
+        this.pty = false;
+    }
+    xdist = Math.abs(thisx - this.targetShip.ph.body.position.x);
+    ydist = Math.abs(thisy - this.targetShip.ph.body.position.y);
+    if (xdist >  300 && ydist > 300) {
+        let xdist = pmath.Between(-100, -50);
+        if (this.targetShip.ph.body.position.x - this.ptx < 0) {
+            xdist = pmath.Between(50, 100);
+        }
+        this.ptx = this.targetShip.ph.body.position.x + xdist;
+        this.pty = this.targetShip.ph.body.position.y;
+    }
+    if (!this.ptx || !this.pty) {
+        rotateToPoint(this, this.targetShip.ph.body.x, this.targetShip.ph.body.y, 10);
+        this.move(3, 0, 200, true);
+        this.burst = this.burst || 10;
+        if (this.burst < 10) {
+            this.shoot(false);
+            this.burst = this.burst + 1;
+        }
+        if (pmath.Between(0, 100000) < 300) {
+            this.burst = 1;
         }
     }
 }
