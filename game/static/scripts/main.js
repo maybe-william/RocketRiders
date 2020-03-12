@@ -93,8 +93,8 @@ class MainScene extends Phaser.Scene {
     {
 
         this.load.image('sky', 'static/assets/images/starbgv.png');
-        this.load.image('player1', 'static/assets/images/whiteship.png');
-        this.load.image('player2', 'static/assets/images/greenship.png');
+        this.load.image('player1', 'static/assets/images/blueship.png');
+        this.load.image('player2', 'static/assets/images/greenship2.png');
         this.load.image('player3', 'static/assets/images/orangeship.png');
         this.load.atlas('shapes', 'static/assets/images/shapes.png', 'static/assets/images/shapes.json');
         this.load.text('space_dirt', 'static/assets/images/space_dirt.json');
