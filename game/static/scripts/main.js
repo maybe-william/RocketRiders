@@ -1,3 +1,8 @@
+var p1score = 0;
+var p1scoreText;
+var p2score = 0;
+var p2scoreText;
+
 var ships = [];
 var enemies = [];
 var blasts;
@@ -55,23 +60,39 @@ class MainScene extends Phaser.Scene {
             blast.setPosition(-100, -100);
         }, 1000);
 
-        if (ship.texture.key == 'player1' || ship.texture.key == 'player2') {
+        if (ship.texture.key === 'player1' || (ship.texture.key === 'player2' && two_player)) {
             setTimeout(function () {
                 ship.setActive(true);
                 ship.setVisible(true);
                 ship.setPosition(pmath.Between(200, 600), pmath.Between(200, 400));
                 ship.setVelocity(0, 0);
             }, 1000);
+        } else if (ship.texture.key !== 'player2') {
+            if (ship.body.position.x > -20 && ship.body.position.x < 820) {
+                if (ship.body.position.y > -20 && ship.body.position.y < 620) {
+                    if (shot.shooter === 'player1') {
+                        p1score = p1score + 10;
+                        p1scoreText.setText('P1 Score: ' + p1score.toString());
+                    }
+                    if (shot.shooter === 'player2') {
+                        p2score = p2score + 10;
+                        p2scoreText.setText('P2 Score: ' + p2score.toString());
+                    }
+                }
+            }
         }
     }
 
-
+    constructor ()
+    {
+        super('MainScene');
+    }
 
 
     preload ()
     {
 
-        this.load.image('sky', 'static/assets/images/starbg.png');
+        this.load.image('sky', 'static/assets/images/starbgv.png');
         this.load.image('player1', 'static/assets/images/whiteship.png');
         this.load.image('player2', 'static/assets/images/greenship.png');
         this.load.image('player3', 'static/assets/images/orangeship.png');
@@ -95,6 +116,9 @@ class MainScene extends Phaser.Scene {
     {
         sky = this.add.tileSprite(400, 300, 800, 600, 'sky');
         sky.setDepth(-999);
+
+        p1scoreText = this.add.text(16, 16, 'P1 Score: ' + p1score.toString(), { fontSize: '32px', fill: '#a66f3c' });
+        p2scoreText = this.add.text(400, 16, 'P2 Score: ' + p1score.toString(), { fontSize: '32px', fill: '#a66f3c' });
         //dirt1 = this.add.particles('shapes',  new Function('return ' + this.cache.text.get('space_dirt'))());
         //dirt1.setDepth(-999);
 
@@ -162,7 +186,13 @@ class MainScene extends Phaser.Scene {
                     }
                     enemy.createTime = Date.now();
                     enemy.nonceTime = pmath.Between(0, 6000);
-                    enemy.update = ai1;
+                    //enemy.update = ai1;
+                    //enemy.update = ai2;
+                    enemy.targetShip = ships[Math.floor(Math.random() * 2)];
+                    enemy.ptx = pmath.Between(100, 700);
+                    enemy.pty = pmath.Between(100, 500);
+                    //enemy.update = ai3;
+                    enemy.update = ai4;
                     enemies.push(enemy);
                 }
             },
@@ -279,7 +309,6 @@ class MainScene extends Phaser.Scene {
                 }
             }
         }.bind(this));
-        console.log(eight, w);
 
     }
 }
@@ -300,7 +329,7 @@ var config = {
             debug: true
         }
     },
-    scene: MainScene
+    scene: [TitleScene, MainScene]
 };
 
 // start the game

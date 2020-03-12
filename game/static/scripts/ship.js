@@ -14,6 +14,7 @@ function makeShot (shipobj, spec=false) {
             shot.setVelocityY(shot.body.velocity.y * -1);
         }
         shot.setDepth(-1);
+        shot.shooter = shipobj.texture.key;
     }
 
 
@@ -56,18 +57,96 @@ function pointsTo(angle, x1, y1, x2, y2, inaccuracy=0.5) {
     return false;
 }
 
-function ai1(shot, spec, up, down, right, left, inn, out) {
+function rotateToPoint(ship, x, y, amt){
+    let target = pmath.Angle.Between(ship.ph.body.position.x, ship.ph.body.position.y, x, y);
+    let next = pmath.Angle.RotateTo(ship.ph.rotation, target, amt);
+    ship.ph.setRotation(next + pi/2);
+    ship.ph.setAngle((180/pi) * (next + pi/2));
+}
+
+function moveToPoint(ship, x, y, amt, max, rotamt) {
+    rotateToPoint(ship, x, y, rotamt);
+    ship.move(amt, 0, max, false);
+}
+
+function ai1(shot, spec, up, down, right, left) {
     //lazy binding allows 'this' to refer to the enemy ships when used as their update method.
     let phase = (Date.now() - this.createTime + this.nonceTime)/500;
     //this.ph.setVelocityY(200);
     //this.ph.setVelocityX(Math.cos(phase) * 200);
     this.rotate(sin(phase - (pi/4)));
     this.move(10, 3, 200, false);
-    for (sh of ships) {
-        if ( pointsTo(this.ph.rotation - (pi/2), this.ph.body.position.x, this.ph.body.position.y, sh.ph.body.position.x, sh.ph.body.position.y, 0.1)) {
-            if (pmath.Between(0, 20000) < 300) {
-                this.shoot(false);
+    let shs = ships;
+    if (demoMode) {
+        shs = [demoShip];
+    }
+    for (sh of shs) {
+        if (sh.ph.active && sh.ph.visible) {
+            if (pointsTo(this.ph.rotation - (pi/2), this.ph.body.position.x, this.ph.body.position.y, sh.ph.body.position.x, sh.ph.body.position.y, 0.1)) {
+                if (pmath.Between(0, 20000) < 300) {
+                    this.shoot(false);
+                }
             }
+        }
+    }
+}
+
+function ai2(shot, spec, up, down, right, left) {
+    if (this.targetShip === undefined || this.targetShip.ph.active === false) {
+        this.targetShip = ships[Math.floor(Math.random(2))];
+        if (this.targetShip === undefined) {
+            this.targetShip = {"ph": {"active": false}};
+        }
+        return
+    }
+    let xdist = this.targetShip.ph.body.position.x - this.ph.body.position.x;
+    let ydist = this.targetShip.ph.body.position.y - this.ph.body.position.y;
+    let dist = Math.sqrt(Math.pow(xdist, 2) + Math.pow(ydist, 2));
+
+
+    rotateToPoint(this, this.targetShip.ph.body.position.x, this.targetShip.ph.body.position.y, 60);
+    if (dist > 100) {
+        moveToPoint(this, this.targetShip.ph.body.position.x, this.targetShip.ph.body.position.y, 2, 120, 60);
+        if (pmath.Between(0, 6000) > 5990) {
+            this.shoot(false);
+        }
+    } else if (dist < 80) {
+        this.move(5, 0, 100, true);
+    }
+}
+function ai3(shot, spec, up, down, right, left) {
+    if (this.ph.body.position.x === this.ptx && this.ph.body.position.y === this.pty) {
+        this.ptx = pmath.Between(100, 700);
+        this.pty = pmath.Between(100, 500);
+    }
+    moveToPoint(this, this.ptx, this.pty, 5, 400, 10);
+}
+function ai4(shot, spec, up, down, right, left) {
+    let xdist = this.targetShip.ph.body.position.x - this.ph.body.position.x;
+    let ydist = this.targetShip.ph.body.position.y - this.ph.body.position.y;
+    let dist = Math.sqrt(Math.pow(xdist, 2) + Math.pow(ydist, 2));
+
+    if (this.targetShip.ph.active === false) {
+        this.targetShip = ships[Math.floor(Math.random(2))];
+        return
+    }
+    if (dist < 400 && this.ptx == null && this.pty == null) {
+        this.ptx = pmath.Between(100, 700);
+        this.pty = pmath.Between(100, 500);
+    }
+    if (dist < 400) {
+        if (this.ph.body.position.x === this.ptx && this.ph.body.position.y === this.pty) {
+            this.ptx = pmath.Between(100, 700);
+            this.ptx = pmath.Between(100, 500);
+        }
+        moveToPoint(this, this.ptx, this.pty, 20, 300, 10);
+    }else{
+        this.ptx = null;
+        this.pty = null;
+        rotateToPoint(this, this.targetShip.ph.body.position.x, this.targetShip.ph.body.position.y, 10);
+        this.move(3, 2, 300, false);
+        if (pmath.Between(0, 6000) > 5996) {
+            this.shoot(false);
         }
     }
 }
