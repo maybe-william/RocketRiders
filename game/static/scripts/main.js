@@ -5,6 +5,11 @@ var p2scoreText;
 
 var ships = [];
 var enemies = [];
+var enemies1;
+var enemies2;
+var enemies3;
+var enemies4;
+var enemies5;
 var blasts;
 var cursors;
 var sky;
@@ -33,6 +38,110 @@ function offscreen(x, y) {
     }
     return false;
 }
+
+function spawnEnemy1(x, y) {
+    if (normal_mode) {
+        let ship = enemies1.get(x, y);
+        ship.setBounce(0.6);
+        ship.setAngle(180)
+        ship.setRotation(pi)
+        if (ship.casing === undefined) { //if full ship objectnot created already
+            let enemy = new Ship(ship, x, y, 1, 0);
+            enemy.update = ai1;
+            ship.casing = enemy; //just to keep track of having been created already
+        }
+        ship.setActive(true);
+        ship.setVisible(true);
+        ship.casing.createTime = Date.now();
+        ship.casing.nonceTime = pmath.Between(0, 6000);
+    }
+}
+
+function spawnEnemy2(x, y) {
+    if (normal_mode) {
+        let ship = enemies2.get(x, y);
+        ship.setBounce(0.6);
+        ship.setAngle(180)
+        ship.setRotation(pi)
+        if (ship.casing === undefined) { //if full ship object not created already
+            let enemy = new Ship(ship, x, y, 1, 0);
+            enemy.update = ai2;
+            ship.casing = enemy; //just to keep track of the object wrapper
+        }
+        ship.setActive(true);
+        ship.setVisible(true);
+        ship.casing.createTime = Date.now();
+        ship.casing.nonceTime = pmath.Between(0, 6000);
+        ship.casing.targetShip = ships[Math.floor(Math.random() * 2)];
+        //ship.casing.ptx = pmath.Between(100, 700);
+        //ship.casing.pty = pmath.Between(100, 500);
+    }
+}
+
+function spawnEnemy3(x, y) {
+    if (normal_mode) {
+        let ship = enemies3.get(x, y);
+        ship.setBounce(0.6);
+        ship.setAngle(180)
+        ship.setRotation(pi)
+        if (ship.casing === undefined) { //if full ship object not created already
+            let enemy = new Ship(ship, x, y, 1, 0);
+            enemy.update = ai3;
+            ship.casing = enemy; //just to keep track of the object wrapper
+        }
+        ship.setActive(true);
+        ship.setVisible(true);
+        ship.casing.createTime = Date.now();
+        ship.casing.nonceTime = pmath.Between(0, 6000);
+        ship.casing.targetShip = ships[Math.floor(Math.random() * 2)];
+        ship.casing.ptx = pmath.Between(100, 700);
+        ship.casing.pty = pmath.Between(100, 500);
+    }
+}
+
+function spawnEnemy4(x, y) {
+    if (normal_mode) {
+        let ship = enemies4.get(x, y);
+        ship.setBounce(0.6);
+        ship.setAngle(180)
+        ship.setRotation(pi)
+        if (ship.casing === undefined) { //if full ship object not created already
+            let enemy = new Ship(ship, x, y, 1, 0);
+            enemy.update = ai4;
+            ship.casing = enemy; //just to keep track of the object wrapper
+        }
+        ship.setActive(true);
+        ship.setVisible(true);
+        ship.casing.createTime = Date.now();
+        ship.casing.nonceTime = pmath.Between(0, 6000);
+        ship.casing.targetShip = ships[Math.floor(Math.random() * 2)];
+        ship.casing.ptx = pmath.Between(100, 700);
+        ship.casing.pty = pmath.Between(100, 500);
+    }
+}
+
+function spawnEnemy5(x, y) {
+    if (normal_mode) {
+        let ship = enemies5.get(x, y);
+        ship.setBounce(0.6);
+        ship.setAngle(180)
+        ship.setRotation(pi)
+        if (ship.casing === undefined) { //if full ship object not created already
+            let enemy = new Ship(ship, x, y, 1, 0);
+            enemy.update = ai5;
+            ship.casing = enemy; //just to keep track of the object wrapper
+        }
+        ship.setActive(true);
+        ship.setVisible(true);
+        ship.casing.createTime = Date.now();
+        ship.casing.nonceTime = pmath.Between(0, 6000);
+        ship.casing.targetShip = ships[Math.floor(Math.random() * 2)];
+        ship.casing.ptx = pmath.Between(100, 700);
+        ship.casing.pty = pmath.Between(100, 500);
+    }
+}
+
+
 
 class MainScene extends Phaser.Scene {
 
@@ -95,7 +204,11 @@ class MainScene extends Phaser.Scene {
         this.load.image('sky', 'static/assets/images/starbgv.png');
         this.load.image('player1', 'static/assets/images/blueship.png');
         this.load.image('player2', 'static/assets/images/greenship2.png');
-        this.load.image('player3', 'static/assets/images/orangeship.png');
+        this.load.image('enemy1', 'static/assets/images/orangeship.png');
+        this.load.image('enemy2', 'static/assets/images/orangeship2.png');
+        this.load.image('enemy3', 'static/assets/images/orangeship3.png');
+        this.load.image('enemy4', 'static/assets/images/orangeship4.png');
+        this.load.image('enemy5', 'static/assets/images/orangeship5.png');
         this.load.atlas('shapes', 'static/assets/images/shapes.png', 'static/assets/images/shapes.json');
         this.load.text('space_dirt', 'static/assets/images/space_dirt.json');
         this.load.image('goodshot', 'static/assets/images/goodshot.png');
@@ -165,38 +278,89 @@ class MainScene extends Phaser.Scene {
             maxSize: 200
         });
 
+        enemies1 = this.physics.add.group({
+            defaultKey: 'enemy1',
+            maxSize: 100
+        });
+        enemies2 = this.physics.add.group({
+            defaultKey: 'enemy2',
+            maxSize: 100
+        });
+        enemies3 = this.physics.add.group({
+            defaultKey: 'enemy3',
+            maxSize: 100
+        });
+        enemies4 = this.physics.add.group({
+            defaultKey: 'enemy4',
+            maxSize: 100
+        });
+        enemies5 = this.physics.add.group({
+            defaultKey: 'enemy5',
+            maxSize: 100
+        });
+
+
         this.physics.add.collider(ships[0].ph, ships[1].ph, null, null, this);
         this.physics.add.collider(ships[1].ph, ships[0].ph, null, null, this);
         this.physics.add.collider(ships[0].ph, badshots, this.bulletHit, null, this);
         this.physics.add.collider(ships[1].ph, badshots, this.bulletHit, null, this);
 
+        this.physics.add.collider(ships[0].ph, enemies1, null, null, this);
+        this.physics.add.collider(ships[1].ph, enemies1, null, null, this);
+        this.physics.add.collider(enemies1, goodshots, this.bulletHit, null, this);
+        this.physics.add.collider(enemies1, enemies1, null, null, this);
+
+        this.physics.add.collider(ships[0].ph, enemies2, null, null, this);
+        this.physics.add.collider(ships[1].ph, enemies2, null, null, this);
+        this.physics.add.collider(enemies2, goodshots, this.bulletHit, null, this);
+        this.physics.add.collider(enemies2, enemies2, null, null, this);
+
+        this.physics.add.collider(ships[0].ph, enemies3, null, null, this);
+        this.physics.add.collider(ships[1].ph, enemies3, null, null, this);
+        this.physics.add.collider(enemies3, goodshots, this.bulletHit, null, this);
+        this.physics.add.collider(enemies3, enemies3, null, null, this);
+
+        this.physics.add.collider(ships[0].ph, enemies4, null, null, this);
+        this.physics.add.collider(ships[1].ph, enemies4, null, null, this);
+        this.physics.add.collider(enemies4, goodshots, this.bulletHit, null, this);
+        this.physics.add.collider(enemies4, enemies4, null, null, this);
+
+        this.physics.add.collider(ships[0].ph, enemies5, null, null, this);
+        this.physics.add.collider(ships[1].ph, enemies5, null, null, this);
+        this.physics.add.collider(enemies5, goodshots, this.bulletHit, null, this);
+        this.physics.add.collider(enemies5, enemies5, null, null, this);
+
+
+        this.physics.add.collider(enemies1, enemies2, null, null, this);
+        this.physics.add.collider(enemies1, enemies3, null, null, this);
+        this.physics.add.collider(enemies1, enemies4, null, null, this);
+        this.physics.add.collider(enemies1, enemies5, null, null, this);
+
+        this.physics.add.collider(enemies2, enemies1, null, null, this);
+        this.physics.add.collider(enemies2, enemies3, null, null, this);
+        this.physics.add.collider(enemies2, enemies4, null, null, this);
+        this.physics.add.collider(enemies2, enemies5, null, null, this);
+
+        this.physics.add.collider(enemies3, enemies1, null, null, this);
+        this.physics.add.collider(enemies3, enemies2, null, null, this);
+        this.physics.add.collider(enemies3, enemies4, null, null, this);
+        this.physics.add.collider(enemies3, enemies5, null, null, this);
+
+        this.physics.add.collider(enemies4, enemies1, null, null, this);
+        this.physics.add.collider(enemies4, enemies2, null, null, this);
+        this.physics.add.collider(enemies4, enemies3, null, null, this);
+        this.physics.add.collider(enemies4, enemies5, null, null, this);
+
+        this.physics.add.collider(enemies5, enemies1, null, null, this);
+        this.physics.add.collider(enemies5, enemies2, null, null, this);
+        this.physics.add.collider(enemies5, enemies3, null, null, this);
+        this.physics.add.collider(enemies5, enemies4, null, null, this);
+
+
         //enemy spawn timer
         this.time.addEvent({
             delay: 1000,
-            callback: function() {
-                if (normal_mode) {
-                    let ship = this.physics.add.sprite(pmath.Between(0, 800), -100, 'player3');
-                    ship.setBounce(0.6);
-                    let enemy = new Ship(ship, 900, ship.body.position.y, 1, 180);
-                    this.physics.add.collider(ships[0].ph, ship, null, null, this);
-                    this.physics.add.collider(ships[1].ph, ship, null, null, this);
-                    this.physics.add.collider(ship, goodshots, this.bulletHit, null, this);
-                    for (let fellow of enemies) {
-                        this.physics.add.collider(ship, fellow.ph, null, null, this);
-                    }
-                    enemy.createTime = Date.now();
-                    enemy.nonceTime = pmath.Between(0, 6000);
-                    //enemy.update = ai1;
-                    //enemy.update = ai2;
-                    enemy.targetShip = ships[Math.floor(Math.random() * 2)];
-                    enemy.ptx = pmath.Between(100, 700);
-                    enemy.pty = pmath.Between(100, 500);
-                    //enemy.update = ai3;
-                    //enemy.update = ai4;
-                    enemy.update = ai5;
-                    enemies.push(enemy);
-                }
-            },
+            callback: function () {spawnEnemy1(pmath.Between(100, 700), -100)},
             callbackScope: this,
             loop: true
         });
@@ -274,23 +438,6 @@ class MainScene extends Phaser.Scene {
             spaceheld = true;
         }
 
-
-        // move offscreen enemies onscreen and delete enemies after exit.
-        for (let enemy of enemies) {
-            let up = false;
-            let down = false;
-            let right = false;
-            let left = false;
-            fire = false;
-            //if (enemy.ph.body.position.x > 450) {
-            //up = true;
-            //}
-            enemy.update(false, false, up, down, right, left, false, false);
-        }
-        let destroyable = enemies.filter((item, ind, arr) => (offscreen(item.ph.body.position.x, item.ph.body.position.y)));
-        enemies = enemies.filter((item, ind, arr) => (!offscreen(item.ph.body.position.x, item.ph.body.position.y)));
-        destroyable.map((item) => (item.ph.destroy()));
-
         //destroy bullets out of range
         goodshots.children.each(function (shot) {
             if (shot.active) {
@@ -311,6 +458,57 @@ class MainScene extends Phaser.Scene {
             }
         }.bind(this));
 
+        //update enemies on screen and destroy enemies out of range
+        enemies1.children.each(function (enemy) {
+            if (enemy.active) {
+                enemy.casing.update(false, false, false, false, false, false);
+                if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
+                    enemy.setActive(false);
+                    enemy.setVisible(false);
+                    enemy.setVelocity(0, 0);
+                }
+            }
+        }.bind(this));
+        enemies2.children.each(function (enemy) {
+            if (enemy.active) {
+                enemy.casing.update(false, false, false, false, false, false);
+                if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
+                    enemy.setActive(false);
+                    enemy.setVisible(false);
+                    enemy.setVelocity(0, 0);
+                }
+            }
+        }.bind(this));
+        enemies3.children.each(function (enemy) {
+            if (enemy.active) {
+                enemy.casing.update(false, false, false, false, false, false);
+                if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
+                    enemy.setActive(false);
+                    enemy.setVisible(false);
+                    enemy.setVelocity(0, 0);
+                }
+            }
+        }.bind(this));
+        enemies4.children.each(function (enemy) {
+            if (enemy.active) {
+                enemy.casing.update(false, false, false, false, false, false);
+                if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
+                    enemy.setActive(false);
+                    enemy.setVisible(false);
+                    enemy.setVelocity(0, 0);
+                }
+            }
+        }.bind(this));
+        enemies5.children.each(function (enemy) {
+            if (enemy.active) {
+                enemy.casing.update(false, false, false, false, false, false);
+                if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
+                    enemy.setActive(false);
+                    enemy.setVisible(false);
+                    enemy.setVelocity(0, 0);
+                }
+            }
+        }.bind(this));
     }
 }
 
@@ -327,7 +525,7 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: true
+            debug: false
         }
     },
     scene: [TitleScene, MainScene]
