@@ -180,6 +180,7 @@ class TitleScene extends Phaser.Scene {
             demoShip.ph.setActive(false);
             demoShip.ph.setVisible(false);
             demoMode = false;
+            normal_mode = true;
             //load next scene
             this.scene.start('MainScene');
         }

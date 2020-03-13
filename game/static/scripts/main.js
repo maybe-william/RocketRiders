@@ -25,7 +25,15 @@ var enterpressed = 0;
 var goodshots;
 var badshots;
 
-var normal_mode = true;
+var textbox;
+
+var normal_mode = false;
+var enemy1_mode = false;
+var enemy2_mode = false;
+var enemy3_mode = false;
+var enemy4_mode = false;
+var enemy5_mode = false;
+var boss_mode = false;
 
 var sin = Math.sin;
 var cos = Math.cos;
@@ -40,7 +48,7 @@ function offscreen(x, y) {
 }
 
 function spawnEnemy1(x, y) {
-    if (normal_mode) {
+    if (enemy1_mode) {
         let ship = enemies1.get(x, y);
         ship.setBounce(0.6);
         ship.setAngle(180)
@@ -58,7 +66,7 @@ function spawnEnemy1(x, y) {
 }
 
 function spawnEnemy2(x, y) {
-    if (normal_mode) {
+    if (enemy2_mode) {
         let ship = enemies2.get(x, y);
         ship.setBounce(0.6);
         ship.setAngle(180)
@@ -79,7 +87,7 @@ function spawnEnemy2(x, y) {
 }
 
 function spawnEnemy3(x, y) {
-    if (normal_mode) {
+    if (enemy3_mode) {
         let ship = enemies3.get(x, y);
         ship.setBounce(0.6);
         ship.setAngle(180)
@@ -100,7 +108,7 @@ function spawnEnemy3(x, y) {
 }
 
 function spawnEnemy4(x, y) {
-    if (normal_mode) {
+    if (enemy4_mode) {
         let ship = enemies4.get(x, y);
         ship.setBounce(0.6);
         ship.setAngle(180)
@@ -121,7 +129,7 @@ function spawnEnemy4(x, y) {
 }
 
 function spawnEnemy5(x, y) {
-    if (normal_mode) {
+    if (enemy5_mode) {
         let ship = enemies5.get(x, y);
         ship.setBounce(0.6);
         ship.setAngle(180)
@@ -200,7 +208,7 @@ class MainScene extends Phaser.Scene {
 
     preload ()
     {
-
+        this.load.plugin('rextexttypingplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexttypingplugin.min.js', true);
         this.load.image('sky', 'static/assets/images/starbgv.png');
         this.load.image('player1', 'static/assets/images/blueship.png');
         this.load.image('player2', 'static/assets/images/greenship2.png');
@@ -234,6 +242,37 @@ class MainScene extends Phaser.Scene {
         p2scoreText = this.add.text(400, 16, 'P2 Score: ' + p1score.toString(), { fontSize: '32px', fill: '#a66f3c' });
         //dirt1 = this.add.particles('shapes',  new Function('return ' + this.cache.text.get('space_dirt'))());
         //dirt1.setDepth(-999);
+
+        textbox = this.make.text({
+            x: 0,
+            y: 400,
+            padding: {
+                left: 64,
+                right: 64,
+                top: 20,
+                bottom: 40,
+                x: 32,    // 32px padding on the left/right
+                y: 16     // 16px padding on the top/bottom
+            },
+            text: '',
+            style: {
+                fontSize: '32px',
+                fontFamily: 'Oxanum',
+                color: '#ffffff',
+                align: 'left',  // 'left'|'center'|'right'|'justify'
+                //backgroundColor: '#fffff',
+                wordWrap: {
+                    width: 750,
+                    useAdvancedWrap: true,
+                },
+                fixedWidth: 800,
+                fixedHeight: 500
+            },
+            add: true
+        });
+        textbox.setDepth(99999);
+        textbox = this.plugins.get('rextexttypingplugin').add(textbox, {
+        })
 
         let ship = this.physics.add.sprite(100, 450, 'player1');
         ship.setBounce(0.2);
@@ -315,8 +354,8 @@ class MainScene extends Phaser.Scene {
         this.physics.add.collider(enemies2, goodshots, this.bulletHit, null, this);
         this.physics.add.collider(enemies2, enemies2, null, null, this);
 
-        this.physics.add.collider(ships[0].ph, enemies3, null, null, this);
-        this.physics.add.collider(ships[1].ph, enemies3, null, null, this);
+        this.physics.add.collider(ships[0].ph, enemies3, this.bulletHit, null, this);
+        this.physics.add.collider(ships[1].ph, enemies3, this.bulletHit, null, this);
         this.physics.add.collider(enemies3, goodshots, this.bulletHit, null, this);
         this.physics.add.collider(enemies3, enemies3, null, null, this);
 
@@ -360,11 +399,140 @@ class MainScene extends Phaser.Scene {
         //enemy spawn timer
         this.time.addEvent({
             delay: 1000,
-            callback: function () {spawnEnemy1(pmath.Between(100, 700), -100)},
+            callback: function () {
+                spawnEnemy1(pmath.Between(100, 700), -100);
+                spawnEnemy2(pmath.Between(100, 700), -100);
+                spawnEnemy3(pmath.Between(100, 700), -100);
+                spawnEnemy4(pmath.Between(100, 700), -100);
+                spawnEnemy5(pmath.Between(100, 700), -100);
+            },
             callbackScope: this,
             loop: true
         });
 
+        this.time.addEvent({
+            delay: 500,
+            callback: function () {
+                textbox.start("Chris\' text", 10);
+                setTimeout(function () {
+                    textbox.stop();
+                }, 1300);
+            },
+            callbackScope: this,
+            loop: false
+        });
+
+        this.time.addEvent({
+            delay: 2000,
+            callback: function () {
+                textbox.start("Faizan\'s text", 10);
+                setTimeout(function () {
+                    textbox.stop();
+                }, 1300);
+            },
+            callbackScope: this,
+            loop: false
+        });
+        this.time.addEvent({
+            delay: 3500,
+            callback: function () {
+                textbox.start("Will\'s text", 10);
+                setTimeout(function () {
+                    textbox.start('');
+                    enemy1_mode = true;
+                }, 1300);
+            },
+            callbackScope: this,
+            loop: false
+        });
+        //stage1
+        setTimeout(function () {
+            enemy1_mode = true;
+            enemy2_mode = false;
+            enemy3_mode = false;
+            enemy4_mode = false;
+            enemy5_mode = false;
+        }, 10000);
+        //stage2
+        setTimeout(function () {
+            enemy1_mode = false;
+            enemy2_mode = true;
+            enemy3_mode = false;
+            enemy4_mode = false;
+            enemy5_mode = false;
+        }, 40000);
+        //stage3
+        setTimeout(function () {
+            enemy1_mode = false;
+            enemy2_mode = false;
+            enemy3_mode = true;
+            enemy4_mode = false;
+            enemy5_mode = false;
+        }, 70000);
+        //stage4
+        setTimeout(function () {
+            enemy1_mode = false;
+            enemy2_mode = false;
+            enemy3_mode = false;
+            enemy4_mode = true;
+            enemy5_mode = false;
+        }, 100000);
+        //stage5
+        setTimeout(function () {
+            enemy1_mode = false;
+            enemy2_mode = false;
+            enemy3_mode = false;
+            enemy4_mode = false;
+            enemy5_mode = true;
+        }, 130000);
+        //stage 1 and 2
+        setTimeout(function () {
+            enemy1_mode = true;
+            enemy2_mode = true;
+            enemy3_mode = false;
+            enemy4_mode = false;
+            enemy5_mode = false;
+        }, 160000);
+        //stage 3 and 5
+        setTimeout(function () {
+            enemy1_mode = false;
+            enemy2_mode = false;
+            enemy3_mode = true;
+            enemy4_mode = false;
+            enemy5_mode = true;
+        }, 220000);
+        //stage 1, 3, 4
+        setTimeout(function () {
+            enemy1_mode = true;
+            enemy2_mode = false;
+            enemy3_mode = true;
+            enemy4_mode = true;
+            enemy5_mode = false;
+        }, 280000);
+        //stage 2,3,5
+        setTimeout(function () {
+            enemy1_mode = false;
+            enemy2_mode = true;
+            enemy3_mode = true;
+            enemy4_mode = false;
+            enemy5_mode = true;
+        }, 340000);
+        //stage 1,2,3,4,5
+        setTimeout(function () {
+            enemy1_mode = true;
+            enemy2_mode = true;
+            enemy3_mode = true;
+            enemy4_mode = true;
+            enemy5_mode = true;
+        }, 400000);
+        //clear
+        setTimeout(function () {
+            enemy1_mode = false;
+            enemy2_mode = false;
+            enemy3_mode = false;
+            enemy4_mode = false;
+            enemy5_mode = false;
+        }, 430000);
     }
 
 
@@ -527,6 +695,12 @@ var config = {
             gravity: { y: 0 },
             debug: false
         }
+    },
+    plugins: {
+        global: [{
+            key: 'rextexttypingplugin',
+            start: true
+        }]
     },
     scene: [TitleScene, MainScene]
 };
