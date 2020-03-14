@@ -125,16 +125,17 @@ function ai4(shot, spec, up, down, right, left) {
     let xdist = this.targetShip.ph.body.position.x - this.ph.body.position.x;
     let ydist = this.targetShip.ph.body.position.y - this.ph.body.position.y;
     let dist = Math.sqrt(Math.pow(xdist, 2) + Math.pow(ydist, 2));
+    let off = offscreen(this.ph.body.position.x, this.ph.body.position.y);
 
     if (this.targetShip.ph.active === false) {
         this.targetShip = ships[Math.floor(Math.random(2))];
         return
     }
-    if (dist < 300 && this.ptx == null && this.pty == null) {
+    if ((dist < 300  || off) && this.ptx == null && this.pty == null) {
         this.ptx = pmath.Between(100, 700);
         this.pty = pmath.Between(100, 500);
     }
-    if (dist < 300) {
+    if (dist < 300 || off) {
         let thisx = this.ph.body.position.x;
         let thisy = this.ph.body.position.y;
         let xdist = Math.abs(thisx - this.ptx);
@@ -149,7 +150,7 @@ function ai4(shot, spec, up, down, right, left) {
         this.pty = null;
         rotateToPoint(this, this.targetShip.ph.body.position.x, this.targetShip.ph.body.position.y, 10);
         this.move(3, 2, 20, false);
-        if (pmath.Between(0, 6000) > 5996) {
+        if (pmath.Between(0, 6000) > 5990) {
             this.shoot(false);
         }
     }

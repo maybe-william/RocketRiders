@@ -157,43 +157,46 @@ class MainScene extends Phaser.Scene {
 
 
     bulletHit (ship, shot) {
-        let blast = blasts.get(shot.body.position.x, shot.body.position.y);
-        blast.setActive(true);
-        blast.setVisible(true);
-        blast.play('blast');
-        shot.setPosition(-100, -100);
-        shot.setVelocity(0,0);
-        shot.setActive(false);
-        shot.setVisible(false);
+        if (shot.active && ship.active) {
+            let blast = blasts.get(shot.body.position.x, shot.body.position.y);
+            if (blast) {
+                blast.setActive(true);
+                blast.setVisible(true);
+                blast.play('blast');
+                setTimeout(function () {
+                    blast.setActive(false);
+                    blast.setVisible(false);
+                    blast.setPosition(-200, -200);
+                }, 1000);
+            }
+            shot.setPosition(-200, -200);
+            shot.setVelocity(0,0);
+            shot.setActive(false);
+            shot.setVisible(false);
 
-        ship.setPosition(-200, 0);
-        ship.setVelocity(0, 0);
-        ship.setActive(false);
-        ship.setVisible(false);
+            ship.setPosition(-200, -200);
+            ship.setVelocity(0, 0);
+            ship.setActive(false);
+            ship.setVisible(false);
 
-        setTimeout(function () {
-            blast.setActive(false);
-            blast.setVisible(false);
-            blast.setPosition(-100, -100);
-        }, 1000);
-
-        if (ship.texture.key === 'player1' || (ship.texture.key === 'player2' && two_player)) {
-            setTimeout(function () {
-                ship.setActive(true);
-                ship.setVisible(true);
-                ship.setPosition(pmath.Between(200, 600), pmath.Between(200, 400));
-                ship.setVelocity(0, 0);
-            }, 1000);
-        } else if (ship.texture.key !== 'player2') {
-            if (ship.body.position.x > -20 && ship.body.position.x < 820) {
-                if (ship.body.position.y > -20 && ship.body.position.y < 620) {
-                    if (shot.shooter === 'player1') {
-                        p1score = p1score + 10;
-                        p1scoreText.setText('P1 Score: ' + p1score.toString());
-                    }
-                    if (shot.shooter === 'player2') {
-                        p2score = p2score + 10;
-                        p2scoreText.setText('P2 Score: ' + p2score.toString());
+            if (ship.texture.key === 'player1' || (ship.texture.key === 'player2' && two_player)) {
+                setTimeout(function () {
+                    ship.setActive(true);
+                    ship.setVisible(true);
+                    ship.setPosition(pmath.Between(200, 600), pmath.Between(200, 400));
+                    ship.setVelocity(0, 0);
+                }, 1000);
+            } else if (ship.texture.key !== 'player2') {
+                if (ship.body.position.x > -20 && ship.body.position.x < 820) {
+                    if (ship.body.position.y > -20 && ship.body.position.y < 620) {
+                        if (shot.shooter === 'player1') {
+                            p1score = p1score + 10;
+                            p1scoreText.setText('P1 Score: ' + p1score.toString());
+                        }
+                        if (shot.shooter === 'player2') {
+                            p2score = p2score + 10;
+                            p2scoreText.setText('P2 Score: ' + p2score.toString());
+                        }
                     }
                 }
             }
@@ -211,7 +214,7 @@ class MainScene extends Phaser.Scene {
         this.load.plugin('rextexttypingplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rextexttypingplugin.min.js', true);
         this.load.image('sky', 'static/assets/images/starbgv.png');
         this.load.image('player1', 'static/assets/images/blueship.png');
-        this.load.image('player2', 'static/assets/images/greenship2.png');
+        this.load.image('player2', 'static/assets/images/blueship2.png');
         this.load.image('enemy1', 'static/assets/images/orangeship.png');
         this.load.image('enemy2', 'static/assets/images/orangeship2.png');
         this.load.image('enemy3', 'static/assets/images/orangeship3.png');
@@ -485,54 +488,54 @@ class MainScene extends Phaser.Scene {
             enemy4_mode = false;
             enemy5_mode = true;
         }, 130000);
-        //stage 1 and 2
-        setTimeout(function () {
-            enemy1_mode = true;
-            enemy2_mode = true;
-            enemy3_mode = false;
-            enemy4_mode = false;
-            enemy5_mode = false;
-        }, 160000);
-        //stage 3 and 5
-        setTimeout(function () {
-            enemy1_mode = false;
-            enemy2_mode = false;
-            enemy3_mode = true;
-            enemy4_mode = false;
-            enemy5_mode = true;
-        }, 220000);
-        //stage 1, 3, 4
-        setTimeout(function () {
-            enemy1_mode = true;
-            enemy2_mode = false;
-            enemy3_mode = true;
-            enemy4_mode = true;
-            enemy5_mode = false;
-        }, 280000);
-        //stage 2,3,5
-        setTimeout(function () {
-            enemy1_mode = false;
-            enemy2_mode = true;
-            enemy3_mode = true;
-            enemy4_mode = false;
-            enemy5_mode = true;
-        }, 340000);
-        //stage 1,2,3,4,5
-        setTimeout(function () {
-            enemy1_mode = true;
-            enemy2_mode = true;
-            enemy3_mode = true;
-            enemy4_mode = true;
-            enemy5_mode = true;
-        }, 400000);
-        //clear
-        setTimeout(function () {
-            enemy1_mode = false;
-            enemy2_mode = false;
-            enemy3_mode = false;
-            enemy4_mode = false;
-            enemy5_mode = false;
-        }, 430000);
+//        //stage 1 and 2
+//        setTimeout(function () {
+//            enemy1_mode = true;
+//            enemy2_mode = true;
+//            enemy3_mode = false;
+//            enemy4_mode = false;
+//            enemy5_mode = false;
+//        }, 160000);
+//        //stage 3 and 5
+//        setTimeout(function () {
+//            enemy1_mode = false;
+//            enemy2_mode = false;
+//            enemy3_mode = true;
+//            enemy4_mode = false;
+//            enemy5_mode = true;
+//        }, 220000);
+//        //stage 1, 3, 4
+//        setTimeout(function () {
+//            enemy1_mode = true;
+//            enemy2_mode = false;
+//            enemy3_mode = true;
+//            enemy4_mode = true;
+//            enemy5_mode = false;
+//        }, 280000);
+//        //stage 2,3,5
+//        setTimeout(function () {
+//            enemy1_mode = false;
+//            enemy2_mode = true;
+//            enemy3_mode = true;
+//            enemy4_mode = false;
+//            enemy5_mode = true;
+//        }, 340000);
+//        //stage 1,2,3,4,5
+//        setTimeout(function () {
+//            enemy1_mode = true;
+//            enemy2_mode = true;
+//            enemy3_mode = true;
+//            enemy4_mode = true;
+//            enemy5_mode = true;
+//        }, 400000);
+//        //clear
+//        setTimeout(function () {
+//            enemy1_mode = false;
+//            enemy2_mode = false;
+//            enemy3_mode = false;
+//            enemy4_mode = false;
+//            enemy5_mode = false;
+//        }, 430000);
     }
 
 
