@@ -1,4 +1,4 @@
-var demoShip = null;
+var demoShip;
 var demoBadShips;
 var demoEnemies = [];
 var demoMode;
@@ -24,17 +24,21 @@ class TitleScene extends Phaser.Scene {
         ship.setVisible(false);
 
         setTimeout(function () {
-            blast.setActive(false);
-            blast.setVisible(false);
-            blast.setPosition(-100, -100);
+            if (blast) {
+                blast.setActive(false);
+                blast.setVisible(false);
+                blast.setPosition(-100, -100);
+            }
         }, 1000);
 
         if (ship.texture.key == 'player1' || (ship.texture.key == 'player2' && two_player)) {
             setTimeout(function () {
-                ship.setActive(true);
-                ship.setVisible(true);
-                ship.setPosition(pmath.Between(200, 600), pmath.Between(200, 400));
-                ship.setVelocity(0, 0);
+                if (ship && ship.body) {
+                    ship.setActive(true);
+                    ship.setVisible(true);
+                    ship.setPosition(pmath.Between(200, 600), pmath.Between(200, 400));
+                    ship.setVelocity(0, 0);
+                }
             }, 1000);
         }
     }
@@ -52,8 +56,6 @@ class TitleScene extends Phaser.Scene {
         this.load.image('player1', 'static/assets/images/blueship.png');
         this.load.image('player2', 'static/assets/images/blueship2.png');
         this.load.image('player3', 'static/assets/images/orangeship.png');
-        this.load.atlas('shapes', 'static/assets/images/shapes.png', 'static/assets/images/shapes.json');
-        this.load.text('space_dirt', 'static/assets/images/space_dirt.json');
         this.load.image('goodshot', 'static/assets/images/goodshot.png');
         this.load.image('badshot', 'static/assets/images/badshot.png');
         this.load.image('blast1', 'static/assets/images/blast1.png');
@@ -77,8 +79,6 @@ class TitleScene extends Phaser.Scene {
         scoreText = this.add.text(16, 16, 'High Score: ' + topScore.toString(), { fontSize: '32px', fill: '#a66f3c' });
         title = this.add.tileSprite(400, 300, 800, 600, 'title');
         title.setDepth(999);
-        //dirt1 = this.add.particles('shapes',  new Function('return ' + this.cache.text.get('space_dirt'))());
-        //dirt1.setDepth(-999);
 
         let ship = this.physics.add.sprite(100, 500, 'player1');
         ship.setBounce(0.2);
@@ -168,71 +168,91 @@ class TitleScene extends Phaser.Scene {
 
     update ()
     {
-        // move sky
-        sky.tilePositionY = sky.tilePositionY - 1;
-
-        // get the movement for ship1
-        const kb = this.input.keyboard;
-        let spec =  kb.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).isDown;
-        if (spec) {
-            spec = false;
-            demoShip.update = function () {};
-            demoShip.ph.setActive(false);
-            demoShip.ph.setVisible(false);
+        let sw = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I).isDown;
+        if (sw) {
             demoMode = false;
+            this.scene.transition({
+                target: 'MainScene',
+                duration: 500,
+                moveBelow: true,
+                onUpdate: this.transitionOut
+            });
             normal_mode = true;
-            //load next scene
-            this.scene.start('MainScene');
         }
-        demoEnemies = demoEnemies.filter(function (item) {
-            return item.ph.active && item.ph.body.position.y < 550;
-        });
+        if (demoMode) {
+            // move sky
+            sky.tilePositionY = sky.tilePositionY - 1;
 
-        //update the demoShip
-        if (demoShip.targetShip === undefined || !demoShip.targetShip.ph.active || demoShip.targetShip.ph.body.position.y < -20 || demoShip.targetShip.ph.body.position.y > 500) {
-            demoShip.targetShip = demoEnemies[Math.floor(Math.random(demoEnemies.length))];
-        }
-        demoShip.update(false, false, false, false, false, false);
-        if (pmath.Between(0, 1000) < 30 && demoShip.targetShip.ph.body && demoShip.targetShip.ph.body.position.y > 0) {
-            demoShip.shoot(false);
-        }
-        if (pmath.Between(0, 1000000) < 500 && demoShip.ph.active){
-            demoShip.shoot(true);
-        }
+            // get the movement for ship1
+            const kb = this.input.keyboard;
+            let spec =  kb.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).isDown;
+            if (spec) {
+                //spec = false;
+                //demoShip.update = function () {};
+                //demoShip.ph.setActive(false);
+                //demoShip.ph.setVisible(false);
+                //demoMode = false;
+                //normal_mode = true;
+                //load next scene
+                //this.scene.start('MainScene');
 
-
-        // update and destroy enemies
-        demoBadShips.children.each(function (enemy) {
-            if (enemy.active) {
-                enemy.casing.update(false, false, false, false, false, false);
-                if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
-                    enemy.setActive(false);
-                    enemy.setVisible(false);
-                    enemy.setVelocity(0, 0);
-                }
+                this.scene.transition({
+                    target: 'MainScene',
+                    duration: 500,
+                    moveBelow: true,
+                    onUpdate: this.transitionOut
+                });
+            normal_mode = true;
             }
-        }.bind(this));
+            demoEnemies = demoEnemies.filter(function (item) {
+                return item.ph.active && item.ph.body.position.y < 550;
+            });
 
-        //destroy bullets out of range
-        goodshots.children.each(function (shot) {
-            if (shot.active) {
-                if (offscreen(shot.x, shot.y)) {
-                    shot.setActive(false);
-                    shot.setVisible(false);
-                }
+            //update the demoShip
+            if (demoShip.targetShip === undefined || !demoShip.targetShip.ph.active || demoShip.targetShip.ph.body.position.y < -20 || demoShip.targetShip.ph.body.position.y > 500) {
+                demoShip.targetShip = demoEnemies[Math.floor(Math.random(demoEnemies.length))];
             }
-        }.bind(this));
-
-        //destroy bullets out of range
-        badshots.children.each(function (shot) {
-            if (shot.active) {
-                if (offscreen(shot.x, shot.y)) {
-                    shot.setActive(false);
-                    shot.setVisible(false);
-                }
+            demoShip.update(false, false, false, false, false, false);
+            if (pmath.Between(0, 1000) < 30 && demoShip.targetShip.ph.body && demoShip.targetShip.ph.body.position.y > 0) {
+                demoShip.shoot(false);
             }
-        }.bind(this));
+            if (pmath.Between(0, 1000000) < 500 && demoShip.ph.active){
+                demoShip.shoot(true);
+            }
 
+
+            // update and destroy enemies
+            demoBadShips.children.each(function (enemy) {
+                if (enemy.active) {
+                    enemy.casing.update(false, false, false, false, false, false);
+                    if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
+                        enemy.setActive(false);
+                        enemy.setVisible(false);
+                        enemy.setVelocity(0, 0);
+                    }
+                }
+            }.bind(this));
+
+            //destroy bullets out of range
+            goodshots.children.each(function (shot) {
+                if (shot.active) {
+                    if (offscreen(shot.x, shot.y)) {
+                        shot.setActive(false);
+                        shot.setVisible(false);
+                    }
+                }
+            }.bind(this));
+
+            //destroy bullets out of range
+            badshots.children.each(function (shot) {
+                if (shot.active) {
+                    if (offscreen(shot.x, shot.y)) {
+                        shot.setActive(false);
+                        shot.setVisible(false);
+                    }
+                }
+            }.bind(this));
+        }
     }
 }
 

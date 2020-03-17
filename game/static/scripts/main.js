@@ -164,9 +164,11 @@ class MainScene extends Phaser.Scene {
                 blast.setVisible(true);
                 blast.play('blast');
                 setTimeout(function () {
-                    blast.setActive(false);
-                    blast.setVisible(false);
-                    blast.setPosition(-200, -200);
+                    if (blast) {
+                        blast.setActive(false);
+                        blast.setVisible(false);
+                        blast.setPosition(-200, -200);
+                    }
                 }, 1000);
             }
             shot.setPosition(-200, -200);
@@ -181,10 +183,12 @@ class MainScene extends Phaser.Scene {
 
             if (ship.texture.key === 'player1' || (ship.texture.key === 'player2' && two_player)) {
                 setTimeout(function () {
-                    ship.setActive(true);
-                    ship.setVisible(true);
-                    ship.setPosition(pmath.Between(200, 600), pmath.Between(200, 400));
-                    ship.setVelocity(0, 0);
+                    if (ship && ship.body) {
+                        ship.setActive(true);
+                        ship.setVisible(true);
+                        ship.setPosition(pmath.Between(200, 600), pmath.Between(200, 400));
+                        ship.setVelocity(0, 0);
+                    }
                 }, 1000);
             } else if (ship.texture.key !== 'player2') {
                 if (ship.body.position.x > -20 && ship.body.position.x < 820) {
@@ -220,8 +224,6 @@ class MainScene extends Phaser.Scene {
         this.load.image('enemy3', 'static/assets/images/orangeship3.png');
         this.load.image('enemy4', 'static/assets/images/orangeship4.png');
         this.load.image('enemy5', 'static/assets/images/orangeship5.png');
-        this.load.atlas('shapes', 'static/assets/images/shapes.png', 'static/assets/images/shapes.json');
-        this.load.text('space_dirt', 'static/assets/images/space_dirt.json');
         this.load.image('goodshot', 'static/assets/images/goodshot.png');
         this.load.image('badshot', 'static/assets/images/badshot.png');
         this.load.image('blast1', 'static/assets/images/blast1.png');
@@ -241,10 +243,15 @@ class MainScene extends Phaser.Scene {
         sky = this.add.tileSprite(400, 300, 800, 600, 'sky');
         sky.setDepth(-999);
 
+        p1score = 0;
+        p2score = 0;
+
+        let p2text = 'P2 Press ENTER'
+        if (two_player) {
+            p2text = 'P2 Score: ' + p2score.toString();
+        }
         p1scoreText = this.add.text(16, 16, 'P1 Score: ' + p1score.toString(), { fontSize: '32px', fill: '#a66f3c' });
-        p2scoreText = this.add.text(400, 16, 'P2 Score: ' + p1score.toString(), { fontSize: '32px', fill: '#a66f3c' });
-        //dirt1 = this.add.particles('shapes',  new Function('return ' + this.cache.text.get('space_dirt'))());
-        //dirt1.setDepth(-999);
+        p2scoreText = this.add.text(16, 64, p2text, { fontSize: '32px', fill: '#a66f3c' });
 
         textbox = this.make.text({
             x: 0,
@@ -280,17 +287,16 @@ class MainScene extends Phaser.Scene {
         let ship = this.physics.add.sprite(100, 450, 'player1');
         ship.setBounce(0.2);
         ship.setCollideWorldBounds(true);
-        ships.push(ship)
+        ships[0] = new Ship(ship, 100, 450, 1, 0);
 
         ship = this.physics.add.sprite(200, 500, 'player2');
         ship.setBounce(0.2);
         ship.setCollideWorldBounds(true);
-        ships.push(ship)
-
-        ships[0] = new Ship(ships[0], 100, 450, 1, 0);
-        ships[1] = new Ship(ships[1], 200, 500, 1, 0);
-        ships[1].ph.setActive(false);
-        ships[1].ph.setVisible(false);
+        ships[1] = new Ship(ship, 200, 500, 1, 0);
+        if (!two_player) {
+            ships[1].ph.setActive(false);
+            ships[1].ph.setVisible(false);
+        }
 
         this.anims.create({
             key: 'blast',
@@ -463,7 +469,16 @@ class MainScene extends Phaser.Scene {
             enemy3_mode = false;
             enemy4_mode = false;
             enemy5_mode = false;
-        }, 40000);
+
+            this.scene.transition({
+                target: 'BossScene',
+                duration: 500,
+                moveBelow: true,
+                onUpdate: this.transitionOut
+            });
+            bossmode = true;
+            //this.scene.start('BossScene');
+        }.bind(this), 15000);
         //stage3
         setTimeout(function () {
             enemy1_mode = false;
@@ -543,143 +558,157 @@ class MainScene extends Phaser.Scene {
 
     update ()
     {
-        // move sky
-        sky.tilePositionY = sky.tilePositionY - 1;
-
-        // get the movement for ship1
-        const kb = this.input.keyboard;
-        let four = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_FOUR).isDown;
-        let six = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SIX).isDown;
-        let eight = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_EIGHT).isDown;
-        let five = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_FIVE).isDown;
-        let fire =  kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ZERO).isDown;
-        let spec =  kb.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).isDown;
-        if (!two_player && spec) {
-            ships[1].ph.setActive(true);
-            ships[1].ph.setVisible(true);
-            ships[1].ph.setPosition(210, 300);
-            ships[1].ph.setVelocity(0, 0);
-            two_player = true;
-            enterpressed = Date.now();
-            spec = false;
+        let sw = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I).isDown;
+        if (sw) {
+            normal_mode = false;
+            this.scene.transition({
+                target: 'BossScene',
+                duration: 500,
+                moveBelow: true,
+                onUpdate: this.transitionOut
+            });
+            bossmode = true;
         }
-        if (!fire) {
-            zeroheld = false;
-        }
-        fire = fire && !zeroheld; //only fire on the first press
+        if (normal_mode) {
+            // move sky
+            sky.tilePositionY = sky.tilePositionY - 1;
 
-        if (Date.now() - enterpressed < 6000) {
-            spec = false; //only allow shift every 6 seconds
-        }
-        if (spec) {
-            enterpressed = Date.now();
-        }
-
-        if (two_player) {
-            ships[1].update(fire, spec, eight, five, six, four);
-        }
-
-        if (fire) {
-            zeroheld = true;
-        }
-
-        // get the movement for ship2
-        let w = kb.addKey('W').isDown;
-        let a = kb.addKey('A').isDown;
-        let s = kb.addKey('S').isDown;
-        let d = kb.addKey('D').isDown;
-
-        fire = kb.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE).isDown;
-        spec = kb.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT).isDown;
-
-        if (!fire) {
-            spaceheld = false;
-        }
-        fire = fire && !spaceheld; //only fire on the first press
-
-        if (Date.now() - shiftpressed < 6000) {
-            spec = false; //only allow shift every 6 seconds
-        }
-        if (spec) {
-            shiftpressed = Date.now();
-        }
-
-        ships[0].update(fire, spec, w, s, d, a);
-        if (fire) {
-            spaceheld = true;
-        }
-
-        //destroy bullets out of range
-        goodshots.children.each(function (shot) {
-            if (shot.active) {
-                if (offscreen(shot.x, shot.y)) {
-                    shot.setActive(false);
-                    shot.setVisible(false);
-                }
+            // get the movement for ship1
+            const kb = this.input.keyboard;
+            let four = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_FOUR).isDown;
+            let six = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SIX).isDown;
+            let eight = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_EIGHT).isDown;
+            let five = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_FIVE).isDown;
+            let fire =  kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ZERO).isDown;
+            let spec =  kb.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).isDown;
+            if (!two_player && spec) {
+                ships[1].ph.setActive(true);
+                ships[1].ph.setVisible(true);
+                ships[1].ph.setPosition(210, 300);
+                ships[1].ph.setVelocity(0, 0);
+                two_player = true;
+                p2scoreText.setText('P2 Score: ' + p2score.toString(), { fontSize: '32px', fill: '#a66f3c' });
+                enterpressed = Date.now() - 5700;
+                spec = false;
             }
-        }.bind(this));
+            if (!fire) {
+                zeroheld = false;
+            }
+            fire = fire && !zeroheld; //only fire on the first press
 
-        //destroy bullets out of range
-        badshots.children.each(function (shot) {
-            if (shot.active) {
-                if (offscreen(shot.x, shot.y)) {
-                    shot.setActive(false);
-                    shot.setVisible(false);
-                }
+            if (Date.now() - enterpressed < 6000) {
+                spec = false; //only allow shift every 6 seconds
             }
-        }.bind(this));
+            if (spec) {
+                enterpressed = Date.now();
+            }
 
-        //update enemies on screen and destroy enemies out of range
-        enemies1.children.each(function (enemy) {
-            if (enemy.active) {
-                enemy.casing.update(false, false, false, false, false, false);
-                if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
-                    enemy.setActive(false);
-                    enemy.setVisible(false);
-                    enemy.setVelocity(0, 0);
-                }
+            if (two_player) {
+                ships[1].update(fire, spec, eight, five, six, four);
             }
-        }.bind(this));
-        enemies2.children.each(function (enemy) {
-            if (enemy.active) {
-                enemy.casing.update(false, false, false, false, false, false);
-                if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
-                    enemy.setActive(false);
-                    enemy.setVisible(false);
-                    enemy.setVelocity(0, 0);
-                }
+
+            if (fire) {
+                zeroheld = true;
             }
-        }.bind(this));
-        enemies3.children.each(function (enemy) {
-            if (enemy.active) {
-                enemy.casing.update(false, false, false, false, false, false);
-                if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
-                    enemy.setActive(false);
-                    enemy.setVisible(false);
-                    enemy.setVelocity(0, 0);
-                }
+
+            // get the movement for ship2
+            let w = kb.addKey('W').isDown;
+            let a = kb.addKey('A').isDown;
+            let s = kb.addKey('S').isDown;
+            let d = kb.addKey('D').isDown;
+
+            fire = kb.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE).isDown;
+            spec = kb.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT).isDown;
+
+            if (!fire) {
+                spaceheld = false;
             }
-        }.bind(this));
-        enemies4.children.each(function (enemy) {
-            if (enemy.active) {
-                enemy.casing.update(false, false, false, false, false, false);
-                if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
-                    enemy.setActive(false);
-                    enemy.setVisible(false);
-                    enemy.setVelocity(0, 0);
-                }
+            fire = fire && !spaceheld; //only fire on the first press
+
+            if (Date.now() - shiftpressed < 6000) {
+                spec = false; //only allow shift every 6 seconds
             }
-        }.bind(this));
-        enemies5.children.each(function (enemy) {
-            if (enemy.active) {
-                enemy.casing.update(false, false, false, false, false, false);
-                if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
-                    enemy.setActive(false);
-                    enemy.setVisible(false);
-                    enemy.setVelocity(0, 0);
-                }
+            if (spec) {
+                shiftpressed = Date.now();
             }
-        }.bind(this));
+
+            ships[0].update(fire, spec, w, s, d, a);
+            if (fire) {
+                spaceheld = true;
+            }
+
+            //destroy bullets out of range
+            goodshots.children.each(function (shot) {
+                if (shot.active) {
+                    if (offscreen(shot.x, shot.y)) {
+                        shot.setActive(false);
+                        shot.setVisible(false);
+                    }
+                }
+            }.bind(this));
+
+            //destroy bullets out of range
+            badshots.children.each(function (shot) {
+                if (shot.active) {
+                    if (offscreen(shot.x, shot.y)) {
+                        shot.setActive(false);
+                        shot.setVisible(false);
+                    }
+                }
+            }.bind(this));
+
+            //update enemies on screen and destroy enemies out of range
+            enemies1.children.each(function (enemy) {
+                if (enemy.active) {
+                    enemy.casing.update(false, false, false, false, false, false);
+                    if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
+                        enemy.setActive(false);
+                        enemy.setVisible(false);
+                        enemy.setVelocity(0, 0);
+                    }
+                }
+            }.bind(this));
+            enemies2.children.each(function (enemy) {
+                if (enemy.active) {
+                    enemy.casing.update(false, false, false, false, false, false);
+                    if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
+                        enemy.setActive(false);
+                        enemy.setVisible(false);
+                        enemy.setVelocity(0, 0);
+                    }
+                }
+            }.bind(this));
+            enemies3.children.each(function (enemy) {
+                if (enemy.active) {
+                    enemy.casing.update(false, false, false, false, false, false);
+                    if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
+                        enemy.setActive(false);
+                        enemy.setVisible(false);
+                        enemy.setVelocity(0, 0);
+                    }
+                }
+            }.bind(this));
+            enemies4.children.each(function (enemy) {
+                if (enemy.active) {
+                    enemy.casing.update(false, false, false, false, false, false);
+                    if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
+                        enemy.setActive(false);
+                        enemy.setVisible(false);
+                        enemy.setVelocity(0, 0);
+                    }
+                }
+            }.bind(this));
+            enemies5.children.each(function (enemy) {
+                if (enemy.active) {
+                    enemy.casing.update(false, false, false, false, false, false);
+                    if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
+                        enemy.setActive(false);
+                        enemy.setVisible(false);
+                        enemy.setVelocity(0, 0);
+                    }
+                }
+            }.bind(this));
+        }
     }
 }
 
@@ -696,7 +725,7 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: false
+            debug: true
         }
     },
     plugins: {
@@ -705,7 +734,7 @@ var config = {
             start: true
         }]
     },
-    scene: [TitleScene, MainScene]
+    scene: [TitleScene, MainScene, BossScene]
 };
 
 // start the game
