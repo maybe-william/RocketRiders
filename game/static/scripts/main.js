@@ -40,6 +40,11 @@ var cos = Math.cos;
 var pi = Math.PI;
 var pmath = Phaser.Math;
 
+var cute;
+var chris;
+var faiz;
+var will;
+
 function offscreen(x, y) {
     if (x < -200 || y < -200 || x > 1000 || y > 800) {
         return true;
@@ -233,6 +238,11 @@ class MainScene extends Phaser.Scene {
         this.load.image('blast5', 'static/assets/images/blast5.png');
         this.load.image('blast6', 'static/assets/images/blast6.png');
 
+        this.load.image('cutealien', 'static/assets/images/characters/cute_alien_small.png');
+        this.load.image('chris', 'static/assets/images/characters/Christiansmall.png');
+        this.load.image('faiz', 'static/assets/images/characters/Faizansmall.png');
+        this.load.image('will', 'static/assets/images/characters/Williamsmall.png');
+
         this.load.image('null', 'static/assets/images/null.png');
     }
 
@@ -242,6 +252,25 @@ class MainScene extends Phaser.Scene {
     {
         sky = this.add.tileSprite(400, 300, 800, 600, 'sky');
         sky.setDepth(-999);
+
+        cute = this.add.image(0, 0, 'cutealien');
+        cute.setPosition(cute.width/2 + 25, cute.height/2 + 300);
+        cute.setDepth(99998);
+
+        chris = this.add.image(0, 0, 'chris');
+        chris.setPosition(chris.width/2 + 25, chris.height/2 + 300);
+        chris.setDepth(99998);
+        chris.setVisible(false);
+
+        faiz = this.add.image(0, 0, 'faiz');
+        faiz.setPosition(faiz.width/2 + 25, faiz.height/2 + 300);
+        faiz.setDepth(99998);
+        faiz.setVisible(false);
+
+        will = this.add.image(0, 0, 'will');
+        will.setPosition(will.width/2 + 25, will.height/2 + 300);
+        will.setDepth(99998);
+        will.setVisible(false);
 
         p1score = 0;
         p2score = 0;
@@ -254,7 +283,7 @@ class MainScene extends Phaser.Scene {
         p2scoreText = this.add.text(16, 64, p2text, { fontSize: '32px', fill: '#a66f3c' });
 
         textbox = this.make.text({
-            x: 0,
+            x: 250,
             y: 400,
             padding: {
                 left: 64,
@@ -272,10 +301,10 @@ class MainScene extends Phaser.Scene {
                 align: 'left',  // 'left'|'center'|'right'|'justify'
                 //backgroundColor: '#fffff',
                 wordWrap: {
-                    width: 750,
+                    width: 500,
                     useAdvancedWrap: true,
                 },
-                fixedWidth: 800,
+                fixedWidth: 550,
                 fixedHeight: 500
             },
             add: true
@@ -422,34 +451,53 @@ class MainScene extends Phaser.Scene {
         this.time.addEvent({
             delay: 500,
             callback: function () {
-                textbox.start("Chris\' text", 10);
+
+                textbox.start("Alien\'s text blah blah blah blah blah blah blah blah blah blah blah blah blah", 10);
                 setTimeout(function () {
-                    textbox.stop();
-                }, 1300);
+                    cute.setVisible(false);
+                    textbox.start('');
+                }, 2200);
+            },
+            callbackScope: this,
+            loop: false
+        });
+        this.time.addEvent({
+            delay: 3000,
+            callback: function () {
+                chris.setVisible(true);
+                textbox.start("Chris\' text blah blah blah blah blah blah", 10);
+                setTimeout(function () {
+                    chris.setVisible(false);
+                    textbox.start('');
+                }, 1600);
             },
             callbackScope: this,
             loop: false
         });
 
         this.time.addEvent({
-            delay: 2000,
+            delay: 5000,
             callback: function () {
-                textbox.start("Faizan\'s text", 10);
+                faiz.setVisible(true);
+                textbox.start("Faizan\'s text blah blah blah blah blah blah blah", 10);
                 setTimeout(function () {
-                    textbox.stop();
-                }, 1300);
+                    faiz.setVisible(false);
+                    textbox.start('');
+                }, 1600);
             },
             callbackScope: this,
             loop: false
         });
         this.time.addEvent({
-            delay: 3500,
+            delay: 7000,
             callback: function () {
-                textbox.start("Will\'s text", 10);
+                will.setVisible(true);
+                textbox.start("Will\'s text blah blah blah blah", 10);
                 setTimeout(function () {
+                    will.setVisible(false);
                     textbox.start('');
                     enemy1_mode = true;
-                }, 1300);
+                }, 1600);
             },
             callbackScope: this,
             loop: false
@@ -461,7 +509,7 @@ class MainScene extends Phaser.Scene {
             enemy3_mode = false;
             enemy4_mode = false;
             enemy5_mode = false;
-        }, 10000);
+        }, 30000);
         //stage2
         setTimeout(function () {
             enemy1_mode = false;
@@ -478,7 +526,7 @@ class MainScene extends Phaser.Scene {
             });
             bossmode = true;
             //this.scene.start('BossScene');
-        }.bind(this), 15000);
+        }.bind(this), 35000);
         //stage3
         setTimeout(function () {
             enemy1_mode = false;
