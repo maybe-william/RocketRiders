@@ -229,12 +229,18 @@ class BossScene extends Phaser.Scene {
             ship.setVisible(false);
 
             if (ship.texture.key === 'player1' || (ship.texture.key === 'player2' && two_player)) {
+                ship.body.checkCollision.none = true;
                 setTimeout(function () {
                     if (ship && ship.body) {
                         ship.setActive(true);
                         ship.setVisible(true);
                         ship.setPosition(pmath.Between(200, 600), pmath.Between(200, 400));
                         ship.setVelocity(0, 0);
+                        setTimeout(function () {
+                            if (ship && ship.body) {
+                                ship.body.checkCollision.none = false;
+                            }
+                        }, 1500);
                     }
                 }, 1000);
             } else if (ship.texture.key !== 'player2') {
@@ -312,7 +318,7 @@ class BossScene extends Phaser.Scene {
         boss = this.add.container(400, -100, [bossbody, bossleftwing, bossrightwing, bossleftlaser, bossrightlaser, bossgun, bossweakspot])
         boss.setDepth(-3)
 
-        let p2text = 'P2 Press ENTER'
+        let p2text = ''
         if (two_player) {
             p2text = 'P2 Score: ' + p2score.toString();
         }

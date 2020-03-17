@@ -186,13 +186,20 @@ class MainScene extends Phaser.Scene {
             ship.setActive(false);
             ship.setVisible(false);
 
+            //respawn
             if (ship.texture.key === 'player1' || (ship.texture.key === 'player2' && two_player)) {
+                ship.body.checkCollision.none = true;
                 setTimeout(function () {
                     if (ship && ship.body) {
                         ship.setActive(true);
                         ship.setVisible(true);
                         ship.setPosition(pmath.Between(200, 600), pmath.Between(200, 400));
                         ship.setVelocity(0, 0);
+                        setTimeout(function () {
+                            if (ship && ship.body) {
+                                ship.body.checkCollision.none = false;
+                            }
+                        }, 1500);
                     }
                 }, 1000);
             } else if (ship.texture.key !== 'player2') {
@@ -275,7 +282,7 @@ class MainScene extends Phaser.Scene {
         p1score = 0;
         p2score = 0;
 
-        let p2text = 'P2 Press ENTER'
+        let p2text = ''
         if (two_player) {
             p2text = 'P2 Score: ' + p2score.toString();
         }
