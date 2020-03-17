@@ -446,10 +446,48 @@ class MainScene extends Phaser.Scene {
         this.physics.add.collider(enemies5, enemies3, null, null, this);
         this.physics.add.collider(enemies5, enemies4, null, null, this);
 
+        let spawnrate = 1000;
+
+        let alienspeak = 1000;
+        let alienstop = 6000;
+
+        let chrisspeak = 7000;
+        let chrisstop = 12000;
+
+        let faizspeak = 13000;
+        let faizstop = 18000;
+
+        let willspeak = 23000;
+        let willstop = 28000;
+
+        let stage1start = 30000;
+        let stage2start = 60000;
+        let stage3start = 90000;
+        let stage4start = 120000;
+        let stage5start = 150000;
+
+        let stage6start = 180000;
+        let stage7start = 210000;
+        let stage8start = 240000;
+        let stage9start = 270000;
+        let stage10start = 300000;
+        let stage10stop = 330000;
+
+        let makeEvent = (function (delayTime, func) {
+            this.time.addEvent({
+                delay: delayTime,
+                callback: function () {
+                    func();
+                },
+                callbackScope: this,
+                loop: false
+            });
+        }).bind(this);
+
 
         //enemy spawn timer
         this.time.addEvent({
-            delay: 1000,
+            delay: spawnrate,
             callback: function () {
                 spawnEnemy1(pmath.Between(100, 700), -100);
                 spawnEnemy2(pmath.Between(100, 700), -100);
@@ -461,157 +499,140 @@ class MainScene extends Phaser.Scene {
             loop: true
         });
 
-        this.time.addEvent({
-            delay: 500,
-            callback: function () {
-
-                textbox.start("Alien\'s text blah blah blah blah blah blah blah blah blah blah blah blah blah", 10);
-                setTimeout(function () {
-                    cute.setVisible(false);
-                    textbox.start('');
-                }, 2200);
-            },
-            callbackScope: this,
-            loop: false
+        makeEvent(alienspeak, function () {
+            cute.setVisible(true);
+            textbox.start("Alien\'s text blah blah blah blah blah blah blah blah blah blah blah blah blah", 10);
         });
-        this.time.addEvent({
-            delay: 3000,
-            callback: function () {
-                chris.setVisible(true);
-                textbox.start("Chris\' text blah blah blah blah blah blah", 10);
-                setTimeout(function () {
-                    chris.setVisible(false);
-                    textbox.start('');
-                }, 1600);
-            },
-            callbackScope: this,
-            loop: false
+        makeEvent(alienstop, function () {
+            cute.setVisible(false);
+            textbox.start('');
         });
 
-        this.time.addEvent({
-            delay: 5000,
-            callback: function () {
-                faiz.setVisible(true);
-                textbox.start("Faizan\'s text blah blah blah blah blah blah blah", 10);
-                setTimeout(function () {
-                    faiz.setVisible(false);
-                    textbox.start('');
-                }, 1600);
-            },
-            callbackScope: this,
-            loop: false
+        makeEvent(chrisspeak, function () {
+            chris.setVisible(true);
+            textbox.start("Chris\' text blah blah blah blah blah blah", 10);
         });
-        this.time.addEvent({
-            delay: 7000,
-            callback: function () {
-                will.setVisible(true);
-                textbox.start("Will\'s text blah blah blah blah", 10);
-                setTimeout(function () {
-                    will.setVisible(false);
-                    textbox.start('');
-                    enemy1_mode = true;
-                }, 1600);
-            },
-            callbackScope: this,
-            loop: false
+        makeEvent(chrisstop, function () {
+            chris.setVisible(false);
+            textbox.start('');
         });
+
+        makeEvent(faizspeak, function () {
+            faiz.setVisible(true);
+            textbox.start("Faizan\'s text blah blah blah blah blah blah blah", 10);
+        });
+        makeEvent(faizstop, function () {
+            faiz.setVisible(false);
+            textbox.start('');
+        });
+
+        makeEvent(willspeak, function () {
+            will.setVisible(true);
+            textbox.start("Will\'s text blah blah blah blah", 10);
+        });
+        makeEvent(willstop, function () {
+            will.setVisible(false);
+            textbox.start('');
+        });
+
+
+
         //stage1
-        setTimeout(function () {
+        makeEvent(stage1start, function () {
             enemy1_mode = true;
             enemy2_mode = false;
             enemy3_mode = false;
             enemy4_mode = false;
             enemy5_mode = false;
-        }, 30000);
+        });
         //stage2
-        setTimeout(function () {
+        makeEvent(stage2start, function () {
             enemy1_mode = false;
             enemy2_mode = true;
             enemy3_mode = false;
             enemy4_mode = false;
             enemy5_mode = false;
 
-            this.scene.transition({
-                target: 'BossScene',
-                duration: 500,
-                moveBelow: true,
-                onUpdate: this.transitionOut
-            });
-            bossmode = true;
-            //this.scene.start('BossScene');
-        }.bind(this), 35000);
+            //this.scene.transition({
+                //target: 'BossScene',
+                //duration: 500,
+                //moveBelow: true,
+                //onUpdate: this.transitionOut
+            //});
+            //bossmode = true;
+        });
         //stage3
-        setTimeout(function () {
+        makeEvent(stage3start, function () {
             enemy1_mode = false;
             enemy2_mode = false;
             enemy3_mode = true;
             enemy4_mode = false;
             enemy5_mode = false;
-        }, 70000);
+        });
         //stage4
-        setTimeout(function () {
+        makeEvent(stage4start, function () {
             enemy1_mode = false;
             enemy2_mode = false;
             enemy3_mode = false;
             enemy4_mode = true;
             enemy5_mode = false;
-        }, 100000);
+        });
         //stage5
-        setTimeout(function () {
+        makeEvent(stage5start, function () {
             enemy1_mode = false;
             enemy2_mode = false;
             enemy3_mode = false;
             enemy4_mode = false;
             enemy5_mode = true;
-        }, 130000);
-//        //stage 1 and 2
-//        setTimeout(function () {
-//            enemy1_mode = true;
-//            enemy2_mode = true;
-//            enemy3_mode = false;
-//            enemy4_mode = false;
-//            enemy5_mode = false;
-//        }, 160000);
-//        //stage 3 and 5
-//        setTimeout(function () {
-//            enemy1_mode = false;
-//            enemy2_mode = false;
-//            enemy3_mode = true;
-//            enemy4_mode = false;
-//            enemy5_mode = true;
-//        }, 220000);
-//        //stage 1, 3, 4
-//        setTimeout(function () {
-//            enemy1_mode = true;
-//            enemy2_mode = false;
-//            enemy3_mode = true;
-//            enemy4_mode = true;
-//            enemy5_mode = false;
-//        }, 280000);
-//        //stage 2,3,5
-//        setTimeout(function () {
-//            enemy1_mode = false;
-//            enemy2_mode = true;
-//            enemy3_mode = true;
-//            enemy4_mode = false;
-//            enemy5_mode = true;
-//        }, 340000);
-//        //stage 1,2,3,4,5
-//        setTimeout(function () {
-//            enemy1_mode = true;
-//            enemy2_mode = true;
-//            enemy3_mode = true;
-//            enemy4_mode = true;
-//            enemy5_mode = true;
-//        }, 400000);
-//        //clear
-//        setTimeout(function () {
-//            enemy1_mode = false;
-//            enemy2_mode = false;
-//            enemy3_mode = false;
-//            enemy4_mode = false;
-//            enemy5_mode = false;
-//        }, 430000);
+        });
+        //stage6; 1 and 2
+        makeEvent(stage6start, function () {
+            enemy1_mode = true;
+            enemy2_mode = true;
+            enemy3_mode = false;
+            enemy4_mode = false;
+            enemy5_mode = false;
+        });
+        //stage7; 3 and 5
+        makeEvent(stage7start, function () {
+            enemy1_mode = false;
+            enemy2_mode = false;
+            enemy3_mode = true;
+            enemy4_mode = false;
+            enemy5_mode = true;
+        });
+        //stage8; 1, 3, 4
+        makeEvent(stage8start, function () {
+            enemy1_mode = true;
+            enemy2_mode = false;
+            enemy3_mode = true;
+            enemy4_mode = true;
+            enemy5_mode = false;
+        });
+        //stage9; 2,3,5
+        makeEvent(stage9start, function () {
+            enemy1_mode = false;
+            enemy2_mode = true;
+            enemy3_mode = true;
+            enemy4_mode = false;
+            enemy5_mode = true;
+        });
+        //stage10; 1,2,3,4,5
+        makeEvent(stage10start, function () {
+            enemy1_mode = true;
+            enemy2_mode = true;
+            enemy3_mode = true;
+            enemy4_mode = true;
+            enemy5_mode = true;
+        });
+        //clear stage10
+        makeEvent(stage10stop, function () {
+            enemy1_mode = false;
+            enemy2_mode = false;
+            enemy3_mode = false;
+            enemy4_mode = false;
+            enemy5_mode = false;
+        });
     }
 
 
