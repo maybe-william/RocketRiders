@@ -150,6 +150,7 @@ class BossScene extends Phaser.Scene {
                 target: 'TitleScene',
                 duration: 500,
                 moveBelow: true,
+                allowInput: false,
                 onUpdate: this.transitionOut
             });
             demoMode = true;
@@ -230,11 +231,14 @@ class BossScene extends Phaser.Scene {
 
             if (ship.texture.key === 'player1' || (ship.texture.key === 'player2' && two_player)) {
                 ship.body.checkCollision.none = true;
+                ship.setCollideWorldBounds(false);
+                ship.setPosition(-3000, -3000);
                 setTimeout(function () {
                     if (ship && ship.body) {
                         ship.setActive(true);
                         ship.setVisible(true);
                         ship.setPosition(pmath.Between(200, 600), pmath.Between(200, 400));
+                        ship.setCollideWorldBounds(true);
                         ship.setVelocity(0, 0);
                         setTimeout(function () {
                             if (ship && ship.body) {
@@ -369,6 +373,8 @@ class BossScene extends Phaser.Scene {
         if (!two_player) {
             ships[1].ph.setActive(false);
             ships[1].ph.setVisible(false);
+            ships[1].ph.setCollideWorldBounds(false);
+            ships[1].ph.setPosition(-3000, -3000);
         }
 
         this.anims.create({
@@ -467,10 +473,11 @@ class BossScene extends Phaser.Scene {
                 ships[1].ph.setActive(true);
                 ships[1].ph.setVisible(true);
                 ships[1].ph.setPosition(210, 300);
+                ships[1].ph.setCollideWorldBounds(true);
                 ships[1].ph.setVelocity(0, 0);
-                p2scoreText.setText('P2 Score: ' + p2score.toString(), { fontSize: '32px', fill: '#a66f3c' });
                 two_player = true;
-                enterpressed = Date.now();
+                p2scoreText.setText('P2 Score: ' + p2score.toString(), { fontSize: '32px', fill: '#a66f3c' });
+                enterpressed = Date.now() - 5700;
                 spec = false;
             }
             if (!fire) {

@@ -189,11 +189,14 @@ class MainScene extends Phaser.Scene {
             //respawn
             if (ship.texture.key === 'player1' || (ship.texture.key === 'player2' && two_player)) {
                 ship.body.checkCollision.none = true;
+                ship.setCollideWorldBounds(false);
+                ship.setPosition(-3000, -3000);
                 setTimeout(function () {
                     if (ship && ship.body) {
                         ship.setActive(true);
                         ship.setVisible(true);
                         ship.setPosition(pmath.Between(200, 600), pmath.Between(200, 400));
+                        ship.setCollideWorldBounds(true);
                         ship.setVelocity(0, 0);
                         setTimeout(function () {
                             if (ship && ship.body) {
@@ -265,7 +268,7 @@ class MainScene extends Phaser.Scene {
         cute.setDepth(99998);
 
         chris = this.add.image(0, 0, 'chris');
-        chris.setPosition(chris.width/2 + 25, chris.height/2 + 300);
+        chris.setPosition(chris.width/2 + 15, chris.height/2 + 300);
         chris.setDepth(99998);
         chris.setVisible(false);
 
@@ -278,6 +281,8 @@ class MainScene extends Phaser.Scene {
         will.setPosition(will.width/2 + 25, will.height/2 + 300);
         will.setDepth(99998);
         will.setVisible(false);
+
+        two_player = false;
 
         p1score = 0;
         p2score = 0;
@@ -317,8 +322,7 @@ class MainScene extends Phaser.Scene {
             add: true
         });
         textbox.setDepth(99999);
-        textbox = this.plugins.get('rextexttypingplugin').add(textbox, {
-        })
+        textbox = this.plugins.get('rextexttypingplugin').add(textbox, {});
 
         let ship = this.physics.add.sprite(100, 450, 'player1');
         ship.setBounce(0.2);
@@ -332,6 +336,8 @@ class MainScene extends Phaser.Scene {
         if (!two_player) {
             ships[1].ph.setActive(false);
             ships[1].ph.setVisible(false);
+            ships[1].ph.setCollideWorldBounds(false);
+            ships[1].ph.setPosition(-3000, -3000);
         }
 
         this.anims.create({
@@ -640,6 +646,7 @@ class MainScene extends Phaser.Scene {
                 ships[1].ph.setActive(true);
                 ships[1].ph.setVisible(true);
                 ships[1].ph.setPosition(210, 300);
+                ships[1].ph.setCollideWorldBounds(true);
                 ships[1].ph.setVelocity(0, 0);
                 two_player = true;
                 p2scoreText.setText('P2 Score: ' + p2score.toString(), { fontSize: '32px', fill: '#a66f3c' });
