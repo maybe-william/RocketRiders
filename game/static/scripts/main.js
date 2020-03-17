@@ -266,6 +266,7 @@ class MainScene extends Phaser.Scene {
         cute = this.add.image(0, 0, 'cutealien');
         cute.setPosition(cute.width/2 + 25, cute.height/2 + 300);
         cute.setDepth(99998);
+        cute.setVisible(false);
 
         chris = this.add.image(0, 0, 'chris');
         chris.setPosition(chris.width/2 + 15, chris.height/2 + 300);
@@ -457,10 +458,10 @@ class MainScene extends Phaser.Scene {
         let faizspeak = 13000;
         let faizstop = 18000;
 
-        let willspeak = 23000;
-        let willstop = 28000;
+        let willspeak = 19000;
+        let willstop = 24000;
 
-        let stage1start = 30000;
+        let stage1start = 27000;
         let stage2start = 60000;
         let stage3start = 90000;
         let stage4start = 120000;
