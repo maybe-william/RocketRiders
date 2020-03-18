@@ -529,14 +529,6 @@ class MainScene extends Phaser.Scene {
             enemy3_mode = false;
             enemy4_mode = false;
             enemy5_mode = false;
-
-            //this.scene.transition({
-                //target: 'BossScene',
-                //duration: 500,
-                //moveBelow: true,
-                //onUpdate: this.transitionOut
-            //});
-            //bossmode = true;
         });
         //stage3
         makeEvent(stage3start, function () {
@@ -609,6 +601,9 @@ class MainScene extends Phaser.Scene {
             enemy3_mode = false;
             enemy4_mode = false;
             enemy5_mode = false;
+            setTimeout(function () {
+                startBoss.bind(this)();
+            }, 30000);
         });
     }
 
@@ -617,18 +612,12 @@ class MainScene extends Phaser.Scene {
 
     update ()
     {
-        let sw = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I).isDown;
-        if (sw) {
-            normal_mode = false;
-            this.scene.transition({
-                target: 'BossScene',
-                duration: 500,
-                moveBelow: true,
-                onUpdate: this.transitionOut
-            });
-            bossmode = true;
-        }
         if (normal_mode) {
+            let sw = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O).isDown;
+            if (sw) {
+                startBoss.bind(this)();
+                return;
+            }
             // move sky
             sky.tilePositionY = sky.tilePositionY - 1;
 

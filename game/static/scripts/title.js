@@ -145,7 +145,7 @@ class TitleScene extends Phaser.Scene {
             callbackScope: this,
             loop: true
         });
-
+        game.scene.dump();
     }
 
 
@@ -153,18 +153,13 @@ class TitleScene extends Phaser.Scene {
 
     update ()
     {
-        let sw = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I).isDown;
-        if (sw) {
-            demoMode = false;
-            this.scene.transition({
-                target: 'MainScene',
-                duration: 500,
-                moveBelow: true,
-                onUpdate: this.transitionOut
-            });
-            normal_mode = true;
-        }
         if (demoMode) {
+            let sw = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I).isDown;
+            if (sw) {
+                startMain.bind(this)();
+                return;
+            }
+
             // move sky
             sky.tilePositionY = sky.tilePositionY - 1;
 
@@ -180,14 +175,8 @@ class TitleScene extends Phaser.Scene {
                 //normal_mode = true;
                 //load next scene
                 //this.scene.start('MainScene');
-
-                this.scene.transition({
-                    target: 'MainScene',
-                    duration: 500,
-                    moveBelow: true,
-                    onUpdate: this.transitionOut
-                });
-            normal_mode = true;
+                startMain.bind(this)();
+                return;
             }
             demoEnemies = demoEnemies.filter(function (item) {
                 return item.ph.active && item.ph.body.position.y < 550;

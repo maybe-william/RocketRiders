@@ -145,20 +145,12 @@ class BossScene extends Phaser.Scene {
             if (p2score > topScore) {
                 topScore = p2score;
             }
-
-            this.scene.transition({
-                target: 'TitleScene',
-                duration: 500,
-                moveBelow: true,
-                allowInput: false,
-                onUpdate: this.transitionOut
-            });
-            demoMode = true;
-
+            //just say you win!
+            //startTitle.bind(this)();
             //this.scene.start('TitleScene');
             //ships[0].ph.setActive(false);
             //ships[1].ph.setActive(false);
-        }.bind(this), 7000);
+        }.bind(this), 2000);
     }
 
     makeBlast(x, y, scale) {
@@ -421,22 +413,18 @@ class BossScene extends Phaser.Scene {
             callbackScope: this,
             loop: false
         });
+        game.scene.dump();
     }
 
     update ()
     {
-        let sw = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I).isDown;
-        if (sw) {
-            bossmode = false;
-            this.scene.transition({
-                target: 'TitleScene',
-                duration: 500,
-                moveBelow: true,
-                onUpdate: this.transitionOut
-            });
-            demoMode = true;
-        }
         if (bossmode) {
+            let sw = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P).isDown;
+            if (sw) {
+                startTitle.bind(this)();
+                return;
+            }
+
             // move sky
             sky.tilePositionY = sky.tilePositionY - 1;
 
