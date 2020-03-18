@@ -33,7 +33,8 @@ var enemy2_mode = false;
 var enemy3_mode = false;
 var enemy4_mode = false;
 var enemy5_mode = false;
-var boss_mode = false;
+var boss_time = false;
+var any_onscreen = false;
 
 var sin = Math.sin;
 var cos = Math.cos;
@@ -447,16 +448,18 @@ class MainScene extends Phaser.Scene {
 
         let stage1start = 45000;
         let stage2start = 60000;
-        let stage3start = 90000;
-        let stage4start = 120000;
-        let stage5start = 150000;
+        let stage3start = 75000;
+        let stage4start = 90000;
+        let stage5start = 105000;
 
-        let stage6start = 180000;
-        let stage7start = 210000;
-        let stage8start = 240000;
-        let stage9start = 270000;
-        let stage10start = 300000;
-        let stage10stop = 330000;
+        let stage6start = 120000;
+        let stage7start = 135000;
+        let stage8start = 150000;
+        let stage9start = 165000;
+        let stage10start = 180000;
+        let stage10stop = 195000;
+
+        let bossStart = 200000;
 
         let makeEvent = (function (delayTime, func) {
             this.time.addEvent({
@@ -611,6 +614,10 @@ class MainScene extends Phaser.Scene {
             enemy5_mode = false;
         });
 
+        makeEvent(bossStart, function () {
+            boss_time = true;
+        });
+
     }
 
 
@@ -619,16 +626,25 @@ class MainScene extends Phaser.Scene {
     update ()
     {
         if (normal_mode) {
+
+            // if O key pressed or if at boss time with no enemies on the screen, then switch to the boss scene
             let sw = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O).isDown;
-            if (sw || this.sw) {
+            if (sw || (boss_time && !any_onscreen)) {
+                boss_time = false;
                 startBoss.bind(this)();
                 return;
             }
+            any_onscreen = false;
+
+
+
             // move sky
             sky.tilePositionY = sky.tilePositionY - 1;
 
-            // get the movement for ship1
+            // abbreviate keyboard input variable
             const kb = this.input.keyboard;
+
+            // if V key pressed and released then swap control mode
             if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.V).isDown) {
                 vdown = true;
             }
@@ -637,6 +653,7 @@ class MainScene extends Phaser.Scene {
                 simpleControl = !simpleControl;
             }
 
+            // if ONE key pressed and released then toggle enemy1 spawning
             if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.ONE).isDown) {
                 onedown = true;
             }
@@ -645,6 +662,7 @@ class MainScene extends Phaser.Scene {
                 enemy1_mode = !enemy1_mode;
             }
 
+            // if TWO key pressed and released then toggle enemy2 spawning
             if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.TWO).isDown) {
                 twodown = true;
             }
@@ -653,6 +671,7 @@ class MainScene extends Phaser.Scene {
                 enemy2_mode = !enemy2_mode;
             }
 
+            // if THREE key pressed and released then toggle enemy3 spawning
             if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.THREE).isDown) {
                 threedown = true;
             }
@@ -661,6 +680,7 @@ class MainScene extends Phaser.Scene {
                 enemy3_mode = !enemy3_mode;
             }
 
+            // if FOUR key pressed and released then toggle enemy4 spawning
             if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR).isDown) {
                 fourdown = true;
             }
@@ -669,6 +689,7 @@ class MainScene extends Phaser.Scene {
                 enemy4_mode = !enemy4_mode;
             }
 
+            // if FIVE key pressed and released then toggle enemy5 spawning
             if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.FIVE).isDown) {
                 fivedown = true;
             }
@@ -676,6 +697,10 @@ class MainScene extends Phaser.Scene {
                 fivedown = false;
                 enemy5_mode = !enemy5_mode;
             }
+
+
+
+            // controls for player2
             let four = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_FOUR).isDown;
             let six = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SIX).isDown;
             let eight = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_EIGHT).isDown;
@@ -713,7 +738,9 @@ class MainScene extends Phaser.Scene {
                 zeroheld = true;
             }
 
-            // get the movement for ship2
+
+
+            // controls for player1
             let w = kb.addKey('W').isDown;
             let a = kb.addKey('A').isDown;
             let s = kb.addKey('S').isDown;
@@ -739,6 +766,8 @@ class MainScene extends Phaser.Scene {
                 spaceheld = true;
             }
 
+
+
             //destroy bullets out of range
             goodshots.children.each(function (shot) {
                 if (shot.active) {
@@ -759,9 +788,12 @@ class MainScene extends Phaser.Scene {
                 }
             }.bind(this));
 
+
+
             //update enemies on screen and destroy enemies out of range
             enemies1.children.each(function (enemy) {
                 if (enemy.active) {
+                    any_onscreen = true;
                     enemy.casing.update(false, false, false, false, false, false);
                     if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
                         enemy.setActive(false);
@@ -772,6 +804,7 @@ class MainScene extends Phaser.Scene {
             }.bind(this));
             enemies2.children.each(function (enemy) {
                 if (enemy.active) {
+                    any_onscreen = true;
                     enemy.casing.update(false, false, false, false, false, false);
                     if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
                         enemy.setActive(false);
@@ -782,6 +815,7 @@ class MainScene extends Phaser.Scene {
             }.bind(this));
             enemies3.children.each(function (enemy) {
                 if (enemy.active) {
+                    any_onscreen = true;
                     enemy.casing.update(false, false, false, false, false, false);
                     if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
                         enemy.setActive(false);
@@ -792,6 +826,7 @@ class MainScene extends Phaser.Scene {
             }.bind(this));
             enemies4.children.each(function (enemy) {
                 if (enemy.active) {
+                    any_onscreen = true;
                     enemy.casing.update(false, false, false, false, false, false);
                     if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
                         enemy.setActive(false);
@@ -802,6 +837,7 @@ class MainScene extends Phaser.Scene {
             }.bind(this));
             enemies5.children.each(function (enemy) {
                 if (enemy.active) {
+                    any_onscreen = true;
                     enemy.casing.update(false, false, false, false, false, false);
                     if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
                         enemy.setActive(false);

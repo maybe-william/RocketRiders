@@ -89,14 +89,14 @@ class PreloaderScene extends Phaser.Scene {
     }
 
     create() {
-        titlemusic = this.sound.add('titlemusic', {loop: true});
-        mainmusic = this.sound.add('mainmusic', {loop: true});
-        bossmusic = this.sound.add('bossmusic', {loop: true});
-        victorymusic = this.sound.add('victorymusic', {loop: true});
+        titlemusic = this.sound.add('titlemusic', {volume: 0.3, loop: true});
+        mainmusic = this.sound.add('mainmusic', {volume: 0.3, loop: true});
+        bossmusic = this.sound.add('bossmusic', {volume: 0.3, loop: true});
+        victorymusic = this.sound.add('victorymusic', {volume: 0.3, loop: true});
         titlemusic.play();
 
-        laser = this.sound.add('lasersfx', {loop: false});
-        explosion = this.sound.add('explosionsfx', {loop: false});
+        laser = this.sound.add('lasersfx', {volume: 0.3, loop: false});
+        explosion = this.sound.add('explosionsfx', {volume: 0.3, loop: false});
         //this.scene.launch('BossScene');
         //this.scene.sleep('BossScene');
         //this.scene.launch('MainScene');
