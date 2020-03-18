@@ -175,6 +175,7 @@ class MainScene extends Phaser.Scene {
                         blast.setPosition(-200, -200);
                     }
                 }, 1000);
+                explosion.play();
             }
             shot.setPosition(-200, -200);
             shot.setVelocity(0,0);

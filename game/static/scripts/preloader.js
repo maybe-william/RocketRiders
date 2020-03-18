@@ -1,6 +1,10 @@
 var titlemusic;
 var mainmusic;
 var bossmusic;
+var victorymusic;
+
+var laser;
+var explosion;
 
 function startMain () {
     demoMode = false;
@@ -38,6 +42,10 @@ class PreloaderScene extends Phaser.Scene {
         this.load.audio('titlemusic', 'static/assets/sounds/title.wav');
         this.load.audio('mainmusic', 'static/assets/sounds/level.wav');
         this.load.audio('bossmusic', 'static/assets/sounds/boss.wav');
+        this.load.audio('victorymusic', 'static/assets/sounds/victory.wav');
+
+        this.load.audio('explosionsfx', 'static/assets/sounds/explosion.wav');
+        this.load.audio('lasersfx', 'static/assets/sounds/laser.wav');
 
         this.load.image('bossbody', 'static/assets/images/boss/bossbody.png');
         this.load.image('bossleftwing', 'static/assets/images/boss/bossleftwing.png');
@@ -75,6 +83,7 @@ class PreloaderScene extends Phaser.Scene {
         this.load.image('will', 'static/assets/images/characters/Williamsmall.png');
 
         this.load.image('title', 'static/assets/images/RocketTitle.png');
+        this.load.image('victory', 'static/assets/images/VICTORY.png')
 
         this.load.image('null', 'static/assets/images/null.png');
     }
@@ -83,7 +92,11 @@ class PreloaderScene extends Phaser.Scene {
         titlemusic = this.sound.add('titlemusic', {loop: true});
         mainmusic = this.sound.add('mainmusic', {loop: true});
         bossmusic = this.sound.add('bossmusic', {loop: true});
+        victorymusic = this.sound.add('victorymusic', {loop: true});
         titlemusic.play();
+
+        laser = this.sound.add('lasersfx', {loop: false});
+        explosion = this.sound.add('explosionsfx', {loop: false});
         //this.scene.launch('BossScene');
         //this.scene.sleep('BossScene');
         //this.scene.launch('MainScene');

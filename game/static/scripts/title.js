@@ -13,6 +13,7 @@ class TitleScene extends Phaser.Scene {
         blast.setActive(true);
         blast.setVisible(true);
         blast.play('blast');
+        explosion.play();
         shot.setPosition(-100, -100);
         shot.setVelocity(0,0);
         shot.setActive(false);
@@ -61,7 +62,7 @@ class TitleScene extends Phaser.Scene {
         demoMode = true;
         sky = this.add.tileSprite(400, 300, 800, 600, 'sky');
         sky.setDepth(-999);
-        scoreText = this.add.text(16, 16, 'High Score: ' + topScore.toString(), { fontSize: '32px', fill: '#a66f3c' });
+        //scoreText = this.add.text(16, 16, 'High Score: ' + topScore.toString(), { fontSize: '32px', fill: '#a66f3c' });
         title = this.add.tileSprite(400, 300, 800, 600, 'title');
         title.setDepth(999);
 

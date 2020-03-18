@@ -10,6 +10,8 @@ var bossweakspot;
 var boss;
 var won;
 
+var victory;
+
 function bossShoot(x, y, direction, velocity, scale) {
     if (x > 0 && y > 0 && x < 800 && y < 600) {
         let shot = badshots.get(x, y);
@@ -20,6 +22,7 @@ function bossShoot(x, y, direction, velocity, scale) {
             shot.setActive(true);
             shot.setVisible(true);
             shot.setVelocity(xamt, yamt);
+            laser.play();
         }
     }
 }
@@ -145,6 +148,9 @@ class BossScene extends Phaser.Scene {
             if (p2score > topScore) {
                 topScore = p2score;
             }
+            victory.setVisible(true);
+            bossmusic.stop();
+            victorymusic.play();
             //just say you win!
             //startTitle.bind(this)();
             //this.scene.start('TitleScene');
@@ -160,6 +166,7 @@ class BossScene extends Phaser.Scene {
             blast.setActive(true);
             blast.setVisible(true);
             blast.play('blast');
+            explosion.play();
             setTimeout(function () {
                 if (blast) {
                     blast.setActive(false);
@@ -273,6 +280,12 @@ class BossScene extends Phaser.Scene {
         won = false;
         sky = this.add.tileSprite(400, 300, 800, 600, 'sky');
         sky.setDepth(-999);
+
+        victory = this.add.tileSprite(400, 300, 800, 600, 'victory');
+        victory.setDepth(999);
+        victory.setActive(false);
+        victory.setVisible(false);
+
 
         bossbody = this.physics.add.sprite(0, 0, 'bossbody');
         bossleftwing = this.physics.add.sprite(-71, -16, 'bossleftwing');

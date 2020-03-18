@@ -15,6 +15,7 @@ function makeShot (shipobj, spec=false) {
         }
         shot.setDepth(-1);
         shot.shooter = shipobj.texture.key;
+        laser.play();
     }
 
 
