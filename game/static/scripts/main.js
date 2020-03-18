@@ -45,6 +45,8 @@ var chris;
 var faiz;
 var will;
 
+var vdown;
+
 function offscreen(x, y) {
     if (x < -200 || y < -200 || x > 1000 || y > 800) {
         return true;
@@ -624,6 +626,13 @@ class MainScene extends Phaser.Scene {
 
             // get the movement for ship1
             const kb = this.input.keyboard;
+            if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.V).isDown) {
+                vdown = true;
+            }
+            if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.V).isUp && vdown) {
+                vdown = false;
+                simpleControl = !simpleControl;
+            }
             let four = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_FOUR).isDown;
             let six = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SIX).isDown;
             let eight = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_EIGHT).isDown;

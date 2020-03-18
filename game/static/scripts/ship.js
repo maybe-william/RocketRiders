@@ -1,3 +1,4 @@
+var simpleControl = true;
 
 function makeShot (shipobj, spec=false) {
     function shootOne(shipobj, shot, angle, speed_scale, extra_speed, invertY=false) {
@@ -198,7 +199,7 @@ function ai5(shot, spec, up, down, right, left) {
     }
 }
 
-class Ship { 
+class Ship {
     constructor(phship, x, y, scale, rot) {
         this.ph = phship;
         this.scale = scale;
@@ -212,6 +213,10 @@ class Ship {
         const acc = 10
         const dec = 3
 
+        if (simpleControl) {
+            this.ph.setRotation(0);
+        }
+
         if (down) {
             this.move(acc, dec, this.vel_max, true);
         } else if (up) {
@@ -219,9 +224,17 @@ class Ship {
         }
 
         if (left) {
-            this.rotate(-5);
+            if (simpleControl) {
+                this.accel(-acc, 0, this.vel_max);
+            } else {
+                this.rotate(-5);
+            }
         } else if (right) {
-            this.rotate(5);
+            if (simpleControl) {
+                this.accel(acc, 0, this.vel_max);
+            } else {
+                this.rotate(5);
+            }
         }
 
 

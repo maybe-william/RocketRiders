@@ -206,7 +206,10 @@ class BossScene extends Phaser.Scene {
                 }
             }
             p1scoreText.setText('P1 Score: ' + p1score.toString());
-            p2scoreText.setText('P2 Score: ' + p2score.toString());
+            if (ships[1] && ships[1].ph && ships[1].ph.active)
+            {
+                p2scoreText.setText('P2 Score: ' + p2score.toString());
+            }
             shot.setPosition(-200, -200);
             shot.setVelocity(0, 0);
             shot.setActive(false);
@@ -443,6 +446,13 @@ class BossScene extends Phaser.Scene {
 
             // get the movement for ship1
             const kb = this.input.keyboard;
+            if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.V).isDown) {
+                vdown = true;
+            }
+            if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.V).isUp && vdown) {
+                vdown = false;
+                simpleControl = !simpleControl;
+            }
             let four = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_FOUR).isDown;
             let six = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SIX).isDown;
             let eight = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_EIGHT).isDown;
