@@ -1,3 +1,4 @@
+
 var p1score = 0;
 var p1scoreText;
 var p2score = 0;
@@ -52,6 +53,7 @@ var twodown;
 var threedown;
 var fourdown;
 var fivedown;
+
 
 function offscreen(x, y) {
     if (x < -200 || y < -200 || x > 1000 || y > 800) {
