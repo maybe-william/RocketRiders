@@ -146,7 +146,6 @@ class TitleScene extends Phaser.Scene {
             callbackScope: this,
             loop: true
         });
-        game.scene.dump();
     }
 
 

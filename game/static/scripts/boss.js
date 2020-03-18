@@ -421,15 +421,20 @@ class BossScene extends Phaser.Scene {
         this.time.addEvent({
             delay: 500,
             callback: function () {
-                textbox.start("Boss\' text", 10);
-                setTimeout(function () {
-                    textbox.stop();
-                }, 1300);
+                textbox.start("WHAT HAVE YOU DONE TO MY BEAUTIFUL EMPIRE?!?! I WILL GRIND YOU INTO COSMIC DUST!!!", 50);
             },
             callbackScope: this,
             loop: false
         });
-        game.scene.dump();
+        this.time.addEvent({
+            delay: 6000,
+            callback: function () {
+                textbox.start("", 8);
+            },
+            callbackScope: this,
+            loop: false
+        });
+
     }
 
     update ()

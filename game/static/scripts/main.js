@@ -253,7 +253,7 @@ class MainScene extends Phaser.Scene {
         cute.setVisible(false);
 
         chris = this.add.image(0, 0, 'chris');
-        chris.setPosition(chris.width/2 + 15, chris.height/2 + 300);
+        chris.setPosition(chris.width/2, chris.height/2 + 300);
         chris.setDepth(99998);
         chris.setVisible(false);
 
@@ -281,7 +281,7 @@ class MainScene extends Phaser.Scene {
 
         textbox = this.make.text({
             x: 250,
-            y: 400,
+            y: 375,
             padding: {
                 left: 64,
                 right: 64,
@@ -434,18 +434,18 @@ class MainScene extends Phaser.Scene {
         let spawnrate = 1000;
 
         let alienspeak = 1000;
-        let alienstop = 6000;
+        let alienstop = 10000;
 
-        let chrisspeak = 7000;
-        let chrisstop = 12000;
+        let chrisspeak = 11000;
+        let chrisstop = 20000;
 
-        let faizspeak = 13000;
-        let faizstop = 18000;
+        let faizspeak = 21000;
+        let faizstop = 30000;
 
-        let willspeak = 19000;
-        let willstop = 24000;
+        let willspeak = 31000;
+        let willstop = 40000;
 
-        let stage1start = 27000;
+        let stage1start = 45000;
         let stage2start = 60000;
         let stage3start = 90000;
         let stage4start = 120000;
@@ -486,7 +486,7 @@ class MainScene extends Phaser.Scene {
 
         makeEvent(alienspeak, function () {
             cute.setVisible(true);
-            textbox.start("Alien\'s text blah blah blah blah blah blah blah blah blah blah blah blah blah", 10);
+            textbox.start("Alien: Please help! The Evil Alien Empire is attacking! I have a spaceship with weapons, but my arms are to short to fly!", 50);
         });
         makeEvent(alienstop, function () {
             cute.setVisible(false);
@@ -495,7 +495,7 @@ class MainScene extends Phaser.Scene {
 
         makeEvent(chrisspeak, function () {
             chris.setVisible(true);
-            textbox.start("Chris\' text blah blah blah blah blah blah", 10);
+            textbox.start("Christian: Not to worry! Team Synergy is here to help, and we've got arms! The Evil Alien Empire won't stand a chance against these hands.", 50);
         });
         makeEvent(chrisstop, function () {
             chris.setVisible(false);
@@ -504,7 +504,7 @@ class MainScene extends Phaser.Scene {
 
         makeEvent(faizspeak, function () {
             faiz.setVisible(true);
-            textbox.start("Faizan\'s text blah blah blah blah blah blah blah", 10);
+            textbox.start("Faizan: Alright, guys, let's shoot 'em up! use WASD to pilot your ship, SPACEBAR to fire, and SHIFT to fire your special move.", 50);
         });
         makeEvent(faizstop, function () {
             faiz.setVisible(false);
@@ -513,7 +513,7 @@ class MainScene extends Phaser.Scene {
 
         makeEvent(willspeak, function () {
             will.setVisible(true);
-            textbox.start("Will\'s text blah blah blah blah", 10);
+            textbox.start("William: You said it, Faizan! If you don't like the simple controls, press V for more freedom of motion. Yee Haw!", 50);
         });
         makeEvent(willstop, function () {
             will.setVisible(false);
@@ -609,10 +609,8 @@ class MainScene extends Phaser.Scene {
             enemy3_mode = false;
             enemy4_mode = false;
             enemy5_mode = false;
-            setTimeout(function () {
-                startBoss.bind(this)();
-            }.bind(this), 30000);
         });
+
     }
 
 
@@ -622,7 +620,7 @@ class MainScene extends Phaser.Scene {
     {
         if (normal_mode) {
             let sw = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O).isDown;
-            if (sw) {
+            if (sw || this.sw) {
                 startBoss.bind(this)();
                 return;
             }
@@ -829,7 +827,7 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: true
+            debug: false
         }
     },
     plugins: {
