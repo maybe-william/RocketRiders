@@ -603,7 +603,7 @@ class MainScene extends Phaser.Scene {
             enemy5_mode = false;
             setTimeout(function () {
                 startBoss.bind(this)();
-            }, 30000);
+            }.bind(this), 30000);
         });
     }
 
