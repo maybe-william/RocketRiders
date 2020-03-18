@@ -46,6 +46,11 @@ var faiz;
 var will;
 
 var vdown;
+var onedown;
+var twodown;
+var threedown;
+var fourdown;
+var fivedown;
 
 function offscreen(x, y) {
     if (x < -200 || y < -200 || x > 1000 || y > 800) {
@@ -632,6 +637,46 @@ class MainScene extends Phaser.Scene {
             if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.V).isUp && vdown) {
                 vdown = false;
                 simpleControl = !simpleControl;
+            }
+
+            if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.ONE).isDown) {
+                onedown = true;
+            }
+            if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.ONE).isUp && onedown) {
+                onedown = false;
+                enemy1_mode = !enemy1_mode;
+            }
+
+            if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.TWO).isDown) {
+                twodown = true;
+            }
+            if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.TWO).isUp && twodown) {
+                twodown = false;
+                enemy2_mode = !enemy2_mode;
+            }
+
+            if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.THREE).isDown) {
+                threedown = true;
+            }
+            if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.THREE).isUp && threedown) {
+                threedown = false;
+                enemy3_mode = !enemy3_mode;
+            }
+
+            if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR).isDown) {
+                fourdown = true;
+            }
+            if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR).isUp && fourdown) {
+                fourdown = false;
+                enemy4_mode = !enemy4_mode;
+            }
+
+            if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.FIVE).isDown) {
+                fivedown = true;
+            }
+            if (kb.addKey(Phaser.Input.Keyboard.KeyCodes.FIVE).isUp && fivedown) {
+                fivedown = false;
+                enemy5_mode = !enemy5_mode;
             }
             let four = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_FOUR).isDown;
             let six = kb.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SIX).isDown;
