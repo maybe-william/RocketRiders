@@ -52,21 +52,6 @@ class TitleScene extends Phaser.Scene {
     preload ()
     {
 
-        this.load.image('sky', 'static/assets/images/starbgv.png');
-        this.load.image('player1', 'static/assets/images/blueship.png');
-        this.load.image('player2', 'static/assets/images/blueship2.png');
-        this.load.image('player3', 'static/assets/images/orangeship.png');
-        this.load.image('goodshot', 'static/assets/images/goodshot.png');
-        this.load.image('badshot', 'static/assets/images/badshot.png');
-        this.load.image('blast1', 'static/assets/images/blast1.png');
-        this.load.image('blast2', 'static/assets/images/blast2.png');
-        this.load.image('blast3', 'static/assets/images/blast3.png');
-        this.load.image('blast4', 'static/assets/images/blast4.png');
-        this.load.image('blast5', 'static/assets/images/blast5.png');
-        this.load.image('blast6', 'static/assets/images/blast6.png');
-        this.load.image('title', 'static/assets/images/RocketTitle.png');
-
-        this.load.image('null', 'static/assets/images/null.png');
     }
 
 
