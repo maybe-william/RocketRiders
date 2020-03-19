@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Blocked';
+    src: url('Blocked.eot');
+    src: url('Blocked.eot?#iefix') format('embedded-opentype'),
+        url('Blocked.woff2') format('woff2'),
+        url('Blocked.woff') format('woff'),
+        url('Blocked.ttf') format('truetype'),
+        url('Blocked.svg#Blocked') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
