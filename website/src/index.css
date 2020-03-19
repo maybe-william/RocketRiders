@@ -45,42 +45,58 @@
 
 @font-face {
     font-family: cool;
-    src: url(assets/fonts/Helicopta-YwXj.ttf);
+    src: url(assets/fonts/KarmaticArcade.otf);
 }
+
+@font-face {
+    font-family: 'Blocked';
+    src: url('assets/fonts/transfonter.org-20200316-213403/Blocked.eot');
+    src: url('assets/fonts/transfonter.org-20200316-213403/Blocked.eot?#iefix') format('embedded-opentype'),
+        url('assets/fonts/transfonter.org-20200316-213403/Blocked.woff2') format('woff2'),
+        url('assets/fonts/transfonter.org-20200316-213403/Blocked.woff') format('woff'),
+        url('assets/fonts/transfonter.org-20200316-213403/Blocked.ttf') format('truetype'),
+        url('assets/fonts/transfonter.org-20200316-213403/Blocked.svg#Blocked') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 
 body {
     background-color: black;
     color: white;
     text-align: center;
     font-size: 20px;    
-    font-family: 'Iceland'
+    font-family: 'Iceland';
+    display: flex;
+    flex-direction: column;
 }
 
 .intro {
+    height: 100vh;
     width: 100vw;
-    height: 100hw;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
-.GameName  {
-    
-    color: white;
-    font-family: 'cool';
-    font-size: 22vw;
+.GameName {
+    color: aa703c;
+    font-family: 'Blocked';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 20vw;
 }
 
 .GameObj {
-    /* display: flex; */
+    display: flex;
 }
 
 .mtt {
-
-    padding-left: 1vw;
+    /* padding-left: 1vw;
     padding-right: 8vw;
     writing-mode: vertical-rl;
-    text-orientation: mixed;
+    text-orientation: mixed; */
     font-size: 5vw;
     display: flex;
     justify-content: center;
@@ -89,18 +105,11 @@ body {
 
 /* This section configures the horizonal scrolling*/
 .wrapper {
-    display: flex;
-    flex-direction: row;
-    width: 715vw;
-    transform: rotate(90deg) translateY(-100vh);
-    transform-origin: top left;
-}
-
-.outer-wrapper {
-    width: 100vh;
-    height: 100vw;
-    transform: rotate(-90deg) translateX(-100vh);
-    transform-origin: top left;
+    /* display: flex;
+    flex-direction: row; */
+    width: auto;
+    /* transform: rotate(90deg) translateY(-100vh);
+    transform-origin: top left;  */    
     overflow-y: scroll;
     overflow-x: hidden;
     position: absolute;
@@ -119,48 +128,51 @@ body {
 }
 
 .one {
-    background: red;
+    background: rgb(0, 0, 0);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .teamPic {
+    padding-left: 5vw;
     height: 40vw;
 }
 
 .desc {
     font-size: 3vw;
     padding-left: 10vw;
-    padding-right: 10vw;
+    padding-right: 5vw;
 }
 
 .team {
     display:flex;
-    position: absolute;
-    top: 10%;
+    flex-direction: column;
+    padding-top: 15vh;
 }
 
 .teamDesc {
     width: 100vw;
-
+    height: auto;
+    margin-bottom: 10vh;
     display:flex;
+    align-items: center;
+    
     /* flex-direction: column; */
 
 }
 
 .two {
     background: rgb(0, 0, 0);
-    width: 300vw;
+    height: auto;
 }
 
-.three {
-    background-color: rgb(56, 92, 177);
+
+.four {
+    background-color: white;
+    height: auto;
 }
 
-.tri-right {
-
-    border-top: 50vh solid transparent;
-    border-left: 5vh solid red;
-    border-bottom: 50vh solid transparent;
-  }
+.title {
+    height: 30vw;
+}

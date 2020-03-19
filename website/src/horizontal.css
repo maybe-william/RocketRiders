@@ -1,0 +1,188 @@
+@font-face {
+    font-family: Colus;
+    src: url(assets/fonts/Colus/Colus-Regular.ttf);;
+}
+
+@font-face {
+    font-family: AlienDouble;
+    src: url(assets/fonts/alien_double.ttf);
+}
+
+@font-face {
+    font-family: SaintGeorge;
+    src: url(assets/fonts/SaintGeorge-LowercaseStencil.otf);
+}
+
+@font-face {
+    font-family: AmagroBold;
+    src: url(assets/fonts/amagro/Amagro-bold.ttf);
+}
+
+@font-face {
+    font-family: Iceland;
+    src: url(assets/fonts/Iceland/Iceland-Regular.ttf);
+}
+
+@font-face {
+    font-family: Uni;
+    src: url(assets/fonts/uni0553/uni0553/uni0553-webfont.ttf);
+}
+
+@font-face {
+    font-family: Sofachrome;
+    src: url(assets/fonts/sofachrome/sofachromerg.ttf);
+}
+
+@font-face {
+    font-family: Silkscreen;
+    src: url(assets/fonts/Silkscreen/slkscr.ttf);
+}
+
+@font-face {
+    font-family: BigFont;
+    src: url(assets/fonts/Myfonts/HouseOfBurvo.otf);
+}
+
+@font-face {
+    font-family: cool;
+    src: url(assets/fonts/blocked.ttf);
+}
+
+@font-face {
+    font-family: 'Blocked';
+    src: url('assets/fonts/transfonter.org-20200316-213403/.eot');
+    src: url('assets/fonts/transfonter.org-20200316-213403/.eot?#iefix') format('embedded-opentype'),
+        url('assets/fonts/transfonter.org-20200316-213403/.woff2') format('woff2'),
+        url('assets/fonts/transfonter.org-20200316-213403/.woff') format('woff'),
+        url('assets/fonts/transfonter.org-20200316-213403/.ttf') format('truetype'),
+        url('assets/fonts/transfonter.org-20200316-213403/.svg#Blocked') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+body {
+    background-color: black;
+    color: white;
+    text-align: center;
+    font-size: 20px;    
+    font-family: 'Iceland';
+}
+
+
+.intro {
+    width: 100vw;
+    height: 100hw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.GameName  {
+    color: white;
+    font-family: 'Blocked';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 22vw;
+}
+
+.GameObj {
+    /* display: flex; */
+}
+
+.mtt {
+
+    padding-left: 1vw;
+    padding-right: 8vw;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 5vw;
+    display: flex;
+    justify-content: center;
+}
+
+
+/* This section configures the horizonal scrolling*/
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 815vw;
+    transform: rotate(90deg) translateY(-100vh);
+    transform-origin: top left;
+}
+
+.outer-wrapper {
+    width: 100vh;
+    height: 100vw;
+    transform: rotate(-90deg) translateX(-100vh);
+    transform-origin: top left;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    position: absolute;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* Horizontal Scroll: slides config */
+.slide {
+    width: 100vw;
+    height: 100vh;
+}
+
+.one {
+    background: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.teamPic {
+    height: 40vw;
+}
+
+.desc {
+    font-size: 3vw;
+    padding-left: 10vw;
+    padding-right: 10vw;
+}
+
+.team {
+    display:flex;
+    position: absolute;
+    top: 10%;
+}
+
+.teamDesc {
+    width: 100vw;
+
+    display:flex;
+    /* flex-direction: column; */
+
+}
+
+.two {
+    background: rgb(0, 0, 0);
+    width: 300vw;
+}
+
+.three {
+    background-color: rgb(56, 92, 177);
+}
+
+.four {
+    background-color: white;
+}
+.tri-right {
+
+    border-top: 50vh solid transparent;
+    border-left: 5vh solid red;
+    border-bottom: 50vh solid transparent;
+  }
+
+.title {
+    height: 30vw;
+}
