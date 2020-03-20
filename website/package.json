@@ -17,8 +17,10 @@
     "history": "^4.10.1",
     "parcel-bundler": "^1.12.4",
     "path": "^0.12.7",
-    "react": "^16.13.0",
+    "react": "^16.13.1",
+    "react-aspect-ratio": "^1.0.42",
     "react-dom": "^16.13.0",
+    "react-image-gallery": "^1.0.6",
     "react-lottie": "^1.2.3",
     "react-router-dom": "^5.1.2"
   },

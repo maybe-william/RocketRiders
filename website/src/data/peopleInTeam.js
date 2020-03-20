@@ -11,11 +11,15 @@ const TEAM_PRESONS = [
 		name: 'Faizan Khan',
 		animeName: 'Faizan-Senpai',
 		title: 'Project Lead',
-		animeTitle: 'Captain\n UWU-sama!',
+		animeTitle: 'Captian Uwu San',
 		image: faizan,
 		animeImg: faizansenpai,
-		description: "Nisi deserunt mollit occaecat enim sit magna est commodo qui nisi consequat laborum adipisicing. Excepteur qui duis occaecat aliquip. Ipsum occaecat adipisicing anim reprehenderit ullamco labore culpa eu laborum duis et eu. Aliquip ipsum minim cillum pariatur minim deserunt eu officia esse.",
-		quote: '"Me Want Cwuddles - UWU"'
+		description: "Hi I'm the Project Lead!",
+		quote: 'I am the master of my fate and the captain of my soul.',
+		github: "https://www.github.com/b1naryp0et",
+		linkedin: "https://www.linkedin.com/in/fkkhan/",
+		twitter: "https://twitter.com/ChrisWill79"
+
 	},
 	{
 		id: 2,
@@ -25,19 +29,25 @@ const TEAM_PRESONS = [
 		animeTitle: 'Fix-it Man-desu ;)',
 		image: will,
 		animeImg: willkun,
-		description: "Nisi deserunt mollit occaecat enim sit magna est commodo qui nisi consequat laborum adipisicing. Excepteur qui duis occaecat aliquip. Ipsum occaecat adipisicing anim reprehenderit ullamco labore culpa eu laborum duis et eu. Aliquip ipsum minim cillum pariatur minim deserunt eu officia esse.",
-		quote: '"What did the farmer say when he lost his tractor? `Where\'s my tractor?`"'
+		description: "Hi I'm the Game Engineer and Dev Ops person!",
+		quote: '"What did the farmer say when he lost his tractor? `Where\'s my tractor?`"',
+		github: "https://www.github.com/maybe-william",
+		linkedin: "https://www.linkedin.com/in/william-dyrland-marquis/",
+		twitter: "https://twitter.com/b1nary_p0et"
 	},
 	{
 		id: 3,
 		name: 'Christian Williams',
 		animeName: 'Chris-Chan',
 		title: 'Full Stack Engineer',
-		animeTitle: 'Gunner \nBang-Bang Uwu',
+		animeTitle: 'Gunner Bang-Bang Uwu',
 		image: chris,
 		animeImg: chrischan,
-		description: "Nisi deserunt mollit occaecat enim sit magna est commodo qui nisi consequat laborum adipisicing. Excepteur qui duis occaecat aliquip. Ipsum occaecat adipisicing anim reprehenderit ullamco labore culpa eu laborum duis et eu. Aliquip ipsum minim cillum pariatur minim deserunt eu officia esse.",
-		quote: '"Bang"'
+		description: "Hi, im chris. i was the full stack software engineer.",
+		quote: '"Bang"',
+		github: "https://www.github.com//chriswill88",
+		linkedin: "https://www.linkedin.com/in/christian--williams/",
+		twitter: "https://twitter.com/notwilliam4"
 	}
 ]
 
