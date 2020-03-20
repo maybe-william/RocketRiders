@@ -7,28 +7,21 @@ import title from "../assets/gamePhotos/titlescreen.png";
 const GAMEPICS = [
 	{
 		id: 1,
-		name: 'title',
-		image: title
+		name: 'Enemy AI',
+		image: title,
+		description: "The enemies have a degree of intelligence"
 	},
 	{
 		id: 2,
-		name: 'game',
-		image: duel1
+		name: 'Multiplayer',
+		image: duel1,
+		description: " You Can Play With A Friend"
 	},
 	{
 		id: 3,
-		name: 'game',
-		image: duel2
-	},
-	{
-		id: 4,
-		name: 'game ship explodes',
-		image: shiplosion1
-	},
-	{
-		id: 5,
-		name: 'game ship explodes',
-		image: shiplosion2
+		name: 'Respawn invincibility',
+		image: duel2,
+		description: "When you die and come back you have a chance to save yourself"
 	},
 ]
 

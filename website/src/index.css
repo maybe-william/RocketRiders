@@ -64,20 +64,22 @@
 body {
     background-color: black;
     color: white;
-    text-align: center;
-    font-size: 20px;    
-    font-family: 'Iceland';
+    font-family: 'Uni';
     display: flex;
     flex-direction: column;
 }
 
 .intro {
-    height: 100vh;
-    width: 100vw;
+    height: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
+}
+
+
+.one {
+    width: 100vw;
+    background: rgb(0, 0, 0);
+    text-align: center;
 }
 
 .GameName {
@@ -86,10 +88,6 @@ body {
     font-weight: normal;
     font-style: normal;
     font-size: 20vw;
-}
-
-.GameObj {
-    display: flex;
 }
 
 .mtt {
@@ -123,16 +121,11 @@ body {
 
 /* Horizontal Scroll: slides config */
 .slide {
-    width: 100vw;
-    height: 100vh;
+    /* width: 100vw;
+    height: 100vh; */
 }
 
-.one {
-    background: rgb(0, 0, 0);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+
 
 .teamPic {
     padding-left: 5vw;
@@ -140,7 +133,8 @@ body {
 }
 
 .desc {
-    font-size: 3vw;
+    width: 50vw;
+    font-size: 2vw;
     padding-left: 10vw;
     padding-right: 5vw;
 }
@@ -169,10 +163,17 @@ body {
 
 
 .four {
-    background-color: white;
     height: auto;
 }
 
 .title {
     height: 30vw;
+}
+
+.techdesc {
+    font-size: 3vh;
+}
+
+.gamepic {
+    width: 100%;
 }

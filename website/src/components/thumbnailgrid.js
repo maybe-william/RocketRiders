@@ -1,11 +1,13 @@
 import React from 'react'
 import Thumbnail from './thumbnail'
-const ThumbnailGrid = ({thumbnails, handleClick }) => {
+
+const ThumbnailGrid = ({thumbnails, handleClick, off}) => {
+
 	return (
 		<div style={styles}>
 			{
 				thumbnails.map((i, index) => (
-					<Thumbnail key={i.id} thumb={i} handleClick={handleClick} index={index}/>
+					<Thumbnail key={i.id} thumb={i} handleClick={handleClick} off={off} index={index}/>
 				))
 			}
 		</div>
@@ -14,12 +16,11 @@ const ThumbnailGrid = ({thumbnails, handleClick }) => {
 
 
 const styles = {
+	paddingUp: '100%',
 	display: 'flex',
 	flexWrap: 'wrap',
-	height: '40vw',
-	width: '33vw',
-	background: 'Black',
-	aspectRatio: 4/4
+	height: '70vh',
+	maxWidth: '15vw',
 
 }
 export default ThumbnailGrid;
