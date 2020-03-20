@@ -420,20 +420,20 @@ class MainScene extends Phaser.Scene {
     const spawnRate = 1000;
 
     const alienSpeak = 1000;
-    const alienStop = 10000;
+    const alienStop = 7000;
 
-    const chrisSpeak = 11000;
-    const chrisStop = 20000;
+    const chrisSpeak = 8000;
+    const chrisStop = 14000;
 
-    const faizSpeak = 21000;
-    const faizStop = 30000;
+    const faizSpeak = 15000;
+    const faizStop = 21000;
 
-    const willSpeak = 31000;
-    const willStop = 40000;
+    const willSpeak = 22000;
+    const willStop = 29000;
 
-    const stage1Start = 45000;
-    const stage2Start = 60000;
-    const stage3Start = 75000;
+    const stage1Start = 30000;
+    const stage2Start = 45000;
+    const stage3Start = 60000;
     const stage4Start = 90000;
     const stage5Start = 105000;
 
@@ -473,7 +473,7 @@ class MainScene extends Phaser.Scene {
 
     makeEvent(alienSpeak, function () {
       cute.setVisible(true);
-      textBox.start('Alien: Please help! The Evil Alien Empire is attacking! I have a spaceship with weapons, but my arms are to short to fly!', 50);
+      textBox.start('Alien: Please help! The Evil Alien Empire is attacking! I have a spaceship with weapons, but my arms are too short to fly!', 25);
     });
     makeEvent(alienStop, function () {
       cute.setVisible(false);
@@ -482,7 +482,7 @@ class MainScene extends Phaser.Scene {
 
     makeEvent(chrisSpeak, function () {
       chris.setVisible(true);
-      textBox.start("Chris-sama: Not to worry! Team Synergy is here to help, and we've got arms! The Evil Alien Empire won't stand a chance against these hands.", 50);
+      textBox.start("Chris-sama: Not to worry! Team Synergy is here to help, and we've got arms! The Evil Alien Empire won't stand a chance against these hands.", 25);
     });
     makeEvent(chrisStop, function () {
       chris.setVisible(false);
@@ -491,7 +491,7 @@ class MainScene extends Phaser.Scene {
 
     makeEvent(faizSpeak, function () {
       faiz.setVisible(true);
-      textBox.start("Khan-senpai: Alright, guys, let's shoot 'em up! use WASD to pilot your ship, SPACEBAR to fire, and SHIFT to fire your special move.", 50);
+      textBox.start("Khan-senpai: Alright, Space Rangers, let's shoot 'em up! use WASD to pilot your ship, SPACEBAR to fire, and SHIFT to fire your special move.", 25);
     });
     makeEvent(faizStop, function () {
       faiz.setVisible(false);
@@ -500,7 +500,7 @@ class MainScene extends Phaser.Scene {
 
     makeEvent(willSpeak, function () {
       will.setVisible(true);
-      textBox.start("Will-kun: You said it, Faizan! If you don't like the simple controls, press V for more freedom of motion. Yee Haw!", 50);
+      textBox.start("Will-kun: You said it, Faizan! If you don't like the simple controls, press V for more freedom of motion. Yee Haw!", 25);
     });
     makeEvent(willStop, function () {
       will.setVisible(false);
