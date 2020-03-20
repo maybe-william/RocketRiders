@@ -26,7 +26,7 @@ class App extends Component {
 
 				<div style={{ marginTop: '20vh' , textAlign: 'center' }}>
 					<h1>Now You Can Try!</h1>
-					<a href="https://www.google.com"><button style={{backgroundColor: 'white', marginBottom: '5vh', width: '10vw', height: '10vh', fontFamily: 'Uni' }}>Play Now!</button></a>
+					<a href="./game/index.html"><button style={{backgroundColor: 'white', marginBottom: '5vh', width: '10vw', height: '10vh', fontFamily: 'Uni' }}>Play Now!</button></a>
 				</div>
 				<hr />
 
