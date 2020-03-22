@@ -18,8 +18,7 @@ const TEAM_PRESONS = [
 		quote: 'I am the master of my fate and the captain of my soul.',
 		github: "https://www.github.com/b1naryp0et",
 		linkedin: "https://www.linkedin.com/in/fkkhan/",
-		twitter: "https://twitter.com/ChrisWill79"
-
+		twitter: "https://twitter.com/b1nary_p0et"
 	},
 	{
 		id: 2,
@@ -33,7 +32,7 @@ const TEAM_PRESONS = [
 		quote: '"What did the farmer say when he lost his tractor? `Where\'s my tractor?`"',
 		github: "https://www.github.com/maybe-william",
 		linkedin: "https://www.linkedin.com/in/william-dyrland-marquis/",
-		twitter: "https://twitter.com/b1nary_p0et"
+		twitter: "https://twitter.com/notwilliam4"
 	},
 	{
 		id: 3,
@@ -47,7 +46,7 @@ const TEAM_PRESONS = [
 		quote: '"Bang"',
 		github: "https://www.github.com//chriswill88",
 		linkedin: "https://www.linkedin.com/in/christian--williams/",
-		twitter: "https://twitter.com/notwilliam4"
+		twitter: "https://twitter.com/ChrisWill79"
 	}
 ]
 
