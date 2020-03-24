@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
-import Intropage from '../components/logocomp';
-import GameObjs from '../components/GameInfo';
-import Team_Persons from '../components/PeopleInTeam';
-import GamePics from '../components/AboutGame';
+import heart from "../assets/miscellaneous/heart.svg";
+import Intropage from './logocomp';
+import GameObjs from './GameInfo';
+import Team_Persons from './PeopleInTeam';
+import GamePics from './AboutGame';
+import Video from './video'
 import '../index.css';
 
 class App extends Component {
@@ -22,12 +22,36 @@ class App extends Component {
 				<div className="mtt">Meet The Crew</div>
 				<Team_Persons />
 				<GameObjs className="slide three"/>
-				
-				<a href='localhost:5500'>Press</a>
-				<div className="ptg">Play The Game!!</div>
+				<GamePics />
+
+				<div style={{ marginTop: '20vh' , textAlign: 'center' }}>
+					<h1>Now You Can Try!</h1>
+					<a href="https://www.google.com"><button style={{backgroundColor: 'white', marginBottom: '5vh', width: '10vw', height: '10vh', fontFamily: 'Uni' }}>Play Now!</button></a>
+				</div>
+				<hr />
+
+				<div style={{height: '50hv', paddingLeft: '3vw'}}>
+					<h2>Credit</h2>
+					<Intropage />
+
+					<h2 style={end}> Thanks to an amazing team!</h2>
+					<h2 style={end}> Thanks To This Amazing School!</h2>
+					<h2 style={end}>Thanks For All The Support!</h2>
+					Thank You For checking Out Our Project Page!
+				</div>
+				<hr />
+
+				<div style={{ display: 'flex', justifyContent: 'center' }}>
+					<img src={heart} alt="heart" style={{ height: '2vh' }} />
+					<p style={{ margin: 0, marginLeft: '12px'}}>Made With Love, Hardwork, And Care By Cohort 9 HolbertonNHV</p>
+				</div>
 			</div>
 		)
 	}
 }
 
+
+const end = {
+	textAlign: 'center'
+}
 export default App;
