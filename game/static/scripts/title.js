@@ -1,5 +1,4 @@
-// This module holds the title scene for the game
-var demoShip;
+var demoShip = null;
 var demoBadShips;
 var demoEnemies = [];
 var demoMode;
@@ -10,14 +9,12 @@ var scoreText = '';
 class TitleScene extends Phaser.Scene {
 
     bulletHit (ship, shot) {
-        // This is the collision function for when a bullet hits a ship
-        const blast = blasts.get(shot.body.position.x, shot.body.position.y);
+        let blast = blasts.get(shot.body.position.x, shot.body.position.y);
         blast.setActive(true);
         blast.setVisible(true);
         blast.play('blast');
-        explosion.play();
         shot.setPosition(-100, -100);
-        shot.setVelocity(0, 0);
+        shot.setVelocity(0,0);
         shot.setActive(false);
         shot.setVisible(false);
 
@@ -27,46 +24,70 @@ class TitleScene extends Phaser.Scene {
         ship.setVisible(false);
 
         setTimeout(function () {
-            if (blast) {
-                blast.setActive(false);
-                blast.setVisible(false);
-                blast.setPosition(-100, -100);
-            }
+            blast.setActive(false);
+            blast.setVisible(false);
+            blast.setPosition(-100, -100);
         }, 1000);
 
-        if (ship.texture.key === 'player1' || (ship.texture.key === 'player2' && twoPlayer)) {
+        if (ship.texture.key == 'player1' || (ship.texture.key == 'player2' && two_player)) {
             setTimeout(function () {
-                if (ship && ship.body) {
-                    ship.setActive(true);
-                    ship.setVisible(true);
-                    ship.setPosition(pmath.Between(200, 600), pmath.Between(200, 400));
-                    ship.setVelocity(0, 0);
-                }
+                ship.setActive(true);
+                ship.setVisible(true);
+                ship.setPosition(pmath.Between(200, 600), pmath.Between(200, 400));
+                ship.setVelocity(0, 0);
             }, 1000);
         }
     }
 
-    constructor () {
+    constructor ()
+    {
         super('TitleScene');
     }
 
 
-    create () {
-        // This loads the assets for the scene
+    preload ()
+    {
+
+        this.load.image('sky', 'static/assets/images/starbgv.png');
+        this.load.image('player1', 'static/assets/images/blueship.png');
+        this.load.image('player2', 'static/assets/images/blueship2.png');
+        this.load.image('player3', 'static/assets/images/orangeship.png');
+        this.load.atlas('shapes', 'static/assets/images/shapes.png', 'static/assets/images/shapes.json');
+        this.load.text('space_dirt', 'static/assets/images/space_dirt.json');
+        this.load.image('goodshot', 'static/assets/images/goodshot.png');
+        this.load.image('badshot', 'static/assets/images/badshot.png');
+        this.load.image('blast1', 'static/assets/images/blast1.png');
+        this.load.image('blast2', 'static/assets/images/blast2.png');
+        this.load.image('blast3', 'static/assets/images/blast3.png');
+        this.load.image('blast4', 'static/assets/images/blast4.png');
+        this.load.image('blast5', 'static/assets/images/blast5.png');
+        this.load.image('blast6', 'static/assets/images/blast6.png');
+        this.load.image('title', 'static/assets/images/RocketTitle.png');
+
+        this.load.image('null', 'static/assets/images/null.png');
+    }
+
+
+
+    create ()
+    {
         demoMode = true;
         sky = this.add.tileSprite(400, 300, 800, 600, 'sky');
         sky.setDepth(-999);
-
+        scoreText = this.add.text(16, 16, 'High Score: ' + topScore.toString(), { fontSize: '32px', fill: '#a66f3c' });
         title = this.add.tileSprite(400, 300, 800, 600, 'title');
         title.setDepth(999);
+        //dirt1 = this.add.particles('shapes',  new Function('return ' + this.cache.text.get('space_dirt'))());
+        //dirt1.setDepth(-999);
 
-        const ship = this.physics.add.sprite(100, 500, 'player1');
+        let ship = this.physics.add.sprite(100, 500, 'player1');
         ship.setBounce(0.2);
         ship.setCollideWorldBounds(true);
         demoShip = ship;
 
+
         demoShip = new Ship(demoShip, 100, 500, 1, 0);
-        demoShip.update = AI2;
+        demoShip.update = ai2;
 
         this.anims.create({
             key: 'blast',
@@ -77,21 +98,21 @@ class TitleScene extends Phaser.Scene {
                 { key: 'blast4' },
                 { key: 'blast5' },
                 { key: 'blast6' },
-                { key: 'null' }
+                { key: 'null' },
             ]
-        });
+        })
 
         blasts = this.physics.add.group({
             defaultKey: 'blast1',
             maxSize: 200
-        });
+        })
 
-        goodShots = this.physics.add.group({
+        goodshots = this.physics.add.group({
             defaultKey: 'goodshot',
             maxSize: 200
         });
 
-        badShots = this.physics.add.group({
+        badshots = this.physics.add.group({
             defaultKey: 'badshot',
             maxSize: 200
         });
@@ -101,106 +122,119 @@ class TitleScene extends Phaser.Scene {
             maxSize: 20
         });
 
-        this.physics.add.collider(demoShip.ph, badShots, this.bulletHit, null, this);
+        this.physics.add.collider(demoShip.ph, badshots, this.bulletHit, null, this);
 
-        // enemy spawn timer
+        //enemy spawn timer
         this.time.addEvent({
             delay: 500,
-            callback: function () {
+            callback: function() {
                 if (demoMode) {
-                    const randx = pmath.Between(200, 600);
-                    const ship = demoBadShips.get(randx, -100);
+                    let randx = pmath.Between(200, 600);
+                    let ship = demoBadShips.get(randx, -100); //this.physics.add.sprite(pmath.Between(0, 800), -100, 'player3');
                     ship.setBounce(0.6);
-                    ship.setAngle(180);
-                    ship.setRotation(pi);
-                    if (ship.casing === undefined) { // if not created already
-                        const enemy = new Ship(ship, ship.body.position.x, ship.body.position.y, 1, 0);
+                    ship.setAngle(180)
+                    ship.setRotation(pi)
+                    if (ship.casing === undefined) { //if not created already
+                        let enemy = new Ship(ship, ship.body.position.x, ship.body.position.y, 1, 0);
                         this.physics.add.collider(demoShip.ph, ship, null, null, this);
-                        this.physics.add.collider(ship, goodShots, this.bulletHit, null, this);
+                        this.physics.add.collider(ship, goodshots, this.bulletHit, null, this);
                         demoBadShips.children.each(function (fellow) {
                             this.physics.add.collider(ship, fellow, null, null, this);
                         }.bind(this));
-                        enemy.update = AI1;
-                        ship.casing = enemy; // just to keep track of having been created already
+                        enemy.update = ai1;
+                        ship.casing = enemy; //just to keep track of having been created already
                     }
                     ship.setActive(true);
                     ship.setVisible(true);
                     ship.casing.createTime = Date.now();
                     ship.casing.nonceTime = pmath.Between(0, 6000);
+                    //enemy.update = ai2;
+                    //enemy.targetShip = ships[Math.floor(Math.random() * 2)];
+                    //enemy.ptx = pmath.Between(100, 700);
+                    //enemy.pty = pmath.Between(100, 500);
+                    //enemy.update = ai3;
+                    //enemy.update = ai4;
                     demoEnemies.push(ship.casing);
                 }
             },
             callbackScope: this,
             loop: true
         });
+
     }
 
-    update () {
-        // This updates the scene state every game tick
-        if (demoMode) {
-            const sw = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I).isDown;
-            if (sw) {
-                startMain.bind(this)();
-                return;
-            }
 
-            // move sky
-            sky.tilePositionY = sky.tilePositionY - 1;
 
-            // get the movement for ship1
-            const kb = this.input.keyboard;
-            const spec = kb.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).isDown;
-            if (spec) {
-                startMain.bind(this)();
-                return;
-            }
-            demoEnemies = demoEnemies.filter(function (item) {
-                return item.ph.active && item.ph.body.position.y < 550;
-            });
 
-            // update the demoShip
-            if (demoShip.targetShip === undefined || !demoShip.targetShip.ph.active || demoShip.targetShip.ph.body.position.y < -20 || demoShip.targetShip.ph.body.position.y > 500) {
-                demoShip.targetShip = demoEnemies[Math.floor(Math.random(demoEnemies.length))];
-            }
-            demoShip.update(false, false, false, false, false, false);
-            if (pmath.Between(0, 1000) < 30 && demoShip.targetShip.ph.body && demoShip.targetShip.ph.body.position.y > 0) {
-                demoShip.shoot(false);
-            }
-            if (pmath.Between(0, 1000000) < 500 && demoShip.ph.active) {
-                demoShip.shoot(true);
-            }
+    update ()
+    {
+        // move sky
+        sky.tilePositionY = sky.tilePositionY - 1;
 
-            // update and destroy enemies
-            demoBadShips.children.each(function (enemy) {
-                if (enemy.active) {
-                    enemy.casing.update(false, false, false, false, false, false);
-                    if (offScreen(enemy.body.position.x, enemy.body.position.y)) {
-                        enemy.setActive(false);
-                        enemy.setVisible(false);
-                        enemy.setVelocity(0, 0);
-                    }
-                }
-            });
-
-            // destroy bullets out of range
-            goodShots.children.each(function (shot) {
-                if (shot.active) {
-                    if (offScreen(shot.x, shot.y)) {
-                        shot.setActive(false);
-                        shot.setVisible(false);
-                    }
-                }
-            });
-
-            // destroy bullets out of range
-            badShots.children.each(function (shot) {
-                if (shot.active) {
-                    if (offScreen(shot.x, shot.y)) {
-                        shot.setActive(false);
-                        shot.setVisible(false);
-                    }
-                }
-            });
+        // get the movement for ship1
+        const kb = this.input.keyboard;
+        let spec =  kb.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER).isDown;
+        if (spec) {
+            spec = false;
+            demoShip.update = function () {};
+            demoShip.ph.setActive(false);
+            demoShip.ph.setVisible(false);
+            demoMode = false;
+            normal_mode = true;
+            //load next scene
+            this.scene.start('MainScene');
         }
+        demoEnemies = demoEnemies.filter(function (item) {
+            return item.ph.active && item.ph.body.position.y < 550;
+        });
+
+        //update the demoShip
+        if (demoShip.targetShip === undefined || !demoShip.targetShip.ph.active || demoShip.targetShip.ph.body.position.y < -20 || demoShip.targetShip.ph.body.position.y > 500) {
+            demoShip.targetShip = demoEnemies[Math.floor(Math.random(demoEnemies.length))];
+        }
+        demoShip.update(false, false, false, false, false, false);
+        if (pmath.Between(0, 1000) < 30 && demoShip.targetShip.ph.body && demoShip.targetShip.ph.body.position.y > 0) {
+            demoShip.shoot(false);
+        }
+        if (pmath.Between(0, 1000000) < 500 && demoShip.ph.active){
+            demoShip.shoot(true);
+        }
+
+
+        // update and destroy enemies
+        demoBadShips.children.each(function (enemy) {
+            if (enemy.active) {
+                enemy.casing.update(false, false, false, false, false, false);
+                if (offscreen(enemy.body.position.x, enemy.body.position.y)) {
+                    enemy.setActive(false);
+                    enemy.setVisible(false);
+                    enemy.setVelocity(0, 0);
+                }
+            }
+        }.bind(this));
+
+        //destroy bullets out of range
+        goodshots.children.each(function (shot) {
+            if (shot.active) {
+                if (offscreen(shot.x, shot.y)) {
+                    shot.setActive(false);
+                    shot.setVisible(false);
+                }
+            }
+        }.bind(this));
+
+        //destroy bullets out of range
+        badshots.children.each(function (shot) {
+            if (shot.active) {
+                if (offscreen(shot.x, shot.y)) {
+                    shot.setActive(false);
+                    shot.setVisible(false);
+                }
+            }
+        }.bind(this));
+
     }
 }
+
+
+

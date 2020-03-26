@@ -35,16 +35,15 @@ const Team_Person = props => {
 			<div className="desc">
 				<h3>{hovered ? animeName : name} - {hovered ? animeTitle : title}</h3>
 				<p>{hovered ? quote : description}</p>
-				<a href={github}><img src={git} style={styleimg}/></a>
-				<a href={linkedin}><img src={linked} style={styleimg}/></a>
-				<a href={twitter}><img src={twit} style={styleimg}/></a>
+				<a href={github} style={{marginRight: '4vw'}}><img src={git} style={styleimg}/></a>
+				<a href={linkedin} style={{marginRight: '4vw'}}><img src={linked} style={styleimg}/></a>
+				<a href={twitter} style={{marginRight: '4vw'}}><img src={twit} style={styleimg}/></a>
 			</div>
 		</div>
 	)
 }
 const styleimg = {
-	height: '4vh',
-	marginRight: '4vw'
+	height: '4vh'
 }
 const Team_Persons = () => {
 	return (

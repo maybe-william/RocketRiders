@@ -1,6 +1,6 @@
 import React from 'react';
 import Lottie from 'react-lottie';
-import * as svgfile from '../assets/logo.json';
+import * as svgfile from '../assets/goodmaskcropped.json';
 import '../index.css';
 
 
@@ -16,7 +16,7 @@ const defaultOptions = {
 const Intropage = () => {
 	return (
 		<div className="intro">
-			<Lottie options={defaultOptions} height={620} width={620} className="lottie" /> 
+			<Lottie options={defaultOptions} height={'70vh'} width={'70vh'} className="lottie" /> 
 		</div>
 	)
 }

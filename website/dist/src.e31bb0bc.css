@@ -62,7 +62,6 @@
 
 
 body {
-    background-color: black;
     color: white;
     font-family: 'Uni';
     display: flex;
@@ -70,7 +69,10 @@ body {
 }
 
 .intro {
-    height: auto;
+    background-color: black;
+    padding-top: 3vw;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -78,7 +80,6 @@ body {
 
 .one {
     width: 100vw;
-    background: rgb(0, 0, 0);
     text-align: center;
 }
 
@@ -157,7 +158,6 @@ body {
 }
 
 .two {
-    background: rgb(0, 0, 0);
     height: auto;
 }
 
@@ -177,5 +177,17 @@ body {
 .gamepic {
     width: 100%;
 }
+.player-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding-top: 56.25% /* Player ratio: 100 / (1280 / 720) */
+  }
+   
+  .react-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 
 /*# sourceMappingURL=/src.e31bb0bc.css.map */
