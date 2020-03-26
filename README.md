@@ -1,4 +1,7 @@
 # Rocket Riders - Bringing People Together  🚀
+
+![rr00](https://user-images.githubusercontent.com/51524966/77604145-2dea0180-6ee8-11ea-879a-60d725c40006.jpg)
+
 ## Introduction
 Rocket Riders is a quirky game created by Team Synergy(Chris Williams, William Dyrland-Marquis, and Faizan Khan) designed to bring people together through the pursuit of decimating the alien horde which threatens us 👽 Rocket Riders allows up to 2 players  🎮 to team up and use their respective ships to attack the enemies, which fill up the screen quickly.
 #### Link to our site
@@ -14,8 +17,20 @@ Rocket Riders requires no installation! Our game is hosted on our website and is
 ## Usage
 ##### We created our project with the intent to maximize a pleasant user experience. This includes writing a control scheme which is easy to use and intuitive. For those who enjoy step by step instructions, please read on
 1. Click [this link](https://thefunonline.tech/game/index.html). When you arrive at the pictured page, hit the 'Enter key
+
+![rr00](https://user-images.githubusercontent.com/51524966/77604145-2dea0180-6ee8-11ea-879a-60d725c40006.jpg)
+
+
 2. After hitting enter, you will be greeted by npc dialogue. This dialogue explains the control scheme for the game. Read the dialogue, which explains that the 'A' key is for moving left, the 'D' key is for moving right, 'W' is for moving up, and 'S' is for moving down. The spacebar is used to shoot enemies and the 'shift' key is used to fire the ship's special move. Enjoy!
+
+![rr01](https://user-images.githubusercontent.com/51524966/77604229-5f62cd00-6ee8-11ea-9ff8-88d433db4d21.jpg)
+
+
 3. Can you beat Will's high score, listed below? If so shoot us a message to one of the Social Media accounts we listed above and we'll send you very cool prize 😃
+
+![rr02](https://user-images.githubusercontent.com/51524966/77604353-a650c280-6ee8-11ea-924a-84f4537c31ab.jpg)
+
+
 ## Contributing to Rocket Riders
 We welcome Pull requests! For any major changes, please open an issue first to discuss what you would like to change.
 ## Related Projects
