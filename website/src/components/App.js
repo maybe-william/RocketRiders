@@ -5,7 +5,7 @@ import GameObjs from './GameInfo';
 import Team_Persons from './PeopleInTeam';
 import GamePics from './AboutGame';
 import VideoBg from "reactjs-videobg";
-import mp4 from "../assets/fullgamevid.webm";
+import mp4 from "../assets/GAMEPLAY.mp4";
 import Video from './videos/video'
 import '../index.css';
 

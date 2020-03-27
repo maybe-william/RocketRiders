@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactPlayer from 'react-player'
 import "./video.css"
-import video from '../../assets/whatcomesnext.webm';
+import video from '../../assets/WCN.mp4';
 
 
 const Video = () => {
