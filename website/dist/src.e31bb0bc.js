@@ -53714,7 +53714,7 @@ function o(e, n) {
         o = document.createElement("style");
     o.type = "text/css", "top" === r && t.firstChild ? t.insertBefore(o, t.firstChild) : t.appendChild(o), o.styleSheet ? o.styleSheet.cssText = e : o.appendChild(document.createTextNode(e));
   }
-}(".VideoBg-module_video__2IPmN {\n  position: absolute;\n  top: 0;\n  right: 0;\n  height: 100%;\n  width: 100%;\n}\n@media (min-aspect-ratio: 16/9) {\n  .VideoBg-module_video__2IPmN {\n    height: auto;\n    width: 100%;\n  }\n}\n@media (max-aspect-ratio: 16/9) {\n  .VideoBg-module_video__2IPmN {\n    height: 100%;\n    width: auto;\n  }\n}\n@media (max-width: 768px) {\n  .VideoBg-module_video__2IPmN {\n    display: none;\n  }\n}\n.VideoBg-module_wrapper__3FlD_ {\n  overflow: hidden;\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: -9999;\n}\n");
+}(".VideoBg-module_video__2IPmN {\n  position: absolute;\n  top: 0;\n  right: 0;\n  height: 100%;\n  width: 100%;\n}\n@media (min-aspect-ratio: 16/9) {\n  .VideoBg-module_video__2IPmN {\n    height: auto;\n    width: 100%;\n  }\n}\n@media (max-aspect-ratio: 16/9) {\n  .VideoBg-module_video__2IPmN {\n    height: 100%;\n    width: auto;\n  }\n}\n@media (max-width: 768px) {\n  .VideoBg-module_video__2IPmN {\n    display: initial\n  }\n}\n.VideoBg-module_wrapper__3FlD_ {\n  overflow: hidden;\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: -9999;\n}\n");
 var i = o(function (e, n) {
   Object.defineProperty(n, "__esModule", {
     value: !0

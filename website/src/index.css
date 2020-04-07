@@ -90,7 +90,7 @@ body {
 #present {
     position: relative;
     left: 0;
-    bottom: -50%;
+    bottom: -20%;
     opacity: 0;
     animation-name: introstart;
     animation-duration: 5s;
@@ -100,7 +100,7 @@ body {
 .svg {
     position: relative;
     left: 0;
-    bottom: 20%;
+    bottom: 30%;
     animation-name: introstart;
     opacity: 0;
     animation-delay: 5s;
@@ -115,7 +115,7 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
     animation-name: close;
     animation-delay: 10s;
     animation-duration: 0s;
@@ -124,15 +124,15 @@ body {
 
 
 .one {
-    text-align: center;
     height: 100vh;
     width: 100vw;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .GameName {
-    color: aa703c;
+    text-align: center;
     font-family: 'Blocked';
     font-weight: normal;
     font-style: normal;
