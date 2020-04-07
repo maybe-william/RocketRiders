@@ -24,7 +24,7 @@ const GamePic = props => {
 const GamePics = () => {
 	return (
 		<div>
-			<h1 style={{textAlign: "center"}}>Features</h1>
+			<h1 style={{textAlign: "center", fontSize: '3vw'}}>Features</h1>
 			<div style={{ maxWidth: '100vw', textAlign: 'center', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
 			
 				{

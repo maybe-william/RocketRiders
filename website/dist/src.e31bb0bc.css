@@ -60,27 +60,75 @@
     font-style: normal;
 }
 
-
 body {
+    background-color: black;
     color: white;
     font-family: 'Uni';
     display: flex;
     flex-direction: column;
 }
+@keyframes return {
+    0%  {position: absolute; left: -9999px; opacity: 0;}
+    100%  {position: absolute; left: -9999px; opacity: 0;}
+}
+#after {
+    animation-name: return;
+    animation-duration: 10s;
+    /* animation-fill-mode: forwards; */
+    /* z-index: 200; */
+    /* display: none; */
+}
+@keyframes introstart {
+    0%   {opacity: 0;}
+    50%   {opacity: 1;}
+    100%   {display: none;}
+}
+@keyframes close {
+    100%  {position: absolute; left: -9999px;}
+}
+
+#present {
+    position: relative;
+    left: 0;
+    bottom: -50%;
+    opacity: 0;
+    animation-name: introstart;
+    animation-duration: 5s;
+    animation-fill-mode: forwards;
+}
+
+.svg {
+    position: relative;
+    left: 0;
+    bottom: 20%;
+    animation-name: introstart;
+    opacity: 0;
+    animation-delay: 5s;
+    animation-duration: 5s;
+    animation-fill-mode: forwards;
+
+}
 
 .intro {
     background-color: black;
-    padding-top: 3vw;
     width: 100vw;
     height: 100vh;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    animation-name: close;
+    animation-delay: 10s;
+    animation-duration: 0s;
+    animation-fill-mode: forwards;
 }
 
 
 .one {
-    width: 100vw;
     text-align: center;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
 }
 
 .GameName {
@@ -89,6 +137,7 @@ body {
     font-weight: normal;
     font-style: normal;
     font-size: 20vw;
+    margin: 0;
 }
 
 .mtt {
@@ -121,10 +170,9 @@ body {
 }
 
 /* Horizontal Scroll: slides config */
-.slide {
+/* .slide {
     /* width: 100vw;
     height: 100vh; */
-}
 
 
 

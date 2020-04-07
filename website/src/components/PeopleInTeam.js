@@ -43,7 +43,7 @@ const Team_Person = props => {
 	)
 }
 const styleimg = {
-	height: '4vh'
+	height: '2vw'
 }
 const Team_Persons = () => {
 	return (

@@ -42,7 +42,7 @@ const TEAM_PRESONS = [
 		animeTitle: 'Gunner Bang-Bang Uwu',
 		image: chris,
 		animeImg: chrischan,
-		description: "Hi, im chris. i was the full stack software engineer.",
+		description: "Hi, I'm Chris. I was the full stack software engineer.",
 		quote: '"Bang"',
 		github: "https://www.github.com//chriswill88",
 		linkedin: "https://www.linkedin.com/in/christian--williams/",

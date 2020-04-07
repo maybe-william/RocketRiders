@@ -19,8 +19,8 @@ const styles = {
 	paddingUp: '100%',
 	display: 'flex',
 	flexWrap: 'wrap',
-	height: '70vh',
-	maxWidth: '15vw',
+	height: '30vw',
+	maxWidth: '15vw'
 
 }
 export default ThumbnailGrid;

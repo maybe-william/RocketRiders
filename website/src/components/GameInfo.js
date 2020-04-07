@@ -63,7 +63,7 @@ class GameObj extends Component {
 
 		return (
 			<div>
-			<h1 style={{textAlign: 'center'}}>The Technologies We Used</h1>
+			<h1 style={{textAlign: 'center', fontSize: '4vw'}}>The Technologies We Used</h1>
 				<div style={gallery} className="three">
 					{/* left side */}
 					<div style={{ flex: 1, width: '5vw'}}>
