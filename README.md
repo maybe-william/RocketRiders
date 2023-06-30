@@ -5,7 +5,7 @@
 ## Introduction
 Rocket Riders is a quirky game created by Team Synergy(Chris Williams, William Dyrland-Marquis, and Faizan Khan) designed to bring people together through the pursuit of decimating the alien horde which threatens us 👽 Rocket Riders allows up to 2 players  🎮 to team up and use their respective ships to attack the enemies, which fill up the screen quickly.
 #### Link to our site
-[Here's a link to our website, where you can play Rocket Riders](https://thefunonline.tech/)
+[Here's a link to our website, where you can play Rocket Riders](https://rocket-riders-git-master-chriswill88.vercel.app/)
 #### Article about what it took to create Rocket Riders
 [Here's a link to our article. We wrote it so that it would be accessible to non-coders. Do check it out! ](https://medium.com/@mathemagician229/the-odyssey-of-team-synergy-2ba4d5998bd4)
 #### Listed below are our Github, LinkedIn and Twitter Profiles. Please reach out, message, and connect with us!
