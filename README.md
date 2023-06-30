@@ -13,10 +13,10 @@ Rocket Riders is a quirky game created by Team Synergy(Chris Williams, William D
 *  William Dyrland-Marquis🥇 [maybe-william](https://github.com/maybe-william) | [@notwilliam4](https://twitter.com/notwilliam4) | [My LinkedIn](https://www.linkedin.com/in/william-dyrland-marquis/)
 * Faizan Khan 🌌 [b1naryp0et](https://github.com/b1naryp0et) | [@b1nary_p0et](https://twitter.com/b1nary_p0et) | [My LinkedIn](https://www.linkedin.com/in/fkkhan/)
 ## Installation
-Rocket Riders requires no installation! Our game is hosted on our website and is easily playable on your desktop or laptop. To play our game immediately, [Click here.](https://thefunonline.tech/game/index.html)
+Rocket Riders requires no installation! Our game is hosted on our website and is easily playable on your desktop or laptop. To play our game immediately, [Click here.](https://rocket-riders-git-master-chriswill88.vercel.app/game/index.html)
 ## Usage
 ##### We created our project with the intent to maximize a pleasant user experience. This includes writing a control scheme which is easy to use and intuitive. For those who enjoy step by step instructions, please read on
-1. Click [this link](https://thefunonline.tech/game/index.html). When you arrive at the pictured page, hit the 'Enter key
+1. Click [this link](https://rocket-riders-git-master-chriswill88.vercel.app/game/index.html). When you arrive at the pictured page, hit the 'Enter key
 
 ![rr00](https://user-images.githubusercontent.com/51524966/77604145-2dea0180-6ee8-11ea-879a-60d725c40006.jpg)
 
